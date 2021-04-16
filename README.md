@@ -6,7 +6,7 @@ Detta gitHub-bibliotek omfattar resurser om det pågående arbetet runt utveckli
 
 ## Om Skolverkets API:er
 ### API för användarprovisionering
-API:et används för att skapa, uppdatera och ta bort elever och personal hos de skolenheter som genomför digitala nationella prov och/eller använder Skolverkets digitala bedömningsstöd.
+API:et kan användas för att skapa, uppdatera och ta bort elever och personal för de skolenheter som genomför digitala nationella prov och/eller använder Skolverkets digitala bedömningsstöd.
 
 ### API för inhämtning av kontrollerade värden
 Via detta api kan skolans system inhämta data om skolenheter, studievägar och andra värden som kontrolleras av Skolverket vid användarprovisionering. På så sätt kan data kontrolleras redan i förväg innan värden överförs till Skolverket. Syftet är att bidra till ökad datakvalitet och minska antalet fel.
