@@ -1,5 +1,5 @@
 # API för användarprovisionering
-API:et används för att skapa, uppdatera och ta bort elever och personal hos de skolenheter som genomför digitala nationella prov och/eller använder Skolverkets digitala bedömningsstöd.
+API:et kan användas för att skapa, uppdatera och ta bort elever och personal för de skolenheter som genomför digitala nationella prov och/eller använder Skolverkets digitala bedömningsstöd.
 
 Format: API:et följer SS12000:2020 informationsmodell men har en omvänd riktning för dataöverföring. API:et tar emot och returnerar data som JSON enligt OpenAPI Specification (tidigare Swagger-format).
 
