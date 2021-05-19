@@ -1,4 +1,4 @@
-[Information på svenska](#DNP-Användarhantering)
+:uk: [Information på svenska](#DNP-Användarhantering)
 
 # DNP User Management
 The Swedish National Agency for Education implements digital national assessments (DNP). This library includes API specifications and documentation for DNP user lifecycle management.
