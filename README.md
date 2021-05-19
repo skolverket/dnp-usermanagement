@@ -7,7 +7,6 @@
 [Markdown - Link](#Link)
 
 
-#Link
 text 
 
 ## Viktig information
@@ -24,3 +23,5 @@ Via detta api kan skolans system inhämta data om skolenheter, studievägar och 
 Information om digitalisering av de nationella proven finns på [Skolverkets webbplats](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/digitalisering-av-de-nationella-proven)
 
 SS12000 API specifikation finns på [https://github.com/girgen/ss12000v2](https://github.com/girgen/ss12000v2)
+
+#Link
