@@ -16,7 +16,7 @@ text
 text
 
 # DNP Användarhantering
-Skolverket digitaliserar de nationella proven (DNP). Detta bibliotek samlar API-specifikationer och dokumentation om hur skolan kan hantera sina användare i DNP. 
+Skolverket digitaliserar de nationella proven (DNP). Detta bibliotek samlar API-specifikationer och dokumentation om hur skolan kan hantera sina användare i Skolverkets provtjänst. 
 
 ## Viktig information
 Detta gitHub-bibliotek omfattar resurser om det pågående arbetet runt utveckling av API för användarprovisionering kopplad till Skolverkets e-tjänst för digitala nationella prov. **N.b. materialet som finns här uppdateras kontinuerligt och är inte officiell information från Skolverket, utan ska betraktas som arbetsdokument**.
