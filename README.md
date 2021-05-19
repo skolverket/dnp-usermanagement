@@ -1,6 +1,13 @@
-<div class="text-gray mb-2">
-  .text-gray on white
-</div>|
+
+
+```diff
+- text in red
++ text in green
+! text in orange
+# text in gray
+@@ text in purple (and bold)@@
+```
+|
 :sweden: [Information på svenska](#DNP-Användarhantering) |
 
 # DNP User Management
