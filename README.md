@@ -3,7 +3,6 @@
 | English | Svenska |
 | ------------- | ------------- |
 | The Swedish National Agency for Education implements digital national assessments (DNP). This library includes API specifications and documentation for DNP user lifecycle management  | Skolverket digitaliserar de nationella proven (DNP). Detta bibliotek samlar API-specifikationer och dokumentation om hur skolan kan hantera sina användare i DNP  |
-
 | [Information på svenska](#Viktig-information) | text | 
 
 
