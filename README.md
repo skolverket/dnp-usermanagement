@@ -1,11 +1,7 @@
 
 
 ```diff
-- text in red
-+ text in green
-! text in orange
-# text in gray
-@@ text in purple (and bold)@@
+:sweden: [Information på svenska](#DNP-Användarhantering) 
 ```
 |
 :sweden: [Information på svenska](#DNP-Användarhantering) |
