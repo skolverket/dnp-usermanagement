@@ -13,7 +13,7 @@ text
 text
 
 ## Contact
-text
+servicedesk@skolverket.se
 
 # DNP Användarhantering
 Skolverket digitaliserar de nationella proven (DNP). Detta bibliotek samlar API-specifikationer och dokumentation om hur skolan kan hantera sina användare i Skolverkets provtjänst. 
@@ -34,4 +34,4 @@ Information om digitalisering av de nationella proven finns på [Skolverkets web
 SS12000 API specifikation finns på [https://github.com/girgen/ss12000v2](https://github.com/girgen/ss12000v2)
 
 ## Kontaktuppgifter
-Uppdateras inom kort
+servicedesk@skolverket.se
