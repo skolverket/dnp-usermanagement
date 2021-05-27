@@ -1,0 +1,654 @@
+openapi: 3.0.2
+servers:
+  - description: Skolverket
+    url: "https://api.skolverket.se/..."
+info:
+  description: >
+    API:et exponerar information om huvudman (organisation), skolenhet och studievägar.
+    Via detta API kan skolans system inhämta data om skolenheter, studievägar och andra
+    värden som kontrolleras av Skolverket vid användarprovisionering. På så sätt kan data
+    kontrolleras redan i förväg innan värden överförs till Skolverket. Syftet är att bidra
+    till ökad datakvalitet och minska antalet fel.
+  version: 1.0.0
+  title: Provisioning Open Data API
+  contact:
+    name: Statens Skolverk
+    email: servicedesk@skolverket.se
+tags:
+  - name: Organisation
+    description: >
+      En skolhuvudman eller annan slags organisatorisk enhet eller juridisk person som
+      ansvarar för utbildningen och som får genomföra digitala nationella prov.
+  - name: School
+    description: >
+      En skolenhet är en administrativ enhet där lärare och/eller elever finns och som
+      har en skolenhetskod i Skolverkets skolenhetsregister.
+  - name: Programme
+    description: Studievägar för olika gymnasieprogram där nationella prov genomförs.
+paths:
+  "/organisations/{id}":
+    get:
+      operationId: getOrganisationById
+      tags:
+        - Organisation
+      summary: Hämta en huvudman med id.
+      description: >
+        Returnerar en huvudman (organisation) som identifierats av parameter `id`. Om
+        parameter `expandSchoolUnits` satts till `true` returneras även skolenheter som
+        organiseras under huvudmannen.
+      parameters:
+        - name: id
+          in: path
+          description: >
+            `id` för huvudman som ska hämtas.
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "657ae6a4-2978-5fbe-b357-ba353c0f03b5"
+        - $ref: "#/components/parameters/expandSchoolUnits"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+        "400":
+          description: Felaktigt id.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Huvudman (organisation) hittades inte.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          $ref: "#/components/responses/default_error"
+  "/organisations/code/{code}":
+    get:
+      operationId: getOrganisationByCode
+      tags:
+        - Organisation
+      summary: Hämta en huvudman med organisationNumber
+      description: >
+        Returnerar en huvudman (organisation) som identifierats av parameter `code` som
+        motsvarar `organisationNumber`. Om parameter `expandSchoolUnits` satts till `true`
+        returneras även skolenheter som organiseras under huvudmannen.
+      parameters:
+        - name: code
+          in: path
+          description: >
+            `organisationNumber` för huvudman som ska hämtas.
+          required: true
+          schema:
+            type: string
+          example: "5567044268"
+        - $ref: "#/components/parameters/expandSchoolUnits"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Organisation"
+        "404":
+          description: Huvudman (organisation) hittades inte.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          $ref: "#/components/responses/default_error"
+  "/schoolUnits":
+    get:
+      operationId: getSchoolUnits
+      tags:
+        - School
+      security:
+        - ApiKeyAuth: [ ]
+      summary: Hämta en lista med skolenheter.
+      description: >
+        Returnerar en lista med skolenheter.
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: array
+                description: En lista med skolenheter.
+                items:
+                  $ref: "#/components/schemas/SchoolUnit"
+        "401":
+          description: Åtkomst nekad.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          $ref: "#/components/responses/default_error"
+  "/schoolUnits/{id}":
+    get:
+      operationId: getSchoolUnitById
+      tags:
+        - School
+      summary: Hämta en skolenhet med id.
+      description: >
+        Returnerar en skolenhet som identifierats av parameter `id`.
+      parameters:
+        - name: id
+          in: path
+          description: >
+            `id` för skolenhet som ska hämtas.
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "fb22448b-b724-5e53-8a2c-d8b339206901"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SchoolUnit"
+        "400":
+          description: Felaktigt id.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Skolenhet hittades inte.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          $ref: "#/components/responses/default_error"
+  "/schoolUnits/code/{code}":
+    get:
+      operationId: getSchoolUnitByCode
+      tags:
+        - School
+      summary: Hämta en skolenhet med skolenhetskod.
+      description: >
+        Returnerar en skolenhet som identifierats av parameter `code` som motsvarar
+        `schoolUnitCode`.
+      parameters:
+        - name: code
+          in: path
+          description: >
+            `schoolUnitCode` för skolenhet som ska hämtas.
+          required: true
+          schema:
+            type: string
+          example: "31279295"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SchoolUnit"
+        "404":
+          description: Skolenhet hittades inte.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          $ref: "#/components/responses/default_error"
+  /programmes:
+    get:
+      operationId: getProgrammes
+      tags:
+        - Programme
+      summary: Hämta en lista med studievägskoder.
+      description: >
+        Returnerar en lista med studievägskoder.
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: array
+                description: En lista med studievägar
+                items:
+                  $ref: "#/components/schemas/Programme"
+        default:
+          $ref: "#/components/responses/default_error"
+  /programmes/{id}:
+    get:
+      operationId: getProgrammeById
+      tags:
+        - Programme
+      summary: Hämta en studieväg med id.
+      description: >
+        Returnerar en studieväg som identifierats av parameter `id`.
+      parameters:
+        - name: id
+          in: path
+          description: >
+            `id` för studieväg som ska hämtas.
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "f8bd4423-9693-51ed-a854-6e9984e6c2f7"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Programme"
+        "400":
+          description: Felaktigt id.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Studieväg hittades inte.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          $ref: "#/components/responses/default_error"
+  /programmes/code/{code}:
+    get:
+      operationId: getProgrammeByCode
+      tags:
+        - Programme
+      summary: Hämta en studieväg med studievägskod.
+      description: >
+        Returnerar en studieväg som identifierats av parameter `code` som motsvarar studievägskod (SS12000: `educationCode`).
+      parameters:
+        - name: code
+          in: path
+          description: >
+            Studievägskod för studievägen som ska hämtas.
+          required: true
+          schema:
+            type: string
+          example: "EKJURV"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Programme"
+        "404":
+          description: Studieväg hittades inte.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        default:
+          $ref: "#/components/responses/default_error"
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: vnd.skolverket.se.pda.key
+      description: API-nyckel.
+  schemas:
+    Code_SchoolType:
+      title: Code_SchoolType
+      description: |
+        Värden för att beskriva utbildningsform enligt [SS12000 värdeförråd för
+        utbildningsformer](https://api.skolverket.se/vocab/common-terms/code-school-type).
+        Observera att de utbildningsformer som är tillåtna för digitala nationella
+        prov (DNP) är `GR`, `GY`, `SP`, `SAM` och `VUXGY`.
+          - _FS_ - Förskola
+          - _FKLASS_ - Förskoleklass
+          - _FTH_ - Fritidshem
+          - _OPPFTH_ - Öppen fritidsverksamhet
+          - _GR_ - Grundskola
+          - _GRS_ - Grundsärskola
+          - _TR_ - Träningsskolan
+          - _SP_ - Specialskola
+          - _SAM_ - Sameskola
+          - _GY_ - Gymnasieskola
+          - _GYS_ - Gymnasiesärskola
+          - _VUX_ - Kommunal vuxenutbildning
+          - _VUXSFI_ - Kommunal vuxenutbildning i svenska för invandrare
+          - _VUXGR_ - Kommunal vuxenutbildning på grundläggande nivå
+          - _VUXGY_ - Kommunal vuxenutbildning på gymnasial nivå
+          - _VUXSARGR_ - Kommunal vuxenutbildning som särskild utbildning på grundläggande nivå
+          - _VUXSARTR_ - Kommunal vuxenutbildning som särskild utbildning som motsvarar träningsskolan
+          - _VUXSARGY_ - Kommunal vuxenutbildning som särskild utbildning på gymnasial nivå
+          - _SFI_ - Utbildning i svenska för invandrare
+          - _SARVUX_ - Särskild utbildning för vuxna
+          - _SARVUXGR_ - Särskild utbildning för vuxna på grundläggande nivå
+          - _SARVUXGY_ - Särskild utbildning för vuxna på gymnasial nivå
+          - _KU_ - Kulturskola
+          - _YH_ - Yrkeshögskola
+          - _FHS_ - Folkhögskola
+          - _STF_ - Studieförbund
+          - _KKU_ - Konst- och kulturutbildning
+          - _HS_ - Högskola
+          - _ABU_ - Arbetsmarknadsutbildning
+          - _AU_ - Annan undervisning
+      type: string
+      enum:
+        - FS
+        - FKLASS
+        - FTH
+        - OPPFTH
+        - GR
+        - GRS
+        - TR
+        - SP
+        - SAM
+        - GY
+        - GYS
+        - VUX
+        - VUXSFI
+        - VUXGR
+        - VUXGY
+        - VUXSARGR
+        - VUXSARTR
+        - VUXSARGY
+        - SFI
+        - SARVUX
+        - SARVUXGR
+        - SARVUXGY
+        - KU
+        - YH
+        - FHS
+        - STF
+        - KKU
+        - HS
+        - ABU
+        - AU
+    Code_Status:
+      title: Code_Status
+      description: Livscykeltillstånd.
+      type: string
+      example: "Active"
+      enum:
+        - New
+        - Active
+        - Expired
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 404
+          description: Statuskod.
+        message:
+          type: string
+          example: "Resource not found"
+          description: Text som beskriver felet.
+        timeStamp:
+          type: string
+          format: date-time
+          description: >
+            Datum och tid för när felet inträffades (RFC 3339 format,
+            exempel "2015-12-12T10:30:00+01:00").
+          example: "2020-12-12T10:30:00+01:00"
+      required:
+        - code
+        - message
+        - timeStamp
+    Meta:
+      title: Meta
+      type: object
+      readOnly: true
+      properties:
+        created:
+          type: string
+          format: date-time
+          description: >
+            Datum och tid för när entiteten skapades (RFC 3339 format,
+            exempel "2015-12-12T10:30:00+01:00").
+          example: "2020-12-12T10:30:00+01:00"
+        modified:
+          type: string
+          format: date-time
+          description: >
+            Datum och tid för när entiteten eller något av de attribut som direkt
+            tillhör entiteten senast uppdaterades (RFC 3339 format,
+            exempel "2015-12-12T10:30:00+01:00").
+          example: "2020-12-12T10:30:00+01:00"
+    Organisation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: >
+            Identifierande attribut som skapas av Skolverket. Skolverket genererar `id`
+            värdet enligt [UUID v5](https://datatracker.ietf.org/doc/html/rfc4122#section-4.3)
+            med att använda `organisationNumber` som namn och
+            [Nil UUID](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.7)
+            som namespace. Till exempel, organisation med `organisationNumber` 5567044268
+            får `id` värde 657ae6a4-2978-5fbe-b357-ba353c0f03b5.
+          example: "657ae6a4-2978-5fbe-b357-ba353c0f03b5"
+        displayName:
+          type: string
+          description: Organisationens namn.
+          example: "Testorganisation AB"
+        organisationNumber:
+          type: string
+          description: Organisationsnummer.
+          example: "5567044268"
+        countryCode:
+          type: string
+          description: >
+            Landskod för den stat som har utfärdat organisationsnumret. Anges i enlighet
+            med ISO 3166-1 alpha-2 två-bokstavskoder. Sätts till SE om inget annat värde
+            anges.
+          example: "SE"
+        organisationType:
+          type: string
+          title: Code_OrganisationType
+          description: Typ av organisation som bedriver utbildningsverksamhet.
+          enum:
+            - Huvudman
+          example: "Huvudman"
+        legalForm:
+          description: Organisationens juridiska form.
+          type: object
+          properties:
+            id:
+              description: Identifierande attribut för organisationens juridisk form.
+              type: string
+              example: 49
+            displayName:
+              description: Visningsnamn för organisationens juridisk form.
+              type: string
+              example: "Övriga aktiebolag."
+        organiserType:
+          description: Huvudmannatyp enligt Skolverkets kategorisering.
+          type: object
+          properties:
+            id:
+              description: Identifierande attribut för huvudmannatyp.
+              type: string
+              example: 01
+            displayName:
+              description: Visningsnamn för huvudmannatyp.
+              type: string
+              example: "Kommuner och kommunalförbund"
+        status:
+          allOf:
+            - $ref: "#/components/schemas/Code_Status"
+            - description: >
+                Attribut för organisationens livscykeltillstånd. En organisation kan ha följande
+                status:
+                  - _Active_ - Huvudmannen organiserar minst en skolenhet med status _Active_ eller _New_
+                  - _Expired_ - Huvudmannen organiserar ingen skolenhet med status _Active_ eller _New_
+        schoolUnits:
+          type: array
+          description: En lista med skolenheter som organiseras under huvudmannen.
+          items:
+            $ref: "#/components/schemas/SchoolUnit"
+        meta:
+          $ref: "#/components/schemas/Meta"
+      required:
+        - id
+        - displayName
+        - organisationNumber
+        - meta
+    OrganisationReference:
+      title: OrganisationReference
+      description: Referens till huvudman (organisation)
+      type: object
+      required:
+        - id
+        - organisationNumber
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Identifierande attribut som skapas av skolverket.
+          example: "657ae6a4-2978-5fbe-b357-ba353c0f03b5"
+        organisationNumber:
+          type: string
+          description: Organisationsnummer.
+          example: "5567044268"
+        displayName:
+          type: string
+          readOnly: true
+          description: >
+            Visningsnamn för den refererade huvudmannen (organisationen).
+          example: "Testorganisation AB"
+    Programme:
+      description: Studieväg för ett gymnasieprogram.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: >
+            Identifierande attribut som skapas av Skolverket. Skolverket genererar `id`
+            värdet enligt [UUID v5](https://datatracker.ietf.org/doc/html/rfc4122#section-4.3)
+            med att använda `educationCode` som namn och
+            [Nil UUID](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.7)
+            som namespace. Till exempel, studieväg med `educationCode` EKJURV
+            får `id` värde f8bd4423-9693-51ed-a854-6e9984e6c2f7.
+          example: "f8bd4423-9693-51ed-a854-6e9984e6c2f7"
+        displayName:
+          type: string
+          description: Visningsnamn för studieväg.
+          example: "Ekonomiprogrammet, Juridik, särskild variant inom det estetiska området"
+        educationCode:
+          type: string
+          description: En kod för att identifiera studieväg.
+          example: "EKJURV"
+        schoolType:
+          allOf:
+            - $ref: "#/components/schemas/Code_SchoolType"
+            - description: >
+                Utbildningsform för studievägen. Observera att endast utbildningsform `GY`
+                har studievägar där nationella prov genomförs.
+          example: "GY"
+        validFrom:
+          type: string
+          format: date-time
+          description: >
+            Datum då studieväg och kan användas för provisionering. Observera att endast
+            studievägar som har ett datum som har passerats kan provisioneras. (RFC 3339
+            format, exempel "2015-12-12T10:30:00+01:00")
+        status:
+          allOf:
+            - $ref: "#/components/schemas/Code_Status"
+            - description: >
+                Livscykeltillstånd. En studieväg kan ha följande status:
+                  - _New_ - Studievägen finns registrerad men är ännu inte aktiv
+                  - _Active_ - Studievägen finns och kan användas för provisionering
+                  - _Expired_ - Studievägen har upphört
+        meta:
+          $ref: "#/components/schemas/Meta"
+      required:
+        - id
+        - displayName
+        - educationCode
+        - meta
+    SchoolUnit:
+      description: Skolenhet
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: >
+            Identifierande attribut som skapas av Skolverket. Skolverket genererar `id`
+            värdet enligt [UUID v5](https://datatracker.ietf.org/doc/html/rfc4122#section-4.3)
+            med att använda `schoolUnitCode` som namn och
+            [Nil UUID](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.7)
+            som namespace. Till exempel, skolenhet med `schoolUnitCode` 31279295
+            får `id` värde fb22448b-b724-5e53-8a2c-d8b339206901.
+          example: "fb22448b-b724-5e53-8a2c-d8b339206901"
+        displayName:
+          type: string
+          description: Visningsnamn för skolenhet.
+          example: "Testskolan"
+        schoolUnitCode:
+          type: string
+          description: >
+            En registrerad skolenhetskod för att identifiera skolenheten. Koden kan
+            förändras utifrån beslut från Skolverket, exempelvis vid en omorganisation
+            eller ett ägarbyte.
+          example: "31279295"
+        schoolTypes:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: "#/components/schemas/Code_SchoolType"
+          example: [ "GR", "FS", "FTH" ]
+        municipalityCode:
+          type: string
+          description: >
+            Kommunkodför den kommun där skolan är belägen, exempelvis 0180 där 01 anger
+            länet och 80 anger kommunen.
+          example: "0180"
+        status:
+          allOf:
+            - $ref: "#/components/schemas/Code_Status"
+            - description: >
+                Attribut för skolenhetens livscykeltillstånd. En skolenhet kan ha följande
+                status:
+                  - _New_ - Skolenheten finns registrerad men är ännu inte aktiv
+                  - _Active_ - Skolenheten som bedriver verksamhet
+                  - _Expired_ - Skolenheten har upphört att bedriva verksamhet
+        parentOrganisation:
+          allOf:
+            - $ref: "#/components/schemas/OrganisationReference"
+            - description: >
+                Huvudmannaorganisation som organiserar skolenheten. Huvudmannaorganisation
+                kan ändras exempelvis vid ett uppköp, rekonstruktion eller ombildning.
+        meta:
+          $ref: "#/components/schemas/Meta"
+      required:
+        - id
+        - displayName
+        - schoolUnitCode
+        - meta
+  responses:
+    default_error:
+      description: Okänt fel.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+  parameters:
+    expandSchoolUnits:
+      name: expandSchoolUnits
+      description: Returnerar en lista med skolenheter som organiseras under huvudmannen.
+      in: query
+      schema:
+        type: boolean
+        default: false
