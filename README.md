@@ -1,4 +1,4 @@
-> :sweden: [Information på svenska](#DNP-Användarhantering)
+>[Information på svenska](#dnp-anv%C3%A4ndarhantering)
 
 # DNP User Management
 The Swedish National Agency for Education implements digital national assessments (DNP). 
@@ -34,7 +34,9 @@ SS12000 API specifikation is available at [https://github.com/girgen/ss12000v2](
 ## Contact
 servicedesk@skolverket.se
 ___
-# DNP-Användarhantering
+>[Information in english](#dnp-user-management)
+
+# DNP Användarhantering
 Skolverket digitaliserar de nationella proven (DNP). 
 
 I Skolverkets bibliotek DNP Användarhantering finns API-specifikationer och dokumentation som beskriver hur skola och huvudman kan hantera användarprovisionering i Skolverkets provtjänst för digitala nationella prov (DNP).
