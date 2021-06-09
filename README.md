@@ -3,9 +3,9 @@
 # DNP User Management
 The Swedish National Agency for Education implements digital national assessments (DNP). 
 
-The library “DNP user management” includes API specifications and documentation describing how schools and school organisers manage user provisioning in the Swedish National Agency for Education’s digital national assessments service.
+The library “DNP user management” includes API specifications and documentation that describe how schools and school organisers can manage user provisioning in the Swedish National Agency for Education’s digital national assessments service.
 
-**Important notice: The work to implement a digital national assessments service is an ongoing project and the information material in DNP user management is continuously updated.** The material is not officially published as formal revisions and should be considered as working drafts.
+**Important notice: The implementation of a digital national assessments service is an ongoing project and the information in DNP user management is continuously updated.** The material is not an official publication and should be considered as work in progress.
 
 
 ## The Swedish National Agency for Education’s APIs for the digital national assessments service
@@ -14,10 +14,10 @@ API for user provisioning is used for adding, updating, and deleting pupils and 
 
 The API is based on part of the data model in the standard SS12000:2020.
 
-API for user provisionering (provisioning-api) require that the client is authenticated.
+API for user provisionering (provisioning-api) requires that the client is authenticated.
 
 ### API for fetching controlled values (data-api)
-By using the API for fetching controlled values school systems can fetch data about school units, education programme, and other values controlled by Swedish National Agency for Education for user provisioning. In this way, data can be verified prior to transferring it to Swedish National Agency for Education. The purpose is to increase data quality and to minimize the number of errors.
+By using the API for fetching controlled values school systems can fetch data about school units, education programme, and other values controlled by the Swedish National Agency for Education for user provisioning. In this way, data can be verified prior to transferring it to the Swedish National Agency for Education. The purpose is to increase data quality and to minimize the number of errors.
 
 The API also offer a feature to fetch an id (UUID) when creating references, such as between person and school unit.
 
@@ -27,7 +27,7 @@ The API for fetching controlled values (data-api) is an open-api.
 API for authentication is used to authenticate a client that will use the API for user provisioning.
 
 ## References
-Information about digitalisation of the national assessments is available at the [Swedish National Agency for Education’s web site (in Swedish)](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/digitalisering-av-de-nationella-proven)
+Information about the digitalisation of the national assessments is available at the [Swedish National Agency for Education’s web site (in Swedish)](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/digitalisering-av-de-nationella-proven)
 
 SS12000 API specifikation is available at [https://github.com/girgen/ss12000v2](https://github.com/girgen/ss12000v2)
 
