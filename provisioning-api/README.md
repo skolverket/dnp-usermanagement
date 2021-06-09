@@ -12,10 +12,11 @@ Information about the digitalisation of the national assessments is available at
 
 SS12000 API specifikation is available at [https://github.com/girgen/ss12000v2](https://github.com/girgen/ss12000v2)
 
-**Important notice: The implementation of a digital national assessments service is an ongoing project and the information in this repository will be continuously updated.** The material is not an official publication and should be considered as work in progress.
-
 ## Contact
 servicedesk@skolverket.se
+
+**Important notice: The implementation of a digital national assessments service is an ongoing project and the information in this repository will be continuously updated.** The material is not an official publication and should be considered as work in progress.
+
 ___
 >[Information in english](#api-for-user-provisioning-provisioning-api)
 
@@ -31,7 +32,7 @@ Information om digitalisering av de nationella proven finns på [Skolverkets web
 
 SS12000 API specifikation finns på [https://github.com/girgen/ss12000v2](https://github.com/girgen/ss12000v2)
 
-**Notera att arbetet med digitala nationella prov (DNP) är ett pågående projekt och att materialet i DNP användarhantering uppdateras kontinuerligt.** Det är inte officiell och fastställd information från Skolverket, utan ska betraktas som arbetsdokument.
-
 ## Kontakt
 servicedesk@skolverket.se
+
+**Notera att arbetet med digitala nationella prov (DNP) är ett pågående projekt och att materialet i DNP användarhantering uppdateras kontinuerligt.** Det är inte officiell och fastställd information från Skolverket, utan ska betraktas som arbetsdokument.
