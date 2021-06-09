@@ -3,9 +3,9 @@
 # DNP User Management
 The Swedish National Agency for Education implements digital national assessments (DNP). 
 
-The library “DNP user management” includes API specifications and documentation that describe how schools and school organisers (skolhuvudmän) can manage user provisioning in the Swedish National Agency for Education’s digital national assessments service.
+This repository includes API specifications and documentation that describe how schools and school organisers (skolhuvudmän) can manage user provisioning in the Swedish National Agency for Education’s digital national assessments service.
 
-**Important notice: The implementation of a digital national assessments service is an ongoing project and the information in DNP user management is continuously updated.** The material is not an official publication and should be considered as work in progress.
+**Important notice: The implementation of a digital national assessments service is an ongoing project and the information in this repository will be continuously updated.** The material is not an official publication and should be considered as work in progress.
 
 
 ## The Swedish National Agency for Education’s APIs for the digital national assessments service
