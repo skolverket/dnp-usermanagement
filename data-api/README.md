@@ -1,4 +1,4 @@
->[Information på svenska](#dnp-anv%C3%A4ndarhantering)
+>[Information på svenska](#api-f%C3%B6r-inh%C3%A4mtning-av-kontrollerade-v%C3%A4rden-data-api)
 
 # API for fetching controlled values (data-api)
 By using the API for fetching controlled values (data-api) school systems can fetch data about school units, education programme, and other values controlled by the Swedish National Agency for Education for user provisioning. In this way, data can be verified prior to transferring it to the Swedish National Agency for Education. The purpose is to increase data quality and to minimize the number of errors.
@@ -10,7 +10,7 @@ The API for fetching controlled values (data-api) is an open-api.
 **Important notice: The implementation of a digital national assessments service is an ongoing project and the information in this repository will be continuously updated.** The material is not an official publication and should be considered as work in progress.
 
 ___
->[Information in english](#dnp-user-management)
+>[Information in english](#api-for-fetching-controlled-values-data-api)
 ## API för inhämtning av kontrollerade värden (data-api)
 Genom API för inhämtning av kontrollerade värden (data-api) kan skolans system inhämta data om skolenheter, studievägar och andra värden som kontrolleras av Skolverket vid användarprovisionering. På så sätt kan data kontrolleras i förväg innan värden överförs till Skolverket. Syftet är att bidra till ökad datakvalitet och minska antalet fel.
 
