@@ -1,11 +1,21 @@
-# data-api
+>[Information på svenska](#dnp-anv%C3%A4ndarhantering)
 
-## API för inhämtning av kontrollerade värden
-Via detta api kan skolans system inhämta data om skolenheter, studievägar och andra värden som kontrolleras av Skolverket vid användarprovisionering. På så sätt kan data kontrolleras redan i förväg innan värden överförs till Skolverket. Syftet är att bidra till ökad datakvalitet och minska antalet fel.
+# API for fetching controlled values (data-api)
+By using the API for fetching controlled values (data-api) school systems can fetch data about school units, education programme, and other values controlled by the Swedish National Agency for Education for user provisioning. In this way, data can be verified prior to transferring it to the Swedish National Agency for Education. The purpose is to increase data quality and to minimize the number of errors.
 
-Format: API:et tar emot och returnerar data som JSON enligt OpenAPI Specification (tidigare Swagger-format).
+The API also offer a feature to fetch an id (UUID) when creating references, such as between person and school unit.
 
-Villkor för användning: Publikt API.
+The API for fetching controlled values (data-api) is an open-api.
 
-## Viktigt
-Detta gitHub-bibliotek omfattar resurser om det pågående arbetet runt utveckling av API för användarprovisionering kopplad till Skolverkets e-tjänst för digitala nationella prov. **N.b. materialet som finns här uppdateras kontinuerligt och är inte officiell information från Skolverket, utan ska betraktas som arbetsdokument**.
+**Important notice: The implementation of a digital national assessments service is an ongoing project and the information in this repository will be continuously updated.** The material is not an official publication and should be considered as work in progress.
+
+___
+>[Information in english](#dnp-user-management)
+## API för inhämtning av kontrollerade värden (data-api)
+Genom API för inhämtning av kontrollerade värden (data-api) kan skolans system inhämta data om skolenheter, studievägar och andra värden som kontrolleras av Skolverket vid användarprovisionering. På så sätt kan data kontrolleras i förväg innan värden överförs till Skolverket. Syftet är att bidra till ökad datakvalitet och minska antalet fel.
+
+API:et erbjuder även en funktion för att hämta id (UUID) när man skapar referenser, exempelvis mellan person och skolenhet. 
+
+API för inhämtning av kontrollerade värden (data-api) är ett öppet API.
+
+**Notera att arbetet med digitala nationella prov (DNP) är ett pågående projekt och att materialet i DNP användarhantering uppdateras kontinuerligt.** Det är inte officiell och fastställd information från Skolverket, utan ska betraktas som arbetsdokument.
