@@ -2,14 +2,19 @@
 
 ### API for authentication (authentication-api)
 API for authentication is used to authenticate a client that will use the API for user provisioning.
+1. Authenticate against the api for authentication.
+2. Use the API for user provisioning.
 
 ## Contact
 servicedesk@skolverket.se
+
 ___
 >[Information in english](#api-for-authentication-authentication-api)
 
 ### API för autentisering (authentication-api)
 API för autentisering används för att autentisera en klient som ska använda API för användarprovisionering.
+1. Autentisera mot api för autentisering.
+2. Använd api för användarprovisionering.
 
 ## Kontakt
 servicedesk@skolverket.se
