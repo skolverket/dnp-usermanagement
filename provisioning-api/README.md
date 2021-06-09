@@ -1,12 +1,32 @@
-# provisioning-api
+>[Information på svenska](#dnp-anv%C3%A4ndarhantering)
+# API for user provisioning (provisioning-api)
+API for user provisioning is used for adding, updating, and deleting pupils and personnel from the digital national assessments service. 
 
-## API för användarprovisionering
-API:et kan användas för att skapa, uppdatera och ta bort elever och personal för de skolenheter som genomför digitala nationella prov och/eller använder Skolverkets digitala bedömningsstöd.
+The API is based on part of the data model in the standard SS12000:2020.
 
-Format: API:et följer SS12000:2020 informationsmodell men har en omvänd riktning för dataöverföring. API:et tar emot och returnerar data som JSON enligt OpenAPI Specification (tidigare Swagger-format).
+API for user provisionering (provisioning-api) requires that the client is authenticated.
 
-Villkor för användning: Autentisering görs med ömsesidig TLS via Skolfederation kontosynk.
-För mer info se [Skolfederation.se](https://www.skolfederation.se/teknisk-information/kontosynk/)
+## References
+Information about the digitalisation of the national assessments is available at the [Swedish National Agency for Education’s web site (in Swedish)](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/digitalisering-av-de-nationella-proven)
 
-### Viktigt
-Detta gitHub-bibliotek omfattar resurser om det pågående arbetet runt utveckling av API för användarprovisionering kopplad till Skolverkets e-tjänst för digitala nationella prov. **N.b. materialet som finns här uppdateras kontinuerligt och är inte officiell information från Skolverket, utan ska betraktas som arbetsdokument**.
+SS12000 API specifikation is available at [https://github.com/girgen/ss12000v2](https://github.com/girgen/ss12000v2)
+
+## Contact
+servicedesk@skolverket.se
+___
+>[Information in english](#dnp-user-management)
+
+# API för användarprovisionering (provisioning-api)
+API för användarprovisionering används för att skapa, uppdatera och ta bort elever och personal i Skolverkets provtjänst för digitala nationella prov. 
+
+API:et bygger på en delmängd ur datamodellen i standarden SS12000:2020.
+
+API för användarprovisionering (provisioning-api) kräver att klienten är autentiserad.
+
+## Referenser
+Information om digitalisering av de nationella proven finns på [Skolverkets webbplats](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/digitalisering-av-de-nationella-proven)
+
+SS12000 API specifikation finns på [https://github.com/girgen/ss12000v2](https://github.com/girgen/ss12000v2)
+
+## Kontakt
+servicedesk@skolverket.se
