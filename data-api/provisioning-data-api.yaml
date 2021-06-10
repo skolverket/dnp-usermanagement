@@ -107,7 +107,7 @@ paths:
     get:
       operationId: getSchoolUnits
       tags:
-        - School
+        - SchoolUnit
       security:
         - ApiKeyAuth: [ ]
       summary: Hämta en lista med skolenheter.
@@ -135,7 +135,7 @@ paths:
     get:
       operationId: getSchoolUnitById
       tags:
-        - School
+        - SchoolUnit
       summary: Hämta en skolenhet med id.
       description: >
         Returnerar en skolenhet som identifierats av parameter `id`.
@@ -174,7 +174,7 @@ paths:
     get:
       operationId: getSchoolUnitByCode
       tags:
-        - School
+        - SchoolUnit
       summary: Hämta en skolenhet med skolenhetskod.
       description: >
         Returnerar en skolenhet som identifierats av parameter `code` som motsvarar
