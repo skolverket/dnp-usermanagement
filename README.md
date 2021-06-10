@@ -32,7 +32,7 @@ Information about the digitalisation of the national assessments is available at
 SS12000 API specifikation is available at [https://github.com/girgen/ss12000v2](https://github.com/girgen/ss12000v2)
 
 ## Contact
-servicedesk@skolverket.se
+digit-np@skolverket.se
 ___
 >[Information in english](#dnp-user-management)
 
@@ -70,4 +70,4 @@ Information om digitalisering av de nationella proven finns på [Skolverkets web
 SS12000 API specifikation finns på [https://github.com/girgen/ss12000v2](https://github.com/girgen/ss12000v2)
 
 ## Kontakt
-servicedesk@skolverket.se
+digit-np@skolverket.se
