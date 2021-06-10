@@ -22,3 +22,4 @@ API för autentisering används för att autentisera en klient som ska använda 
 
 ## Kontakt
 digit-np@skolverket.se
+
