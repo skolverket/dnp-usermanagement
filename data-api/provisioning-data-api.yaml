@@ -19,7 +19,7 @@ tags:
     description: >
       En skolhuvudman eller annan slags organisatorisk enhet eller juridisk person som
       ansvarar för utbildningen och som får genomföra digitala nationella prov.
-  - name: School
+  - name: SchoolUnit
     description: >
       En skolenhet är en administrativ enhet där lärare och/eller elever finns och som
       har en skolenhetskod i Skolverkets skolenhetsregister.
