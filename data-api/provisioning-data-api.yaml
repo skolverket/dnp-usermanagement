@@ -57,11 +57,7 @@ paths:
         "400":
           $ref: "#/components/responses/400_invalid_id"        
         "404":
-          description: Huvudman (organisation) hittades inte.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/404_organisation_not_found"  
         default:
           $ref: "#/components/responses/default_error"
   "/organisations/code/{code}":
@@ -92,11 +88,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Organisation"
         "404":
-          description: Huvudman (organisation) hittades inte.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/404_organisation_not_found"
         default:
           $ref: "#/components/responses/default_error"
   "/schoolUnits":
@@ -155,11 +147,7 @@ paths:
         "400":
           $ref: "#/components/responses/400_invalid_id"   
         "404":
-          description: Skolenhet hittades inte.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/404_schoolunit_not_found"
         default:
           $ref: "#/components/responses/default_error"
   "/schoolUnits/code/{code}":
@@ -188,11 +176,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SchoolUnit"
         "404":
-          description: Skolenhet hittades inte.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/404_schoolunit_not_found"
         default:
           $ref: "#/components/responses/default_error"
   /programmes:
@@ -243,11 +227,7 @@ paths:
         "400":
           $ref: "#/components/responses/400_invalid_id"
         "404":
-          description: Studieväg hittades inte.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/404_programme_not_found"
         default:
           $ref: "#/components/responses/default_error"
   /programmes/code/{code}:
@@ -274,12 +254,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Programme"
+        
         "404":
-          description: Studieväg hittades inte.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/404_programme_not_found"
         default:
           $ref: "#/components/responses/default_error"
 components:
@@ -640,6 +617,39 @@ components:
                   message: "Invalid parameter: id",
                   timeStamp: "2021-06-10T17:50:49+02:00"
                 }
+    404_organisation_not_found:
+       description: Huvudman (organisation) hittades inte.
+       content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                { "code": 404,
+                  "message": "Organisation not found",
+                  "timeStamp": "2021-06-10T17:39:38+02:00"
+                }
+    404_schoolunit_not_found:
+       description: Skolenhet hittades inte.
+       content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                { "code": 404,
+                  "message": "School unit not found",
+                  "timeStamp": "2021-06-10T17:39:38+02:00"
+                }
+    404_programme_not_found:
+       description: Studieväg hittades inte.
+       content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              example:
+                { "code": 404,
+                  "message": "Programm not found",
+                  "timeStamp": "2021-06-10T17:39:38+02:00"
+                }    
     default_error:
       description: Okänt fel.
       content:
