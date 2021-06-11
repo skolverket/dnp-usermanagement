@@ -448,9 +448,9 @@ components:
           type: string
           description: >
             Landskod för den stat som har utfärdat organisationsnumret. Anges i enlighet
-            med ISO 3166-1 alpha-2 två-bokstavskoder. Sätts till SE om inget annat värde
+            med ISO 3166-1 alpha-3 tre-bokstavskoder. Sätts till SWE om inget annat värde
             anges.
-          example: "SE"
+          example: "SWE"
         organisationType:
           type: string
           title: Code_OrganisationType
