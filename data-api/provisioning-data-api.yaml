@@ -55,11 +55,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Organisation"
         "400":
-          description: Felaktigt id.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/400_invalid_id"        
         "404":
           description: Huvudman (organisation) hittades inte.
           content:
@@ -157,11 +153,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SchoolUnit"
         "400":
-          description: Felaktigt id.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/400_invalid_id"   
         "404":
           description: Skolenhet hittades inte.
           content:
@@ -249,11 +241,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Programme"
         "400":
-          description: Felaktigt id.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/400_invalid_id"
         "404":
           description: Studieväg hittades inte.
           content:
@@ -638,6 +626,20 @@ components:
         - schoolUnitCode
         - meta
   responses:
+    400_invalid_id:
+      description: Felaktigt id.
+      content:
+        application/json:
+          schema:
+            type: object
+            description: Felmeddelande lista
+            items:
+              $ref: "#/components/schemas/Error"
+            example:
+                {code: 400, 
+                  message: "Invalid parameter: id",
+                  timeStamp: "2021-06-10T17:50:49+02:00"
+                }
     default_error:
       description: Okänt fel.
       content:
