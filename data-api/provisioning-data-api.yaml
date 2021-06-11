@@ -354,7 +354,7 @@ components:
           description: Statuskod.
         message:
           type: string
-          example: "Resource not found"
+          example: "Unknown error"
           description: Text som beskriver felet.
         timeStamp:
           type: string
@@ -647,7 +647,7 @@ components:
                 $ref: "#/components/schemas/Error"
               example:
                 { "code": 404,
-                  "message": "Programm not found",
+                  "message": "Programme not found",
                   "timeStamp": "2021-06-10T17:39:38+02:00"
                 }    
     default_error:
