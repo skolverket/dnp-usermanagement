@@ -15,7 +15,7 @@ digit-np@skolverket.se
 ___
 >[Information in english](#api-for-authentication-authentication-api)
 
-**Det här APIet kommer att publiceras under Q3-2021. **
+**Det här APIet kommer att publiceras under Q3-2021.**
 
 # API för autentisering (authentication-api)
 API för autentisering används för att autentisera en klient som ska använda API för användarprovisionering.
