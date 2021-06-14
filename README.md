@@ -61,9 +61,6 @@ API för inhämtning av kontrollerade värden (data-api) är ett öppet API.
 ### API för autentisering (authentication-api)
 API för autentisering används för att autentisera en klient som ska använda API för användarprovisionering.
 
-### API för inhämtning av kontrollerade värden
-Via detta api kan skolans system inhämta data om skolenheter, studievägar och andra värden som kontrolleras av Skolverket vid användarprovisionering. På så sätt kan data kontrolleras redan i förväg innan värden överförs till Skolverket. Syftet är att bidra till ökad datakvalitet och minska antalet fel.
-
 ## Referenser
 Information om digitalisering av de nationella proven finns på [Skolverkets webbplats](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/digitalisering-av-de-nationella-proven)
 
