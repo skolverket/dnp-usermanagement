@@ -1,5 +1,7 @@
 >[Information på svenska](#api-f%C3%B6r-anv%C3%A4ndarprovisionering-provisioning-api)
 
+**This API will be published during Q3-2021.**
+
 # API for user provisioning (provisioning-api)
 API for user provisioning is used for adding, updating, and deleting pupils and personnel from the digital national assessments service. 
 
@@ -18,6 +20,8 @@ SS12000 API specifikation is available at [https://github.com/girgen/ss12000v2](
 digit-np@skolverket.se
 ___
 >[Information in english](#api-for-user-provisioning-provisioning-api)
+
+**Det här APIet kommer att publiceras under Q3-2021.**
 
 # API för användarprovisionering (provisioning-api)
 API för användarprovisionering används för att skapa, uppdatera och ta bort elever och personal i Skolverkets provtjänst för digitala nationella prov. 
