@@ -4,7 +4,7 @@ servers:
     url: "https://api.skolverket.se/..."
 info:
   description: >
-    API:et exponerar information om huvudman (organisation), skolenhet och studievägar.
+    API:et exponerar information om huvudman (organisation), skolenhet och studieväg.
     Via detta API kan skolans system inhämta data om skolenheter, studievägar och andra
     värden som kontrolleras av Skolverket vid användarprovisionering. På så sätt kan data
     kontrolleras redan i förväg innan värden överförs till Skolverket. Syftet är att bidra
@@ -13,7 +13,7 @@ info:
   title: Provisioning Open Data API
   contact:
     name: Statens Skolverk
-    email: servicedesk@skolverket.se
+    email: digit-np@skolverket.se
 tags:
   - name: Organisation
     description: >
@@ -100,7 +100,8 @@ paths:
         - ApiKeyAuth: [ ]
       summary: Hämta en lista med skolenheter.
       description: >
-        Returnerar en lista med skolenheter.
+        Returnerar en lista med skolenheter. 
+        Observera! Funktionen är endast tillgänglig för Skolverkets personal.
       responses:
         "200":
           description: Anropet lyckades.
@@ -184,9 +185,9 @@ paths:
       operationId: getProgrammes
       tags:
         - Programme
-      summary: Hämta en lista med studievägskoder.
+      summary: Hämta en lista med studievägar.
       description: >
-        Returnerar en lista med studievägskoder.
+        Returnerar en lista med studievägar.
       responses:
         "200":
           description: Anropet lyckades.
@@ -242,7 +243,7 @@ paths:
         - name: code
           in: path
           description: >
-            Studievägskod för studievägen som ska hämtas.
+            Studievägskod för studieväg som ska hämtas.
           required: true
           schema:
             type: string
@@ -413,7 +414,7 @@ components:
           type: string
           description: >
             Landskod för den stat som har utfärdat organisationsnumret. Anges i enlighet
-            med ISO 3166-1 alpha-3 tre-bokstavskoder. Sätts till SWE om inget annat värde
+            med ISO 3166-1 alpha-3 tre-bokstavskod. Sätts till SWE om inget annat värde
             anges.
           example: "SWE"
         organisationType:
@@ -453,6 +454,7 @@ components:
             - description: >
                 Attribut för organisationens livscykeltillstånd. En organisation kan ha följande
                 status:
+                  - _New_ - Huvudmannen finns registrerad men är ännu inte aktiv
                   - _Active_ - Huvudmannen organiserar minst en skolenhet med status _Active_ eller _New_
                   - _Expired_ - Huvudmannen organiserar ingen skolenhet med status _Active_ eller _New_
         schoolUnits:
@@ -517,14 +519,14 @@ components:
           allOf:
             - $ref: "#/components/schemas/Code_SchoolType"
             - description: >
-                Utbildningsform för studievägen. Observera att endast utbildningsform `GY`
+                Utbildningsform för studieväg. Observera att endast utbildningsform `GY`
                 har studievägar där nationella prov genomförs.
           example: "GY"
         validFrom:
           type: string
           format: date-time
           description: >
-            Datum då studieväg och kan användas för provisionering. Observera att endast
+            Datum då studieväg kan användas för provisionering. Observera att endast
             studievägar som har ett datum som har passerats kan provisioneras. (RFC 3339
             format, exempel "2015-12-12T10:30:00+01:00")
         status:
@@ -532,9 +534,9 @@ components:
             - $ref: "#/components/schemas/Code_Status"
             - description: >
                 Livscykeltillstånd. En studieväg kan ha följande status:
-                  - _New_ - Studievägen finns registrerad men är ännu inte aktiv
-                  - _Active_ - Studievägen finns och kan användas för provisionering
-                  - _Expired_ - Studievägen har upphört
+                  - _New_ - Studieväg finns registrerad men är ännu inte aktiv
+                  - _Active_ - Studieväg finns och kan användas för provisionering
+                  - _Expired_ - Studieväg har upphört
         meta:
           $ref: "#/components/schemas/Meta"
       required:
@@ -609,7 +611,7 @@ components:
         application/json:
           schema:
             type: object
-            description: Felmeddelande lista
+            description: Felmeddelandelista
             items:
               $ref: "#/components/schemas/Error"
             example:
