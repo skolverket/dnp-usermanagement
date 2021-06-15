@@ -454,7 +454,7 @@ components:
             - description: >
                 Attribut för organisationens livscykeltillstånd. En organisation kan ha följande
                 status:
-                  - _New_ - Huvudmannen finns registrerad men är ännu inte aktiv
+                  - _New_ - Huvudmannen finns registrerad men är ännu inte aktiv. Inte tillämpbart.
                   - _Active_ - Huvudmannen organiserar minst en skolenhet med status _Active_ eller _New_
                   - _Expired_ - Huvudmannen organiserar ingen skolenhet med status _Active_ eller _New_
         schoolUnits:
