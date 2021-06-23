@@ -13,7 +13,7 @@ The API for fetching controlled values (open-data-api) is an open-api.
 digit-np@skolverket.se
 ___
 >[Information in english](#api-for-fetching-controlled-values-open-data-api)
-## API för inhämtning av kontrollerade värden (open-data-api)
+# API för inhämtning av kontrollerade värden (open-data-api)
 Genom API för inhämtning av kontrollerade värden (open-data-api) kan skolans system inhämta data om skolenheter, studievägar och andra värden som kontrolleras av Skolverket vid användarprovisionering. På så sätt kan data kontrolleras i förväg innan värden överförs till Skolverket. Syftet är att bidra till ökad datakvalitet och minska antalet fel.
 
 API:et erbjuder även en funktion för att hämta id (UUID) när man skapar referenser, exempelvis mellan person och skolenhet. 
