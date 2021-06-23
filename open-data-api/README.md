@@ -1,4 +1,4 @@
->[Information på svenska](#api-f%C3%B6r-inh%C3%A4mtning-av-kontrollerade-v%C3%A4rden-data-api)
+>[Information på svenska](#api-f%C3%B6r-inh%C3%A4mtning-av-kontrollerade-v%C3%A4rden-open-data-api)
 
 # API for fetching controlled values (open-data-api)
 By using the API for fetching controlled values (open-data-api) school systems can fetch data about school units, education programme, and other values controlled by the Swedish National Agency for Education for user provisioning. In this way, data can be verified prior to transferring it to the Swedish National Agency for Education. The purpose is to increase data quality and to minimize the number of errors.
@@ -12,7 +12,7 @@ The API for fetching controlled values (open-data-api) is an open-api.
 ## Contact
 digit-np@skolverket.se
 ___
->[Information in english](#api-for-fetching-controlled-values-data-api)
+>[Information in english](#api-for-fetching-controlled-values-open-data-api)
 ## API för inhämtning av kontrollerade värden (open-data-api)
 Genom API för inhämtning av kontrollerade värden (open-data-api) kan skolans system inhämta data om skolenheter, studievägar och andra värden som kontrolleras av Skolverket vid användarprovisionering. På så sätt kan data kontrolleras i förväg innan värden överförs till Skolverket. Syftet är att bidra till ökad datakvalitet och minska antalet fel.
 
