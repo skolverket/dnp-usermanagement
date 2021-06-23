@@ -1,6 +1,6 @@
 >[Information på svenska](#api-f%C3%B6r-inh%C3%A4mtning-av-kontrollerade-v%C3%A4rden-data-api)
 
-# API for fetching controlled values (data-api)
+# API for fetching controlled values (open-data-api)
 By using the API for fetching controlled values (data-api) school systems can fetch data about school units, education programme, and other values controlled by the Swedish National Agency for Education for user provisioning. In this way, data can be verified prior to transferring it to the Swedish National Agency for Education. The purpose is to increase data quality and to minimize the number of errors.
 
 The API also offer a feature to fetch an id (UUID) when creating references, such as between person and school unit.
