@@ -1,7 +1,7 @@
 openapi: 3.0.2
 servers:
   - description: Skolverket
-    url: "https://api.skolverket.se/..."
+    url: "https://api.skolverket.se/dnp/iga/open-data"
 info:
   description: >
     API:et exponerar information om huvudman (organisation), skolenhet och studieväg.
@@ -55,9 +55,9 @@ paths:
               schema:
                 $ref: "#/components/schemas/Organisation"
         "400":
-          $ref: "#/components/responses/400_invalid_id"        
+          $ref: "#/components/responses/400_invalid_id"
         "404":
-          $ref: "#/components/responses/404_organisation_not_found"  
+          $ref: "#/components/responses/404_organisation_not_found"
         default:
           $ref: "#/components/responses/default_error"
   "/organisations/code/{code}":
@@ -100,7 +100,7 @@ paths:
         - ApiKeyAuth: [ ]
       summary: Hämta en lista med skolenheter.
       description: >
-        Returnerar en lista med skolenheter. 
+        Returnerar en lista med skolenheter.
         Observera! Funktionen är endast tillgänglig för Skolverkets personal.
       responses:
         "200":
@@ -146,7 +146,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SchoolUnit"
         "400":
-          $ref: "#/components/responses/400_invalid_id"   
+          $ref: "#/components/responses/400_invalid_id"
         "404":
           $ref: "#/components/responses/404_schoolunit_not_found"
         default:
@@ -255,7 +255,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Programme"
-        
         "404":
           $ref: "#/components/responses/404_programme_not_found"
         default:
@@ -615,9 +614,10 @@ components:
             items:
               $ref: "#/components/schemas/Error"
             example:
-                {code: 400, 
-                  message: "Invalid parameter: id",
-                  timeStamp: "2021-06-10T17:50:49+02:00"
+                {
+                  "code": 400,
+                  "message": "Invalid parameter: id",
+                  "timeStamp": "2021-06-10T17:50:49+02:00"
                 }
     404_organisation_not_found:
        description: Huvudman (organisation) hittades inte.
@@ -626,7 +626,8 @@ components:
               schema:
                 $ref: "#/components/schemas/Error"
               example:
-                { "code": 404,
+                {
+                  "code": 404,
                   "message": "Organisation not found",
                   "timeStamp": "2021-06-10T17:39:38+02:00"
                 }
@@ -637,7 +638,8 @@ components:
               schema:
                 $ref: "#/components/schemas/Error"
               example:
-                { "code": 404,
+                {
+                  "code": 404,
                   "message": "School unit not found",
                   "timeStamp": "2021-06-10T17:39:38+02:00"
                 }
@@ -648,10 +650,11 @@ components:
               schema:
                 $ref: "#/components/schemas/Error"
               example:
-                { "code": 404,
+                {
+                  "code": 404,
                   "message": "Programme not found",
                   "timeStamp": "2021-06-10T17:39:38+02:00"
-                }    
+                }
     default_error:
       description: Okänt fel.
       content:
