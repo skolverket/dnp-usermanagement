@@ -25,6 +25,8 @@ tags:
       har en skolenhetskod i Skolverkets skolenhetsregister.
   - name: Programme
     description: Studievägar för olika gymnasieprogram där nationella prov genomförs.
+  - name: Activity
+    description: Provaktiviteter i provtjänsten (DNP).
 paths:
   "/organisations/{id}":
     get:
@@ -259,6 +261,57 @@ paths:
           $ref: "#/components/responses/404_programme_not_found"
         default:
           $ref: "#/components/responses/default_error"
+  /activities:
+    get:
+      operationId: getActivities
+      tags:
+        - Activity
+      summary: Hämta en lista med provaktiviteter.
+      description: >
+        Returnerar en lista med provaktiviteter.
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: array
+                description: En lista med provaktiviteter
+                items:
+                  $ref: "#/components/schemas/Activity"
+        default:
+          $ref: "#/components/responses/default_error"
+  /activities/{id}:
+    get:
+      operationId: getActivityById
+      tags:
+        - Activity
+      summary: Hämta en provaktivitet med id.
+      description: >
+        Returnerar en provaktivitet som identifierats av parameter `id`.
+      parameters:
+        - name: id
+          in: path
+          description: >
+            `id` för provaktiviteten som ska hämtas.
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: "f8bd4423-9693-51ed-a854-6e9984e6c2f7"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Activity"
+        "400":
+          $ref: "#/components/responses/400_invalid_id"
+        "404":
+          $ref: "#/components/responses/404_activity_not_found"
+        default:
+          $ref: "#/components/responses/default_error"
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -267,6 +320,45 @@ components:
       name: vnd.skolverket.se.pda.key
       description: API-nyckel.
   schemas:
+    Activity:
+      type: object
+      description: >
+        Provaktivitet som används som förälderaktivitet till en eller flera
+        aktiviteter i SS12000 standarden.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: >
+            Identifierande attribut som skapas av Skolverket. Skolverket genererar `id`
+            värdet enligt [UUID v5](https://datatracker.ietf.org/doc/html/rfc4122#section-4.3)
+            med att använda provaktivitetens `displayName` som namn och
+            [Nil UUID](https://datatracker.ietf.org/doc/html/rfc4122#section-4.1.7)
+            som namespace. Till exempel, provaktivitet med `displayName` _MATMAT01_
+            får `id` värde _505c5ee0-7be4-560d-9c27-10ab0d96ac9a_. Identifieraren ska användas
+            som `parentActivity` referens i aktivitet objektet i SS12000 standarden.
+        displayName:
+          type: string
+          description: "Namn på aktiviteten, i presentationssyfte."
+          example: "MATMAT01"
+        activityType:
+          type: string
+          title: Code_ActivityType
+          enum:
+            - Provaktivitet
+          description: >
+            Beskriver vilken typ av aktivitet som avses.
+
+            * _Provaktivitet_ - En aktivitet som är avsedd för att definiera ett
+            eller flera provtillfällen
+        comment:
+          type: string
+          description: En text med kompletterande information.
+        meta:
+          $ref: "#/components/schemas/Meta"
+      required:
+        - id
+        - displayName
     Code_SchoolType:
       title: Code_SchoolType
       description: |
@@ -305,6 +397,7 @@ components:
           - _ABU_ - Arbetsmarknadsutbildning
           - _AU_ - Annan undervisning
       type: string
+      example: "GR"
       enum:
         - FS
         - FKLASS
@@ -543,6 +636,14 @@ components:
         - displayName
         - educationCode
         - meta
+    SchoolType:
+      description: Utbildningsform med årskurs
+      type: object
+      properties:
+        schoolType:
+          $ref: "#/components/schemas/Code_SchoolType"
+        schoolYears:
+          $ref: "#/components/schemas/SchoolYear"
     SchoolUnit:
       description: Skolenhet
       type: object
@@ -571,10 +672,10 @@ components:
           example: "31279295"
         schoolTypes:
           type: array
-          uniqueItems: true
+          description: >
+            Utbildningsformer med årskurser för skolenheten.
           items:
-            $ref: "#/components/schemas/Code_SchoolType"
-          example: [ "GR", "FS", "FTH" ]
+            $ref: "#/components/schemas/SchoolType"
         municipalityCode:
           type: string
           description: >
@@ -590,6 +691,11 @@ components:
                   - _New_ - Skolenheten finns registrerad men är ännu inte aktiv
                   - _Active_ - Skolenheten som bedriver verksamhet
                   - _Expired_ - Skolenheten har upphört att bedriva verksamhet
+        dnpStatus:
+          description: >
+            Attribut som visar skolenhetens tillgänglighet i provtjänsten (DNP).
+          type: boolean
+          example: true
         parentOrganisation:
           allOf:
             - $ref: "#/components/schemas/OrganisationReference"
@@ -603,6 +709,19 @@ components:
         - displayName
         - schoolUnitCode
         - meta
+    SchoolYear:
+      type: object
+      properties:
+        schoolYear:
+          description: Årskurs för en specifik skolenhet och utbildningsform.
+          type: integer
+          example: 3
+        dnpStatus:
+          description: >
+            Attribut som visar årskursens tillgänglihet under specifik skolenhet och
+            utbildningsform i provtjänsten (DNP).
+          type: boolean
+          example: true
   responses:
     400_invalid_id:
       description: Felaktigt id.
@@ -655,6 +774,18 @@ components:
                   "message": "Programme not found",
                   "timeStamp": "2021-06-10T17:39:38+02:00"
                 }
+    404_activity_not_found:
+      description: Provaktiviteten hittades inte.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            {
+              "code": 404,
+              "message": "Activity not found",
+              "timeStamp": "2021-06-10T17:39:38+02:00"
+            }
     default_error:
       description: Okänt fel.
       content:
