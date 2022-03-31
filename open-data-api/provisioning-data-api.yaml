@@ -643,7 +643,11 @@ components:
         schoolType:
           $ref: "#/components/schemas/Code_SchoolType"
         schoolYears:
-          $ref: "#/components/schemas/SchoolYear"
+          type: array
+          description: >
+            Årskurser för en specifik utbildningsform i skolenheten.
+          items:
+            $ref: "#/components/schemas/SchoolYear"
     SchoolUnit:
       description: Skolenhet
       type: object
