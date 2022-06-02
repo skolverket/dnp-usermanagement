@@ -29,7 +29,7 @@ API for authentication is used to authenticate a client that will use the API fo
 ## References
 Information about the digitalisation of the national assessments is available at the [Swedish National Agency for Education’s web site (in Swedish)](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/digitalisering-av-de-nationella-proven)
 
-SS12000 API specifikation is available at [https://github.com/girgen/ss12000v2](https://github.com/girgen/ss12000v2)
+SS 12000 specification is available at [https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/](https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/)
 
 ## Contact
 digit-np@skolverket.se
@@ -64,7 +64,7 @@ API för autentisering används för att autentisera en klient som ska använda 
 ## Referenser
 Information om digitalisering av de nationella proven finns på [Skolverkets webbplats](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/digitalisering-av-de-nationella-proven)
 
-SS12000 API specifikation finns på [https://github.com/girgen/ss12000v2](https://github.com/girgen/ss12000v2)
+SS 12000 specifikation finns på [https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/](https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/)
 
 ## Kontakt
 digit-np@skolverket.se
