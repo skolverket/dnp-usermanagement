@@ -32,7 +32,7 @@ Information about the digitalisation of the national assessments is available at
 SS 12000 specification is available at [https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/](https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/)
 
 ## Contact
-digit-np@skolverket.se
+https://www.skolverket.se/kontakt
 ___
 >[Information in english](#dnp-user-management)
 
@@ -67,4 +67,4 @@ Information om digitalisering av de nationella proven finns på [Skolverkets web
 SS 12000 specifikation finns på [https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/](https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/)
 
 ## Kontakt
-digit-np@skolverket.se
+https://www.skolverket.se/kontakt
