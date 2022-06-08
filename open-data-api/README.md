@@ -10,7 +10,7 @@ The API for fetching controlled values (open-data-api) is an open-api.
 **Important notice: The implementation of a digital national assessments service is an ongoing project and the information in this repository will be continuously updated.** The material is not an official publication and should be considered as work in progress.
 
 ## Contact
-digit-np@skolverket.se
+https://www.skolverket.se/kontakt
 ___
 >[Information in english](#api-for-fetching-controlled-values-open-data-api)
 # API för inhämtning av kontrollerade värden (open-data-api)
@@ -23,4 +23,4 @@ API för inhämtning av kontrollerade värden (open-data-api) är ett öppet API
 **Notera att arbetet med digitala nationella prov (DNP) är ett pågående projekt och att materialet i DNP användarhantering uppdateras kontinuerligt.** Det är inte officiell och fastställd information från Skolverket, utan ska betraktas som arbetsdokument.
 
 ## Kontakt
-digit-np@skolverket.se
+https://www.skolverket.se/kontakt
