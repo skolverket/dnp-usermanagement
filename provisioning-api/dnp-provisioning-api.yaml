@@ -1,0 +1,2287 @@
+openapi: 3.0.2
+servers:
+  - description: Provtjänstens Provisioning API
+    url: "https://api.skolverket.se/dnp/iga/provisioning/v1"
+info:
+  description: |
+    Detta är Skolverkets API för användarprovisionering till provtjänsten.
+    Via detta API kan en huvudman skicka uppgifter om elever, personal och
+    grupper från sin klient. API:et tillämpar en delmängd ur
+    datamodellen i standarden SS 12000
+    [TK450](https://www.sis.se/standardutveckling/tksidor/tk400499/sistk450/).
+
+    Notera att provtjänsten har specifika krav på uppgifter som skickas från
+    skolhuvudman. Mer information finns i
+    [Skolverkets publika github](https://github.com/skolverket/dnp-usermanagement/tree\
+    /main/provisioning-api) och på [Skolverkets hemsida](https://www.skolverket.se/om-oss\
+    /var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov\
+    /tekniska-forutsattningar-for-skolorna-att-kunna-genomfora-digitala-nationella-prov).
+  version: 1.0.0
+  title: Provtjänstens Provisioning API
+  contact:
+    name: Statens Skolverk
+    email: digit-np@skolverket.se
+tags:
+  - name: Person
+    description: |
+      Hanterar personer och personers placering i skolor (inskrivningar). Specifika krav relaterade
+      till person:
+      * För närvarande **ska** det skickas endast en eduPersonPrincipalName i person objektet.
+      * För närvarande **ska** det skickas olika eduPersonPrincipalName för rollen elev och personal.
+      * E-postadress är obligatoriskt för skolpersonal.
+      * För närvarande tillåts endast Svenskt personnummer, samordningsnummer och TF-nummer.
+      * Värdet som skickas för `enroledAt.id` under attributet `enrolments` **ska** vara ett
+      UUID-värde som är genererat av Skolverket.
+  - name: Duty
+    description: |
+      Skolpersonalens tjänstgöringar. Specifika krav relaterade till tjänstgöring:
+      * Värdet som skickas för `dutyAt.id` **ska** vara ett UUID-värde som är genererat av Skolverket.
+  - name: Group
+    description: |
+      Kan användas för att definiera elevgrupper. Specifika krav relaterade till aktiviteter:
+      * Det **ska** skickas enbart grupper av typen `Klass` och `Undervisning`.
+      * Det **ska** skickas enbart undervisningsgrupper som genomför nationella prov eller bedömningsstöd.
+  - name: Activity
+    description: |
+      Kan användas för att koppla ihop lärare och elevgrupper med
+      kursplan (ämne eller kurskod). Specifika krav relaterade till aktiviteter:
+      * Det **ska** skickas enbart aktiviteter av typen `Undervisning`.
+      * Det **ska** skickas enbart aktiviteter relaterade till nationella prov eller bedömningsstöd.
+      * Värdet som skickas för `parentActivity.id` **ska** vara ett UUID-värde som är genererat av Skolverket.
+paths:
+  /persons:
+    get:
+      operationId: getPersons
+      tags:
+        - Person
+      summary: Hämta en lista med personer.
+      parameters:
+        - name: civicNo
+          description: >-
+            Begränsa urvalet till den person vars civicNo matchar parameterns värde.
+          in: query
+          schema:
+            type: string
+            example: "200112240123"
+        - name: eduPersonPrincipalName
+          description: >-
+            Begränsa urvalet till den person vars eduPersonPrincipalNames
+            matchar parameterns värde.
+          in: query
+          schema:
+            type: string
+            example: "piplan145@soderhavetsgymnasium.se"
+        - name: relationship.organisation
+          description: >
+            Begränsa urvalet till de personer som har en relation till angivet
+            organisationselement (vanligtvis en skolenhet).
+          in: query
+          schema:
+            type: string
+            format: uuid
+            example: "3fa85f64-5717-4562-b3fc-2c963f66afa5"
+        - $ref: "#/components/parameters/SearchCreatedBefore"
+        - $ref: "#/components/parameters/SearchCreatedAfter"
+        - $ref: "#/components/parameters/SearchModifiedBefore"
+        - $ref: "#/components/parameters/SearchModifiedAfter"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/PageToken"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Person"
+                  pageToken:
+                    type: string
+                    nullable: true
+                    description: >
+                      Om värdet är null finns inget mer att hämta på det token
+                      som skickades in som query parameter.
+                required:
+                  - data
+        "400":
+          $ref: "#/components/responses/400_invalid_filter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+  /persons/lookup:
+    post:
+      operationId: searchPersons
+      tags:
+        - Person
+      summary: Hämta många personer baserat på en lista av ID:n eller personnummer.
+      description: >-
+        Istället för att hämta personer en i taget med en loop av GET-anrop så
+        finns det även möjlighet att hämta många personer på en gång genom att
+        skicka ett anrop med en lista med önskade personer.
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Person"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "503":
+          $ref: "#/components/responses/503_overload"
+        default:
+          $ref: "#/components/responses/default_error"
+      requestBody:
+        description: |
+          En lista med personnummer och / eller uuid:n på personer.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                civicNos:
+                  type: array
+                  items:
+                    description: >
+                      Personnummer, samordningsnummer eller tillfälliga
+                      personnummer, och motsvarande för andra länder. För
+                      svenska personnummner **ska** formatet 12 tecken utan
+                      divis användas. Se exempel.
+                    type: string
+              example:
+                ids:
+                  - "d544563a-747a-42d3-8d37-415a101537fa"
+                civicNos:
+                  - "201002037271"
+        required: true
+  "/persons/{id}":
+    get:
+      operationId: getPersonById
+      tags:
+        - Person
+      summary: Get person by person id
+      parameters:
+        - name: id
+          in: path
+          description: ID för personen som ska hämtas
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Person"
+        "400":
+          $ref: "#/components/responses/400_invalid_id"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "404":
+          $ref: "#/components/responses/404_not_found"
+        default:
+          $ref: "#/components/responses/default_error"
+  /persons/bulk:
+    post:
+      operationId: addPersons
+      tags:
+        - Person
+      summary: Skapa flera personer.
+      description: >-
+        Det går att skapa/uppdatera en eller flera personer via denna operation.
+        Person skapas/uppdateras asynkront.
+      parameters:
+        - $ref: "#/components/parameters/UpdateIfExists"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Person"
+              required:
+                - data
+      responses:
+        "202":
+          $ref: "#/components/responses/202_accepted"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+    put:
+      operationId: updatePersons
+      tags:
+        - Person
+      summary: Uppdatera flera personer.
+      description: >-
+        Det går att uppdatera en eller flera personer via denna operation.
+        Uppdatering av personer görs asynkront.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Person"
+              required:
+                - data
+      responses:
+        "202":
+          $ref: "#/components/responses/202_accepted"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+  /persons/bulk/delete:
+    post:
+      operationId: deletePersons
+      tags:
+        - Person
+      summary: Radera flera personer.
+      description: >-
+        Det går att radera en eller flera personer via denna operation.
+        Borttagning av personer görs asynkront.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              required:
+                - data
+      responses:
+        "202":
+          $ref: "#/components/responses/202_accepted"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+  "/persons/bulk/jobs/{id}":
+    get:
+      operationId: getPersonsBulkJobStatusById
+      tags:
+        - Person
+      summary: Hämta status för bulk-jobb med id
+      parameters:
+        - name: id
+          in: path
+          description: ID för bulk-jobbet som ska hämtas
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "3fa85f64-5717-4562-b3fc-2c963f66afa5"
+        - name: showOnlyError
+          in: query
+          description: >-
+            Om denna parameter sätts till `true` returneras
+            lista med bulk-respons med status `Error`
+          schema:
+            type: boolean
+            default: false
+            example: false
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AsynchronousResponse"
+              example: |
+                {
+                  "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                  "responses": [
+                    {
+                      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                      "response": {
+                        "status": "Success",
+                        "statusCode": 201,
+                        "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/persons/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                        "provisioningStatus": true,
+                        "errors": []
+                      },
+                      "meta": {
+                        "created": "2021-05-12T10:30:00.123+02:00",
+                        "modified": "2021-05-12T10:30:00.123+02:00"
+                      }
+                    }
+                  ]
+                }
+        "400":
+          $ref: "#/components/responses/400_invalid_id"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "404":
+          $ref: "#/components/responses/404_not_found"
+        default:
+          $ref: "#/components/responses/default_error"
+  "/persons/bulk/jobs/{id}/isCompleted":
+    get:
+      operationId: getPersonsBulkJobIsCompleted
+      tags:
+        - Person
+      summary: Kontrollera om bulk-processen är klar
+      parameters:
+        - name: id
+          in: path
+          description: ID för bulk-jobbet som ska hämtas
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "3fa85f64-5717-4562-b3fc-2c963f66afa5"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: boolean
+                example: true
+        "400":
+          $ref: "#/components/responses/400_invalid_id"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "404":
+          $ref: "#/components/responses/404_not_found"
+        default:
+          $ref: "#/components/responses/default_error"
+  /duties:
+    get:
+      operationId: getDuties
+      tags:
+        - Duty
+      summary: Hämta en lista med tjänstgöringar.
+      parameters:
+        - name: organisation
+          description: >
+            Begränsa urvalet till de tjänstgöringar som är kopplade till ett
+            organisationselement (vanligtvis en skolenhet).
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: person
+          description: >
+            Begränsa urvalet till de tjänstgöringar som är kopplade till person
+            ID
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/SearchCreatedBefore"
+        - $ref: "#/components/parameters/SearchCreatedAfter"
+        - $ref: "#/components/parameters/SearchModifiedBefore"
+        - $ref: "#/components/parameters/SearchModifiedAfter"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/PageToken"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Duty"
+                  pageToken:
+                    type: string
+                    nullable: true
+                    description: >
+                      Om värdet är null finns inget mer att hämta på det token
+                      som skickades in som query parameter.
+                required:
+                  - data
+        "400":
+          $ref: "#/components/responses/400_invalid_filter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+  /duties/lookup:
+    post:
+      operationId: searchDuties
+      tags:
+        - Duty
+      summary: "Hämta många tjänstgöringar baserat på en lista av ID:n."
+      description: >-
+        Istället för att hämta tjänstgöringar en i taget med en loop av
+        GET-anrop så finns det även möjlighet att hämta många tjänstgöringar på
+        en gång genom att skicka ett anrop med en lista med önskade
+        tjänstgöringar.
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Duty"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "503":
+          $ref: "#/components/responses/503_overload"
+        default:
+          $ref: "#/components/responses/default_error"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdLookup"
+        required: true
+  "/duties/{id}":
+    get:
+      operationId: getDutyById
+      tags:
+        - Duty
+      summary: Hämta tjänstgöring baserat på tjänstgörings ID
+      parameters:
+        - name: id
+          in: path
+          description: ID för tjänstgöringen som ska hämtas
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Duty"
+        "400":
+          $ref: "#/components/responses/400_invalid_id"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "404":
+          $ref: "#/components/responses/404_not_found"
+        default:
+          $ref: "#/components/responses/default_error"
+  /duties/bulk:
+    post:
+      operationId: addDuties
+      tags:
+        - Duty
+      summary: Skapa flera tjänstgöringar
+      description: >-
+        Det går att skapa/uppdatera en eller flera tjänstgöringar via denna operation.
+        Tjänstgöring skapas/uppdateras asynkront.
+      parameters:
+        - $ref: "#/components/parameters/UpdateIfExists"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Duty"
+              required:
+                - data
+      responses:
+        "202":
+          $ref: "#/components/responses/202_accepted"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+    put:
+      operationId: updateDuties
+      tags:
+        - Duty
+      summary: Uppdatera flera tjänstgöringar
+      description: >-
+        Det går att uppdatera en eller flera tjänstgöringar via denna operation.
+        Uppdatering av tjänstgöringar görs asynkront.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Duty"
+              required:
+                - data
+      responses:
+        "202":
+          $ref: "#/components/responses/202_accepted"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+  /duties/bulk/delete:
+    post:
+      operationId: deleteDuties
+      tags:
+        - Duty
+      summary: Radera flera tjänstgöringar
+      description: >-
+        Det går att radera en eller flera tjänstgöringar via denna operation.
+        Borttagning av tjänstgöringar görs asynkront.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              required:
+                - data
+      responses:
+        "202":
+          $ref: "#/components/responses/202_accepted"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+  "/duties/bulk/jobs/{id}":
+    get:
+      operationId: getDutiesBulkJobStatusById
+      tags:
+        - Duty
+      summary: Hämta status för bulk-jobb med id
+      parameters:
+        - name: id
+          in: path
+          description: ID för bulk-jobbet som ska hämtas
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: showOnlyError
+          in: query
+          description: >-
+            Om denna parameter sätts till `true` returneras
+            lista med bulk-respons med status `Error`
+          schema:
+            type: boolean
+            default: false
+            example: false
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AsynchronousResponse"
+              example: |
+                {
+                  "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                  "responses": [
+                    {
+                      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                      "response": {
+                        "status": "Success",
+                        "statusCode": 201,
+                        "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/duties/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                        "provisioningStatus": true,
+                        "errors": []
+                      },
+                      "meta": {
+                        "created": "2021-05-12T10:30:00.123+02:00",
+                        "modified": "2021-05-12T10:30:00.123+02:00"
+                      }
+                    }
+                  ]
+                }
+        "400":
+          $ref: "#/components/responses/400_invalid_id"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "404":
+          $ref: "#/components/responses/404_not_found"
+        default:
+          $ref: "#/components/responses/default_error"
+  "/duties/bulk/jobs/{id}/isCompleted":
+    get:
+      operationId: getDutiesBulkJobIsCompleted
+      tags:
+        - Duty
+      summary: Kontrollera om bulk-processen är klar
+      parameters:
+        - name: id
+          in: path
+          description: ID för bulk-jobbet som ska hämtas
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "3fa85f64-5717-4562-b3fc-2c963f66afa5"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: boolean
+                example: true
+        "400":
+          $ref: "#/components/responses/400_invalid_id"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "404":
+          $ref: "#/components/responses/404_not_found"
+        default:
+          $ref: "#/components/responses/default_error"
+  /groups:
+    get:
+      operationId: getGroups
+      tags:
+        - Group
+      summary: Hämta en lista med grupper.
+      parameters:
+        - name: groupType
+          description: |
+            Begränsa urvalet till grupper av en eller flera grupptyper.
+          in: query
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Code_GroupType"
+        - name: schoolTypes
+          description: >
+            Begränsa urvalet av grupper till de som har en av de angivna
+            skolformerna.
+          in: query
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Code_SchoolType"
+        - name: organisation
+          description: >
+            Begränsa urvalet till de grupper som direkt kopplade till angivna
+            organisationselement.
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              format: uuid
+        - $ref: "#/components/parameters/SearchCreatedBefore"
+        - $ref: "#/components/parameters/SearchCreatedAfter"
+        - $ref: "#/components/parameters/SearchModifiedBefore"
+        - $ref: "#/components/parameters/SearchModifiedAfter"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/PageToken"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Group"
+                  pageToken:
+                    type: string
+                    nullable: true
+                    description: >
+                      Om värdet är null finns inget mer att hämta på det token
+                      som skickades in som query parameter.
+                required:
+                  - data
+        "400":
+          $ref: "#/components/responses/400_invalid_filter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+  /groups/lookup:
+    post:
+      operationId: searchGroups
+      tags:
+        - Group
+      summary: "Hämta många grupper baserat på en lista av ID:n."
+      description: >-
+        Istället för att hämta grupper en i taget med en loop av GET-anrop så
+        finns det även möjlighet att hämta många grupper på en gång genom att
+        skicka ett anrop med en lista med önskade grupper.
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Group"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "503":
+          $ref: "#/components/responses/503_overload"
+        default:
+          $ref: "#/components/responses/default_error"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdLookup"
+        required: true
+  "/groups/{id}":
+    get:
+      operationId: getGroupById
+      tags:
+        - Group
+      summary: Hämta grupp baserat på gruppens ID
+      parameters:
+        - name: id
+          in: path
+          description: ID för gruppen som ska hämtas
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+        "400":
+          $ref: "#/components/responses/400_invalid_id"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "404":
+          $ref: "#/components/responses/404_not_found"
+        default:
+          $ref: "#/components/responses/default_error"
+  /groups/bulk:
+    post:
+      operationId: addGroups
+      tags:
+        - Group
+      summary: Skapa flera grupper med eller utan gruppmedlemskap
+      description: >
+        Det går att skapa eller uppdatera en eller flera grupper via denna operation.
+        Grupper skapas eller uppdateras asynkront. Notera att grupper kan skickas
+        med eller utan gruppmedlemmar samt gruppens koppling till
+        ämnen/kurser och lärare görs via aktivitet.
+      parameters:
+        - $ref: "#/components/parameters/UpdateIfExists"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Group"
+              required:
+                - data
+      responses:
+        "202":
+          $ref: "#/components/responses/202_accepted"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+    put:
+      operationId: updateGroups
+      tags:
+        - Group
+      summary: Uppdatera flera grupper
+      description: >-
+        Det går att uppdatera en eller flera grupper via denna operation.
+        Uppdatering av grupper görs asynkront.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Group"
+              required:
+                - data
+      responses:
+        "202":
+          $ref: "#/components/responses/202_accepted"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+  /groups/bulk/delete:
+    post:
+      operationId: deleteGroups
+      tags:
+        - Group
+      summary: Radera flera grupper
+      description: >-
+        Det går att radera en eller flera grupper via denna operation.
+        Borttagning av grupper görs asynkront.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              required:
+                - data
+      responses:
+        "202":
+          $ref: "#/components/responses/202_accepted"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+  "/groups/bulk/jobs/{id}":
+    get:
+      operationId: getGroupsBulkJobStatusById
+      tags:
+        - Group
+      summary: Hämta status för bulk-jobb med id
+      parameters:
+        - name: id
+          in: path
+          description: ID för bulk-jobbet som ska hämtas
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: showOnlyError
+          in: query
+          description: >-
+            Om denna parameter sätts till `true` returneras
+            lista med bulk-respons med status `Error`
+          schema:
+            type: boolean
+            default: false
+            example: false
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AsynchronousResponse"
+              example: |
+                {
+                  "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                  "responses": [
+                    {
+                      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                      "response": {
+                        "status": "Success",
+                        "statusCode": 201,
+                        "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/groups/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                        "provisioningStatus": false,
+                        "errors": []
+                      },
+                      "meta": {
+                        "created": "2021-05-12T10:30:00.123+02:00",
+                        "modified": "2021-05-12T10:30:00.123+02:00"
+                      }
+                    }
+                  ]
+                }
+        "400":
+          $ref: "#/components/responses/400_invalid_id"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "404":
+          $ref: "#/components/responses/404_not_found"
+        default:
+          $ref: "#/components/responses/default_error"
+  "/groups/bulk/jobs/{id}/isCompleted":
+    get:
+      operationId: getGroupsBulkJobIsCompleted
+      tags:
+        - Group
+      summary: Kontrollera om bulk-processen är klar
+      parameters:
+        - name: id
+          in: path
+          description: ID för bulk-jobbet som ska hämtas
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "3fa85f64-5717-4562-b3fc-2c963f66afa5"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: boolean
+                example: true
+        "400":
+          $ref: "#/components/responses/400_invalid_id"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "404":
+          $ref: "#/components/responses/404_not_found"
+        default:
+          $ref: "#/components/responses/default_error"
+  /activities:
+    get:
+      operationId: getActivities
+      tags:
+        - Activity
+      summary: Hämta en lista med aktiviteter baserat på ett antal sökparametrar.
+      parameters:
+        - name: teacher
+          description: >-
+            Begränsa urvalet till aktiviteter vars lärare `teachers` inkluderar
+            detta id i attributet `duty.id`. Tidsbegräninsgar (`startDate`,
+            `endDate`) appliceras inte för detta filter.
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: organisation
+          description: >-
+            Begränsa urvalet till utpekat organisationselement och dess
+            underliggande element.
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: group
+          description: Begränsa urvalet till utpekad grupp.
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - $ref: "#/components/parameters/SearchCreatedBefore"
+        - $ref: "#/components/parameters/SearchCreatedAfter"
+        - $ref: "#/components/parameters/SearchModifiedBefore"
+        - $ref: "#/components/parameters/SearchModifiedAfter"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/PageToken"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Activity"
+                  pageToken:
+                    type: string
+                    nullable: true
+                    description: >
+                      Om värdet är null finns inget mer att hämta på det token
+                      som skickades in som query parameter.
+                required:
+                  - data
+        "400":
+          $ref: "#/components/responses/400_invalid_filter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+  /activities/lookup:
+    post:
+      operationId: searchActivities
+      tags:
+        - Activity
+      summary: "Hämta en lista med aktiviteter baserat på motsvarande lista av ID:n."
+      description: >-
+        Istället för att hämta aktiviteter en i taget med en loop av GET-anrop
+        så finns det även möjlighet att hämta många aktiviteter på en gång genom
+        att skicka ett anrop med en lista med önskade aktiviteter.
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Activity"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "503":
+          $ref: "#/components/responses/503_overload"
+        default:
+          $ref: "#/components/responses/default_error"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdLookup"
+        required: true
+  "/activities/{id}":
+    get:
+      operationId: getActivityById
+      tags:
+        - Activity
+      summary: Hämta en aktivitet baserat på dess ID
+      parameters:
+        - name: id
+          in: path
+          description: ID för aktivitet som ska hämtas
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Activity"
+        "400":
+          $ref: "#/components/responses/400_invalid_id"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "404":
+          $ref: "#/components/responses/404_not_found"
+        default:
+          $ref: "#/components/responses/default_error"
+  /activities/bulk:
+    post:
+      operationId: addActivities
+      tags:
+        - Activity
+      summary: Skapa flera aktiviteter
+      description: >
+        Det går att skapa eller uppdatera en eller flera aktiviteter via denna operation.
+        Aktiviteter skapas eller uppdateras asynkront.
+      parameters:
+        - $ref: "#/components/parameters/UpdateIfExists"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Activity"
+              required:
+                - data
+      responses:
+        "202":
+          $ref: "#/components/responses/202_accepted"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+    put:
+      operationId: updateActivities
+      tags:
+        - Activity
+      summary: Uppdatera flera aktiviteter
+      description: >-
+        Det går att uppdatera en eller flera aktiviteter via denna operation.
+        Uppdatering av aktiviteter görs asynkront.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Activity"
+              required:
+                - data
+      responses:
+        "202":
+          $ref: "#/components/responses/202_accepted"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+  /activities/bulk/delete:
+    post:
+      operationId: deleteActivities
+      tags:
+        - Activity
+      summary: Radera flera aktiviteter
+      description: >-
+        Det går att radera en eller flera aktiviteter via denna operation.
+        Borttagning av aktiviteter görs asynkront.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+              required:
+                - data
+      responses:
+        "202":
+          $ref: "#/components/responses/202_accepted"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        default:
+          $ref: "#/components/responses/default_error"
+  "/activities/bulk/jobs/{id}":
+    get:
+      operationId: getActivitiesBulkJobStatusById
+      tags:
+        - Activity
+      summary: Hämta status för bulk-jobb med id
+      parameters:
+        - name: id
+          in: path
+          description: ID för bulk-jobbet som ska hämtas
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: showOnlyError
+          in: query
+          description: >-
+            Om denna parameter sätts till `true` returneras
+            lista med bulk-respons med status `Error`
+          schema:
+            type: boolean
+            default: false
+            example: false
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AsynchronousResponse"
+              example: |
+                {
+                  "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                  "responses": [
+                    {
+                      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                      "response": {
+                        "status": "Success",
+                        "statusCode": 201,
+                        "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/activities/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                        "provisioningStatus": true,
+                        "errors": []
+                      },
+                      "meta": {
+                        "created": "2021-05-12T10:30:00.123+02:00",
+                        "modified": "2021-05-12T10:30:00.123+02:00"
+                      }
+                    }
+                  ]
+                }
+        "400":
+          $ref: "#/components/responses/400_invalid_id"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "404":
+          $ref: "#/components/responses/404_not_found"
+        default:
+          $ref: "#/components/responses/default_error"
+  "/activities/bulk/jobs/{id}/isCompleted":
+    get:
+      operationId: getActivitiesBulkJobIsCompleted
+      tags:
+        - Activity
+      summary: Kontrollera om bulk-processen är klar
+      parameters:
+        - name: id
+          in: path
+          description: ID för bulk-jobbet som ska hämtas
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: "3fa85f64-5717-4562-b3fc-2c963f66afa5"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: boolean
+                example: true
+        "400":
+          $ref: "#/components/responses/400_invalid_id"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "404":
+          $ref: "#/components/responses/404_not_found"
+        default:
+          $ref: "#/components/responses/default_error"
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Activity:
+      title: Activity
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Identifierare för aktiviteten.
+        meta:
+          $ref: "#/components/schemas/Meta"
+        displayName:
+          type: string
+          description: "Namn på aktiviteten, i presentationssyfte."
+        startDate:
+          type: string
+          format: date
+          description: >
+            Datum för när aktiviteten startar (RFC 3339-format, t.ex.
+            "2016-10-15").
+          example: "2021-09-01"
+        endDate:
+          type: string
+          format: date
+          description: >
+            Datum för när aktiviteten slutar (RFC 3339-format, t.ex.
+            "2016-10-15").
+          example: "2022-06-15"
+        activityType:
+          type: string
+          title: Code_ActivityType
+          enum:
+            - Undervisning
+            - Elevaktivitet
+            - Provaktivitet
+            - Läraraktivitet
+            - Övrigt
+          description: >
+            Beskriver vilken typ av aktivitet som avses. Notera att enbart
+            aktiviteter av typen `Undervisning` ska skickas till provtjänsten.
+
+
+            * _Undervisning_ - Schemalagd tid med koppling till timplan, som ska
+            närvarorapporteras.
+
+            * _Elevaktivitet_ - Schemalagd tid för elever som inte är
+            undervisning enligt timplan, och som ska närvarorapporteras,
+            exempelvis mentorstid, klassråd eller friluftsdag
+
+            * _Provaktivitet_ - En aktivitet som är avsedd för att definiera ett
+            eller flera provtillfällen
+
+            * _Läraraktivitet_ - Tid för lärare som inte är undervisning och som
+            ingår i lärarens arbetstid, kan vara schemalagd, men ska inte
+            närvarorapporteras, exempelvis konferenstid.
+
+            * _Övrigt_ - Läxhjälp, lunch, bokning och annat som finns på
+            schemat, men inte är undervisning och inte ska närvarorapporteras
+        groups:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/GroupReference"
+          description: >
+            De grupper som är kopplade till aktiviteten.
+        teachers:
+          type: array
+          description: >
+            De lärare (Duty-objekt) som är kopplade till aktiviteten. Provtjänstens
+            tolkning är att alla lärare som finns i en aktivitet undervisar i alla
+            elevgrupper som är kopplade till aktiviteten. Provtjänsten använder
+            informationen för behörighets kontroll. Exempelvis, alla lärare som
+            finns in en aktivitet har åtkomst till provresultat av alla elever som
+            är medlem i grupperna som är kopplade till aktiviteten.
+          items:
+            type: object
+            title: DutyAssignment
+            properties:
+              duty:
+                $ref: "#/components/schemas/DutyReference"
+              startDate:
+                type: string
+                format: date
+                description: >
+                  Datum för när lärarens deltagande i aktiviteten startar (RFC
+                  3339-format, t.ex. "2016-10-15").
+                example: "2021-09-01"
+              endDate:
+                type: string
+                format: date
+                description: >
+                  Datum för när lärarens deltagande i aktiviteten slutar (RFC
+                  3339-format, t.ex. "2016-10-15").
+                example: "2022-06-01"
+              grader:
+                type: boolean
+                description: >-
+                  Markerar att läraren har rollen som betygsättande lärare för
+                  aktiviteten
+        organisation:
+          allOf:
+            - $ref: "#/components/schemas/OrganisationReference"
+            - description: Den skolenhet/skola som aktiviteten är knuten till.
+        parentActivity:
+          allOf:
+            - $ref: "#/components/schemas/ActivityReference"
+            - description: >
+                Referens till en unik nationell prov-aktivitet. Värdet som skickas för
+                "parentActivity.id" **ska** vara ett UUID-värde som är genererat av Skolverket.
+                Detta eftersom det finns behov i provtjänsten att koppla ihop en aktivitet till
+                en specifik prov-aktivitet i provtjänsten. En prov-aktivitet motsvarar ett
+                ämne och årskurs det genomförs ett nationellt prov eller bedömningsstöd för skolformer
+                `GR`, `SP` och `SAM`, exempelvis "MA åk 6" (matematik i årkurs 6). För skolformerna
+                `GY` och `VUXGY` motsvarar en prov-aktivitet en kurs det genomförs nationellt prov eller
+                bedömningsstöd, exempelvis "MATMAT01a". Information om nationella prov-aktiviteter med
+                identifierare i UUID-format **ska** hämtas via provtjänstens
+                [open-data API](https://api-pre.skolverket.se/dnp/iga/open-data/swagger-ui.html).
+                Mer information om nationella prov-aktiviteter finns i
+                [Skolverkets Github](https://github.com/skolverket/dnp-usermanagement/tree/main/open-data-api).
+      required:
+        - id
+        - displayName
+        - startDate
+        - activityType
+        - groups
+        - organisation
+        - parentActivity
+    ActivityReference:
+      allOf:
+        - $ref: "#/components/schemas/ObjectReference"
+        - title: ActivityReference
+          description: Referens till en aktivitet
+    AsynchronousResponse:
+      title: AsynchronousResponse
+      type: object
+      properties:
+        jobId:
+          type: string
+          format: uuid
+          description: Identifierare för bulk-jobbet.
+        responses:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                description: Identifierare för resursen som asynkrona återkopplingen gäller.
+              response:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: |
+                      Asynkront svar kan ha följande status:
+                      - _Pending_ - Den asynkrona processen är inte klar ännu.
+                      - _Success_ - Den asynkrona processen är slutförd med framgång.
+                      - _Error_ - Den asynkrona processen är slutförd med fel.
+                    enum:
+                      - Pending
+                      - Success
+                      - Error
+                    default: "Pending"
+                    example: "Error"
+                  statusCode:
+                    type: integer
+                    description: Statuskod
+                    example: 400
+                  location:
+                    type: string
+                    format: uri
+                    description: >-
+                      URL till resursen som skapades. Det returneras endast om
+                      resurs skapades.
+                    example: "https://api.skolverket.se/dnp/iga/provisioning/v1/persons/3fa85f64-5717-4562-b3fc-2c963f66afa7"
+                  provisioningStatus:
+                    type: boolean
+                    description: |
+                      Provisioneringsstatus av resursen i provtjänsten.
+                      Returneras endast om asynkrona processen är slutförd med `status=Success`.
+                      - _false_ - Resursen är mottagen och har lagrats hos Skolverket men
+                                  informationen är inte fullständig för att genomföra
+                                  provisionering till provplattformen. Till exempel,
+                                  personuppgifter som skickas för skolpersonal provisioneras inte
+                                  till provtjänsten förrän information om tjänstgöring skickas.
+                      - _true_ - Provisionering till provplattformen är genomförd.
+                    example: false
+                  errors:
+                    type: array
+                    description: Lista med felmeddelande. Returneras endast om
+                      fel inträffades.
+                    items:
+                      $ref: "#/components/schemas/LogEntry"
+                required:
+                  - status
+              meta:
+                $ref: "#/components/schemas/Meta"
+            required:
+              - id
+              - response
+              - meta
+      required:
+        - jobId
+        - responses
+    Code_DutyRole:
+      type: string
+      title: Code_DutyRole
+      description: >
+        För värdeförråd se
+        https://api.skolverket.se/vocab/common-terms/code-duty-role.
+      enum:
+        - Rektor
+        - Lärare
+        - Förskollärare
+        - Barnskötare
+        - Bibliotekarie
+        - Lärarassistent
+        - Fritidspedagog
+        - Annan personal
+        - Studie- och yrkesvägledare
+        - Förstelärare
+        - Kurator
+        - Skolsköterska
+        - Skolläkare
+        - Skolpsykolog
+        - Speciallärare/specialpedagog
+        - Skoladministratör
+        - Övrig arbetsledning
+    Code_GroupType:
+      type: string
+      title: Code_GroupType
+      description: >
+        Grupptyp anger vad en grupp ska användas till.
+
+        Ett värdeförråd för att indikera anger vilka grupptyper som finns. Notera att
+        enbart grupper av typen `Klass` och `Undervisning` ska skickas till provtjänsten.
+
+        * _Undervisning_ - Undervisningsgruppen är en grupp som har koppling
+          till ett ämne eller en kurs, och som ska schemaläggas med undervisningstid
+          ihop med en lärare.
+        * _Klass_ - Klassen är en organisatorisk grupp med elever som är
+        skolplacerade
+          på en skola med skolform FSK, GR, GRS, SP, SAM, GY eller GYS.
+          Varje elev ska vara placerad i endast en klass. Klassen kan schemaläggas
+          med undervisning enligt timplan. "Klassföreståndare" kan beskrivas genom att
+          koppla en _AssignmentRole_ av typen _Mentor_.
+        * _Mentor_ - Grupp med elever vilka delar samma mentor/mentorer.
+          Mentor kopplas till gruppen genom en _AssignmentRole_.
+        * _Provgrupp_ - Grupp med elever vilka ska genomföra ett eller flera
+        prov.
+
+        * _Schema_ - Schemagrupper är grupper som utgör ett komplement till
+          grupper av typen Undervisning. Schemagrupper ska schemaläggas för att
+          åstadkomma anpassningar av schemat för enskilda elever eller grupper
+          av elever. Exempel på schemagrupper är delgrupper och grupper som
+          används för stödundervisning eller läxhjälp.
+        * _Avdelning_ - Avdelningen är en grupp för placering inom skolformerna
+          förskola eller fritidshem.
+        * _Personalgrupp_ - En grupp vars medlemmar utgörs av personal.
+
+        * _Övrigt_ - Övriga grupper är andra grupper som inte är något av
+        ovanstående.
+      enum:
+        - Undervisning
+        - Klass
+        - Mentor
+        - Provgrupp
+        - Schema
+        - Avdelning
+        - Personalgrupp
+        - Övrigt
+    Code_ObjectType:
+      title: Code_ObjectType
+      type: string
+      enum:
+        - Person
+        - Duty
+        - Group
+        - Activity
+      example: Person
+    Code_SchoolType:
+      title: Code_SchoolType
+      description: |
+        Följande värden används för att beskriva utbildningsform i provtjänsten:
+          - _GR_ - Grundskola
+          - _SP_ - Specialskola
+          - _SAM_ - Sameskola
+          - _GY_ - Gymnasieskola
+          - _VUXGY_ - Kommunal vuxenutbildning på gymnasial nivå
+      type: string
+      enum:
+        - GR
+        - SP
+        - SAM
+        - GY
+        - VUXGY
+    Duty:
+      type: object
+      title: Duty
+      description: referens till ett Dutyobjekt
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Ett ID för tjänsten.
+        meta:
+          $ref: "#/components/schemas/Meta"
+        person:
+          allOf:
+            - $ref: "#/components/schemas/PersonReference"
+            - description: Identifierare av person som tjänsten är knuten till.
+        dutyAt:
+          $ref: "#/components/schemas/SchoolUnitReference"
+        dutyRole:
+          allOf:
+            - $ref: "#/components/schemas/Code_DutyRole"
+            - description: >
+                Syfte med tjänsten, den roll tjänsten avser, till exempel lärare
+                eller rektor.
+        startDate:
+          type: string
+          format: date
+          description: >
+            Startdatum för personens anställning på en viss skolenhet eller
+            skola (RFC 3339-format, t.ex. "2016-10-15"). Inkluderande.
+          example: "2021-09-01"
+        endDate:
+          type: string
+          format: date
+          description: >
+            Slutdatum för personens anställning på en viss skolenhet eller skola
+            (RFC 3339-format, e.g. "2016-10-15"). Inkluderande.
+          example: "2022-06-01"
+      required:
+        - id
+        - person
+        - dutyAt
+        - dutyRole
+        - startDate
+    DutyReference:
+      allOf:
+        - $ref: "#/components/schemas/ObjectReference"
+        - title: DutyReference
+          description: Referens till en Duty
+    Enrolment:
+      title: Enrolment
+      type: object
+      properties:
+        enroledAt:
+          $ref: "#/components/schemas/SchoolUnitReference"
+        schoolYear:
+          type: integer
+          description: >
+            Värdet årskurs anger det år efter skolstarten för vilket en student
+            följer undervisningen. Värde måste anges för utbildningsform `GY`.
+          minimum: 1
+          maximum: 10
+          example: 1
+        schoolType:
+          $ref: "#/components/schemas/Code_SchoolType"
+        startDate:
+          type: string
+          format: date
+          description: >
+            Startdatum för inskrivningen (RFC 3339-format, t.ex.
+            "2016-10-15").Inkluderande.
+          example: "2020-01-12"
+        endDate:
+          type: string
+          format: date
+          description: >
+            Slutdatum för inskrivningen (RFC 3339-format, t.ex. "2016-10-15").
+            Inkluderande.
+          example: "2020-06-05"
+        cancelled:
+          type: boolean
+          description: Inskrivningen har avbrutits i förväg.
+          default: false
+          example: false
+        educationCode:
+          type: string
+          description: >
+            Studievägskod för den aktuella inskrivningen. Värde måste anges för
+            utbildningsform `GY`.
+          example: "RLKOK11"
+      required:
+        - enroledAt
+        - schoolType
+        - startDate
+    Group:
+      allOf:
+        - $ref: "#/components/schemas/GroupFragment"
+        - type: object
+          properties:
+            groupMemberships:
+              description: >
+                Gruppmedlemskap anger att en person är medlem i en grupp och
+                vilken tidsperiod medlemskapet omfattar.
+              type: array
+              items:
+                type: object
+                title: GroupMembership
+                properties:
+                  person:
+                    $ref: "#/components/schemas/PersonReference"
+                  startDate:
+                    description: >
+                      Startdatum för personens medlemskap i gruppen (RFC
+                      3339-format, t.ex. "2016-10-15"). Inkluderande.
+                    type: string
+                    format: date
+                    example: "2021-09-01"
+                  endDate:
+                    description: >
+                      Slutdatum för personens medlemskap i gruppen (RFC
+                      3339-format, t.ex. "2016-10-15"). Inkluderande.
+                    type: string
+                    format: date
+                    example: "2021-09-01"
+    GroupFragment:
+      type: object
+      description: >
+        Group kan innehålla personer eller bara vara en tom "platshållare" utan
+        medlemmar, som kan populeras vid ett senare tillfälle. Notera att
+        gruppens koppling till ämnen/kurser och lärare görs via Aktivitet.
+        Grupper har olika egenskaper baserat på grupptyp.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Identifierare för gruppen
+        meta:
+          $ref: "#/components/schemas/Meta"
+        displayName:
+          description: Gruppens benämning.
+          type: string
+        startDate:
+          type: string
+          format: date
+          description: >
+            Startdatum för gruppens giltighetstid (RFC 3339-format, t.ex.
+            "2016-10-15"). Inkluderande.
+        endDate:
+          type: string
+          format: date
+          description: >
+            Slutdatum för gruppens giltighetstid (RFC 3339-format, t.ex.
+            "2016-10-15"). Inkluderande.
+        groupType:
+          $ref: "#/components/schemas/Code_GroupType"
+        schoolType:
+          $ref: "#/components/schemas/Code_SchoolType"
+        organisation:
+          $ref: "#/components/schemas/OrganisationReference"
+      required:
+        - id
+        - displayName
+        - groupType
+        - schoolType
+        - startDate
+        - organisation
+    GroupReference:
+      allOf:
+        - $ref: "#/components/schemas/ObjectReference"
+        - title: GroupReference
+          description: Referens till en grupp
+    IdLookup:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+    LogEntry:
+      type: object
+      title: LogEntry
+      description: >-
+        Information runt en händelse, används för att återsända information för
+        att avhjälpa vid olika typer av felsökning.
+      properties:
+        id:
+          description: Specifikt id för felmeddelanden.
+          type: string
+          example: "2011"
+        statusCode:
+          description: Http statuskod.
+          type: integer
+          example: 400
+        messageType:
+          type: string
+          description: Felmeddelande kategori.
+          example: "Ogiltigt format"
+        message:
+          description: Situationsspecifik text rörande felmeddelanden.
+          type: string
+          example: "Ogiltigt format på <startDate>. Format ska vara enligt RFC3339. Se https://tools.ietf.org/html/rfc3339.txt."
+        parameterName:
+          type: string
+          description: >
+            Namn på `path`, `header` eller `query` parameter där felet inträffade.
+          example: "id"
+        parameterValue:
+          type: string
+          description: >
+            Värde på `path`, `header` eller `query` parameter som orsakade felet.
+          example: "xxx"
+        resourceType:
+          $ref: "#/components/schemas/Code_ObjectType"
+        resourceId:
+          type: string
+          description: Identifierare för SS12000 resurs relaterat till felmeddelanden.
+          example: "3fa85f64-5717-4562-b3fc-2c963f66afa7"
+        attributeName:
+          description: >
+            Namn på attribut där felet inträffade.
+          type: string
+          example: "Enrolment.startDate"
+        attributeValue:
+          description: >
+            Värde på attribut som orsakade felet.
+          type: string
+          example: "2020xxxx"
+        severityLevel:
+          type: string
+          description: >
+            Felmeddelande allvarlighetsgrad.
+
+            * _Warning_ - Behöver uppmärksammas, eventuellt problem.
+
+            * _Error_ - Problem som kräver någon typ av åtgärd.
+          enum:
+            - Warning
+            - Error
+          example: "Error"
+        timeOfOccurance:
+          type: string
+          format: date-time
+          description: Tidpunkt för loggad händelse.
+          example: "2021-05-12T10:30:00.123+02:00"
+      required:
+        - id
+        - statusCode
+        - message
+        - severityLevel
+        - timeOfOccurance
+    Meta:
+      title: Meta
+      type: object
+      readOnly: true
+      properties:
+        created:
+          type: string
+          format: date-time
+          description: >
+            Datum och tid för när entiteten skapades (RFC 3339 format tex
+            "2015-12-12T10:30:00.123+02:00").
+          example: "2021-05-12T10:30:00.123+02:00"
+        modified:
+          type: string
+          format: date-time
+          description: >
+            Datum och tid för när entiteten senast uppdaterades (RFC 3339 format
+            tex "2015-12-12T10:30:00.123+02:00"). Tidpunkten avser den senaste
+            tidpunkt när något av de attribut som direkt tillhör entiteten har
+            ändrats.
+          example: "2021-05-12T10:30:00.123+02:00"
+    ObjectReference:
+      title: ObjectReference
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "3fa85f64-5717-4562-b3fc-2c963f66afa5"
+        displayName:
+          type: string
+          readOnly: true
+          description: >
+            Namn för visningsyfte för det refererade objektet.
+          example: "Testskola"
+    OrganisationReference:
+      allOf:
+        - $ref: "#/components/schemas/ObjectReference"
+        - title: OrganisationReference
+          description: >
+            Referens till ett organisationselement av typen skolenhet. Notera att skolenhetsidentifieraren
+            ska vara ett UUID-värde som är genererat av Skolverket. Skolenhetsinformation med
+            identifierare i UUID-format kan hämtas via provtjänstens
+            [open-data API](https://api-pre.skolverket.se/dnp/iga/open-data/swagger-ui.html).
+            Mer information om nationella prov-aktiviteter finns i
+            [Skolverkets Github](https://github.com/skolverket/dnp-usermanagement/tree/main/open-data-api).
+    Person:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: >
+            Ett objekt ska ha samma överförings-ID mellan samtliga ingående
+            system och således är det ett enda namespace för de gemensamma
+            ID:na. Objektidentifikatorn är den nyckel som skall vara persistent
+            mellan olika processer (enl figur 1).
+          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        meta:
+          $ref: "#/components/schemas/Meta"
+        givenName:
+          type: string
+          description: Förnamn.
+          example: "Pippilotta Viktualia Rullgardina Krusmynta"
+        middleName:
+          type: string
+          description: Mellannamn.
+          example: "Efraimsdotter"
+        familyName:
+          type: string
+          description: Efternamn.
+          example: "Långstrump"
+        eduPersonPrincipalNames:
+          type: array
+          description: |
+            Identifierare som ska användas för att identifiera användaren
+            i skilda e-tjänster. Identifieraren ska vara en spårbar,
+            persistent och globalt unik sträng. Den ska bestå av en lokalt
+            unik användaridentifierare, ett ’@’ och en domän. En domän är
+            ofta, men inte nödvändigtvis, samma som organisationens
+            internet-domännamn. _Exempel: kalko@edu.goteborg.se_.
+            För närvarande får man skicka bara en eduPersonPrincipalName,
+            därför ska `eduPersonPrincipalNames` listan innehålla endast
+            ett element.
+          uniqueItems: true
+          maxItems: 1
+          items:
+            type: string
+            example: "piplan145@soderhavetsgymnasium.se"
+        civicNo:
+          type: object
+          description: >
+            Personnummer. Just nu är personnummer obligatoriskt och endast personnummer
+            som är utfärdats i Sverige ska skickas. Utredning pågår om hur utländska
+            personnummer hanteras i provtjänsten.
+          properties:
+            value:
+              type: string
+              description: >
+                * Svenskt personnummer, tilldelat personnummer eller Skatteverkets
+                samordningsnummer för personen. **Ska** anges med 12 siffror
+                utan separatorer. _Exempel: 200112240123_
+                
+                * Samordningsnummer ska anges med 12 siffror utan separator.
+                Födelsedagen adderas med talet 60, det vill säga någon född
+                den 24 i en månad får talet 84 som dag. _Exempel: 200112840123_
+
+                * Saknas både personnummer och samordningsnummer så förekommer det
+                att "tillfälligt personnummer" definieras i elevregistret. Dessa är
+                möjliga att beskriva i detta fält och i så fall tillåts de två första
+                positionerna efter datumdelen att vara bokstäver. _Exempel: 20130101TF10_
+              example: "200112240123"
+            nationality:
+              type: string
+              description: >
+                Landskod för det land som personnumret härstammar från, enligt
+                ISO 3166-1 alpha-3. För närvarande ska det skickas endast personnummer som
+                är utfärdats i Sverige, därför värdet ska vara `SWE`.
+              default: "SWE"
+              example: "SWE"
+          required:
+            - value
+        emails:
+          type: array
+          description: >-
+            En lista med personens epostadresser. Notera att epostadress är obligatoriskt för
+            skolpersonal samt att endast "Skola elev" och "Skola personal" stöds i provtjänsten.
+          items:
+            type: object
+            title: Email
+            properties:
+              value:
+                type: string
+                format: email
+                example: "piplan145@soderhavetsgymnasium.se"
+              type:
+                type: string
+                title: Code_EmailType
+                description: |
+                  Email kan ha en av följanden typen:
+                  - _Privat_ - E-postadress för privatbruk.
+                  - _Skola elev_ - E-postadress som används av elever i skolan.
+                  - _Skola personal_ - E-postadress som används av skolpersonal i skolan.
+                  - _Arbete övrigt_ - E-postadress som används av skolpersonal i annat arbete.
+                enum:
+                  - Privat
+                  - Skola elev
+                  - Skola personal
+                  - Arbete övrigt
+                example: "Skola elev"
+            required:
+              - value
+        enrolments:
+          type: array
+          description: En lista med inskrivningar för personen
+          items:
+            $ref: "#/components/schemas/Enrolment"
+      required:
+        - id
+        - givenName
+        - familyName
+        - eduPersonPrincipalNames
+    PersonReference:
+      allOf:
+        - $ref: "#/components/schemas/ObjectReference"
+        - title: PersonReference
+          description: Referens till en person
+    SchoolUnitReference:
+      allOf:
+        - $ref: "#/components/schemas/ObjectReference"
+        - title: OrganisationReference
+          description: >
+            Referens till ett organisationselement av typen skolenhet. Notera att skolenhetsidentifieraren
+            ska vara ett UUID-värde som är genererat av Skolverket. Skolenhetsinformation med
+            identifierare i UUID-format kan hämtas via provtjänstens
+            [open-data API](https://api-pre.skolverket.se/dnp/iga/open-data/swagger-ui.html).
+            Mer information om nationella prov-aktiviteter finns i
+            [Skolverkets Github](https://github.com/skolverket/dnp-usermanagement/tree/main/open-data-api).
+  responses:
+    202_accepted:
+      description: Anropet har tagits emot.
+      headers:
+        Location:
+          schema:
+            type: string
+            format: uri
+          description: URL till det nyskapade asynkrona jobbet
+          example: "https://api.skolverket.se/dnp/iga/provisioning/v1/persons/bulk/jobs/3fa85f64-5717-4562-b3fc-2c963f66afa7"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              jobId:
+                type: string
+                format: uuid
+                example: "3fa85f64-5717-4562-b3fc-2c963f66afa7"
+              message:
+                type: string
+                example: >-
+                  Anropet har tagits emot. Återkoppling görs asynkront.
+                  Kontrollera status av asynkrona processen genom att
+                  följa URL-adressen i ’Location’-header.
+    400_invalid_parameter:
+      description: >-
+        Felaktigt format på parameter `updateIfExists`.
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Felmeddelande lista
+            items:
+              $ref: "#/components/schemas/LogEntry"
+            example: |
+              [
+                {
+                  "id": "2025",
+                  "statusCode": 400,
+                  "messageType": "Ogiltigt format",
+                  "message": "Ogiltigt format på ´query´ parameter <updateIfExists>. Format ska vara boolean (true/false).",
+                  "parameterName": "updateIfExists",
+                  "parameterValue": "xxxxx",
+                  "severityLevel": "Error",
+                  "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
+                }
+              ]
+    400_invalid_filter:
+      description: >-
+        Felaktigt format på filter (ex `meta.modified.after`, `meta.modified.before`,
+        `meta.created.after`, `meta.created.before` osv.) och/eller filter kan inte kombineras
+        med `pageToken`.
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Felmeddelande lista
+            items:
+              $ref: "#/components/schemas/LogEntry"
+            example: |
+              [
+                {
+                  "id": "2024",
+                  "statusCode": 400,
+                  "messageType": "Ogiltigt format",
+                  "message": "Ogiltigt format på ´query´ parameter <meta.modified.after>. Format ska vara enligt RFC3339. Se https://tools.ietf.org/html/rfc3339.txt.",
+                  "parameterName": "meta.modified.after",
+                  "parameterValue": "xxxxx",
+                  "resourceType": "Person",
+                  "severityLevel": "Error",
+                  "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
+                }
+              ]
+    400_invalid_id:
+      description: Felaktigt id.
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Felmeddelande lista
+            items:
+              $ref: "#/components/schemas/LogEntry"
+            example: |
+              [
+                {
+                  "id": "2011",
+                  "statusCode": 400,
+                  "messageType": "Ogiltigt format",
+                  "message": "Ogiltigt format på ´path´ parameter <id>. Format ska vara UUID enligt RFC4122. Se https://www.ietf.org/rfc/rfc4122.txt.",
+                  "parameterName": "id",
+                  "parameterValue": "xxxxx",
+                  "resourceType": "Person",
+                  "severityLevel": "Error",
+                  "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
+                }
+              ]
+    403_not_authorised:
+      description: Åtkomst nekad.
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Felmeddelande lista
+            items:
+              $ref: "#/components/schemas/LogEntry"
+            example: |
+              [
+                {
+                  "id": "5002",
+                  "statusCode": 403,
+                  "messageType": "Behörighet saknas",
+                  "message": "Ogiltigt JWT bearer token.",
+                  "severityLevel": "Error",
+                  "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
+                }
+              ]
+    404_not_found:
+      description: Posten hittades inte.
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Felmeddelande lista
+            items:
+              $ref: "#/components/schemas/LogEntry"
+            example: |
+              [
+                {
+                  "id": "4001",
+                  "statusCode": 404,
+                  "messageType": "Ogiltigt värde",
+                  "message": "Person identifierats av angivet värden i `path` parameter <id> hittades inte.",
+                  "parameterName": "id",
+                  "parameterValue": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+                  "resourceType": "Person",
+                  "severityLevel": "Error",
+                  "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
+                }
+              ]
+    503_overload:
+      description: Svaret är förstort för servern att hantera.
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Felmeddelande lista
+            items:
+              $ref: "#/components/schemas/LogEntry"
+            example: |
+              [
+                {
+                  "id": "6001",
+                  "statusCode": 503,
+                  "messageType": "Overload",
+                  "message": "Svaret är för stort för servern att hantera.",
+                  "resourceType": "Person",
+                  "severityLevel": "Error",
+                  "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
+                }
+              ]
+    default_error:
+      description: Okänt fel.
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Felmeddelande lista
+            items:
+              $ref: "#/components/schemas/LogEntry"
+            example: |
+              [
+                {
+                  "id": "5004",
+                  "statusCode": 500,
+                  "messageType": "Okänt fel",
+                  "message": "Ett okänt fel inträffade.",
+                  "severityLevel": "Error",
+                  "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
+                }
+              ]
+  parameters:
+    Limit:
+      in: query
+      name: limit
+      schema:
+        type: integer
+        minimum: 1
+      required: false
+      description: >
+        Antal poster som ska visas i resultatet. Utelämnas det så returneras så
+        många poster som möjligt av servern, se `pageToken`.
+    PageToken:
+      in: query
+      name: pageToken
+      schema:
+        type: string
+      description: >
+        Ett opakt värde som servern givit som svar på en tidigare ställd fråga.
+        Kan inte kombineras med andra filter men väl med `limit`.
+    SearchCreatedAfter:
+      name: meta.created.after
+      description: >
+        Endast poster skapade efter detta timestamp (RFC 3339 format, tex
+        "2015-12-12T10:30:00.123+02:00"). Exkluderande.
+      in: query
+      schema:
+        type: string
+        format: date-time
+    SearchCreatedBefore:
+      name: meta.created.before
+      description: >
+        Endast poster skapade på eller före detta timestamp (RFC 3339 format,
+        tex "2015-12-12T10:30:00.123+02:00"). Inkluderande.
+      in: query
+      schema:
+        type: string
+        format: date-time
+    SearchModifiedAfter:
+      name: meta.modified.after
+      description: >
+        Endast poster modifierade efter detta timestamp (RFC 3339 format, tex
+        "2015-12-12T10:30:00.123+02:00"). Exkluderande.
+      in: query
+      schema:
+        type: string
+        format: date-time
+    SearchModifiedBefore:
+      name: meta.modified.before
+      description: >
+        Endast poster modifierade på eller före detta timestamp (RFC 3339
+        format, tex "2015-12-12T10:30:00.123+02:00"). Inkluderande.
+      in: query
+      schema:
+        type: string
+        format: date-time
+    Sortkey:
+      in: query
+      name: sortkey
+      schema:
+        type: string
+        enum:
+          - ModifiedDesc
+          - DisplayNameAsc
+    UpdateIfExists:
+      in: query
+      name: updateIfExists
+      required: false
+      description: Om denna parameter sätts till `true` kommer resurserna uppdateras
+      schema:
+        type: boolean
+        default: false
+        example: false
+security:
+  - BearerAuth: []
