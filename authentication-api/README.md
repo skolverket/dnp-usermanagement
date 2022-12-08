@@ -1,7 +1,5 @@
 >[Information på svenska](#api-f%C3%B6r-autentisering-authentication-api)
 
-**This API will be published during Q3-2021.**
-
 # API for authentication (authentication-api)
 API for authentication is used to authenticate a client that will use the API for user provisioning.
 1. Authenticate against the api for authentication.
@@ -14,8 +12,6 @@ https://www.skolverket.se/kontakt
 
 ___
 >[Information in english](#api-for-authentication-authentication-api)
-
-**Det här APIet kommer att publiceras under Q3-2021.**
 
 # API för autentisering (authentication-api)
 API för autentisering används för att autentisera en klient som ska använda API för användarprovisionering.
