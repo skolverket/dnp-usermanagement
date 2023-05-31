@@ -1,25 +1,118 @@
->[Information på svenska](#api-f%C3%B6r-autentisering-authentication-api)
+# API för autentisering
+API för autentisering används för att autentisera klienter inför maskin-till-maskin-överföring av uppgifter till
+Skolverkets provtjänst. API:et kallas också för auktoriseringsserver eftersom det utfärdar auktoriseringstoken
+till klienter efter autentisering.
 
-# API for authentication (authentication-api)
-API for authentication is used to authenticate a client that will use the API for user provisioning.
-1. Authenticate against the api for authentication.
-2. Use the API for user provisioning.
+**Notera att arbetet med digitala nationella prov är ett pågående projekt och att informationsinnehållet i
+detta dokument uppdateras kontinuerligt.** Informationen är med andra ord inte officiell och fastställd
+av Skolverket, utan ska betraktas som ett innehåll i ett arbetsdokument.
 
-**Important notice: The implementation of a digital national assessments service is an ongoing project and the information in this repository will be continuously updated.** The material is not an official publication and should be considered as work in progress.
+## Förutsättningar för autentisering och auktorisering
+För att kunna överföra uppgifter till Skolverkets provtjänst behöver en huvudman uppfylla ett av följande krav.
 
-## Contact
-https://www.skolverket.se/kontakt
+1. Huvudmannen behöver ansluta sig till en TLS-federation som är ansluten till [FIDUS](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/tekniska-forutsattningar-for-digitala-nationella-prov/fidus)
+   samt se till att sitt klientcertifikat är med i ett metadataregister som TLS-federationen tillhandahåller.
+   [Läs mer om TLS-federation](https://www.ietf.org/archive/id/draft-halen-fed-tls-auth-00.html).
+2. Huvudmannen behöver skaffa ett klientcertifikat från en certifikatutfärdare som är godkänd av FIDUS.
 
-___
->[Information in english](#api-for-authentication-authentication-api)
+**I dagsläget är provtjänstens auktoriseringsserver konfigurerad med en TLS-federation. Skolverket arbetar med
+att integrera andra TLS-federationer samt vissa certifikatutfärdare till auktoriseringsservern.**
 
-# API för autentisering (authentication-api)
-API för autentisering används för att autentisera en klient som ska använda API för användarprovisionering.
-1. Autentisera mot api för autentisering.
-2. Använd api för användarprovisionering.
+## Autentisering utifrån vald metod för överföring av uppgifter
+Inför maskin-till-maskin-överföring av uppgifter till Skolverkets provtjänst krävs det att klienter autentiserar
+sig mot provtjänstens auktoriseringsserver enligt principen mTLS ("mutual Transport Layer Security") och hämtar
+JWT ("JSON Web Token").
 
-**Notera att arbetet med digitala nationella prov (DNP) är ett pågående projekt och att materialet i DNP användarhantering uppdateras kontinuerligt.** Det är inte officiell och fastställd information från Skolverket, utan ska betraktas som arbetsdokument.
+"Trust store" för provtjänstens auktoriseringsserver förbereds genom att:
+1. Hämta och aggregera metadata från olika TLS-federationer som är anslutna till FIDUS.
+2. Hämta och konfigurera rotcertifikaten från olika certifikatutfärdare som är godkända av FIDUS.
+3. Hämta och konfigurera certifikatet från provtjänstens SS 12000-klient.
+
+![Auktoriseringsserver trust store](authentication-api-trust-store.png)
+
+Nedan beskrivs specifika flöden för autentisering utifrån vald metod för överföring av uppgifter.
+
+### Autentiseringsflöde för huvudmän som överför uppgifter via Provisionerings-API - data skickas till Skolverket
+![Autentiseringflöde för Provisionings-API](authentication-flow-provisioning-api.png)
+1. Huvudmannens klient autentiserar sig mot provtjänstens auktoriseringsserver genom att presentera
+   sitt klientcertifikat.
+2. Auktoriseringsservern autentiserar klientcertifikatet mot etablerad "trust store". Huvudmannens klient
+   kan också kontrollera servercertifikatet av auktoriseringsservern.
+3. Auktoriseringsservern utfärdar JWT till klienten.
+4. Huvudmannens klient presenterar JWT vid överföring av uppgifter till provtjänstens Provisioning-API.
+
+### Autentiseringsflöde för huvudmän som överför uppgifter enligt standarden SS 12000 – Skolverket hämtar data
+Denna metod för överföring av uppgifter består av två huvudsteg utifrån vilken part som initierar
+kommunikationen. Vid förändringar av uppgifter skickar huvudmannen notifiering, som också kallas "webhook", till
+Skolverkets provtjänst. Utifrån informationen som finns i notifieringen hämtar Skolverkets provtjänst förändringar
+från huvudmannens SS 12000-API. Autentiseringsflöden för dessa två steg beskrivs nedan.
+
+#### **_Autentiseringsflöde vid notifiering av förändringar_**
+![Autentiseringflöde för SS 12000 "webhook" notifiering](authentication-flow-ss12000-webhook-notification.png)
+1. Huvudmannens notifieringsklient autentiserar sig mot provtjänstens auktoriseringsserver genom att presentera
+   sitt klientcertifikat.
+2. Auktoriseringsservern autentiserar klientcertifikatet mot etablerad "trust store". Notifieringsklienten kan också
+   kontrollera servercertifikatet av auktoriseringsservern.
+3. Auktoriseringsservern utfärdar JWT till notifieringsklienten.
+4. Notifieringsklienten presenterar JWT vid notifiering av förändringar till provtjänstens SS 12000-klient.
+
+#### **_Autentiseringsflöde vid datainhämtning_**
+![Autentiseringflöde för SS 12000 datainhämtning](authentication-flow-ss12000-data-fetching.png)
+1. Provtjänstens SS 12000-klient autentiserar sig mot provtjänstens auktoriseringsserver genom att presentera
+   sitt klientcertifikat.
+2. Auktoriseringsservern autentiserar klientcertifikatet mot etablerad "trust store". Provtjänstens SS 12000-klient
+   kan också kontrollera servercertifikatet av auktoriseringsservern.
+3. Auktoriseringsservern utfärdar JWT till klienten.
+4. Skolverkets SS 12000-klient presenterar JWT till huvudmannens SS 12000-API vid hämtning av förändrade uppgifter.
+
+## Http-anrop mot auktoriseringsserver
+Nedan finns ett exempelanrop för hur en klient kan hämta JWT från provtjänstens auktoriseringsserver.
+
+````shell script
+$curl --cert login-test.crt --key login-test-private.key \
+     --pinnedpubkey sha256//gWH4cyRuOw9GnGoQNR5NazM3gt36IkK6fszCvqkSll0=  \
+     -X POST -H "Content-Type: application/json" -d @body.json \
+     https://nutid-auth-test.sunet.se/transaction
+````
+Beskrivning av ovanstående `Curl` kommand:
+
+* `curl` är ett kommandoradsverktyg för dataöverföring.
+* `--cert login-test.crt` pekar på var klientens publika nyckel finns i filsystemet.
+* `--key login-test-private.key` pekar på var klientens privata nyckel finns i filsystemet.
+* `--pinnedpubkey sha256//gWH4cyRuOw9GnGoQNR5NazM3gt36IkK6fszCvqkSll0=` används för att autentisera server certifikatet av auktoriseringsservern.
+* `body.json` är JSON-data som skickas till auktoriseringsservern i anropet. Nedan finns ett exempel JSON-data.
+  ````json
+    {
+        "access_token": [
+            {
+                "flags": [
+                    "bearer"
+                ]
+            }
+        ],
+        "client": {
+            "key": "https://login-test.skolverket.se"
+        }
+    }
+  ````
+  Notera att `client.key` är identifierare (entityId) för specifika metadata för klienten.
+* `https://nutid-auth-test.sunet.se/transaction` är URL till auktoriseringsservern i testmiljö.
+
+Efter autentisering av klienten utfärdar auktoriseringsservern ett JWT som returneras i svaret. JWT
+hittas i attributet `access_token.value`.
+
+````json
+{
+  "access_token": {
+    "value": "eyJhbGciOiJFUzI1NiJ9.eyJhdW...3jcM3lRV73iojs-CNPg",
+    "access": [],
+    "expires_in": 864000,
+    "flags": [
+      "bearer"
+    ]
+  }
+}
+````
 
 ## Kontakt
 https://www.skolverket.se/kontakt
-
