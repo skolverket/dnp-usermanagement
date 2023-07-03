@@ -308,7 +308,7 @@ paths:
           in: query
           description: >-
             Om denna parameter sätts till `true` returneras
-            lista med bulk-respons med status `Error`
+            lista med bulk-respons med status `Error`.
           schema:
             type: boolean
             default: false
@@ -1933,14 +1933,52 @@ components:
             unik användaridentifierare, ett ’@’ och en domän. En domän är
             ofta, men inte nödvändigtvis, samma som organisationens
             internet-domännamn. _Exempel: kalko@edu.goteborg.se_.
-            För närvarande får man skicka bara en eduPersonPrincipalName,
-            därför ska `eduPersonPrincipalNames` listan innehålla endast
-            ett element.
+            För närvarande får man skicka bara en federationsanvändarnamn
+            (`eduPersonPrincipalName`), därför `eduPersonPrincipalNames` listan
+            får inte innehålla mer än ett värde.
           uniqueItems: true
           maxItems: 1
           items:
             type: string
             example: "piplan145@soderhavetsgymnasium.se"
+        externalIdentifiers:
+          type: array
+          description: >
+            Teknisk personidentifierare för en person hos externa tjänster. Skolverkets
+            provtjänst använder detta objekt för att ta emot federationsanvändarnamn
+            (`eduPersonPrincipalName`) av skolpersonal hos [eduID](https://eduid.se/).
+            `externalIdentifiers` ska skickas endast för skolpersonal från skolhuvudmän
+            som har egen inloggningstjänst (IDP) men saknar godkänd e-legitimation.
+          maxItems: 1
+          items:
+            type: object
+            title: externalIdentifier
+            properties:
+              value:
+                type: string
+                description: >
+                  Detta är federationsanvändarnamn (`eduPersonPrincipalName`) för
+                  skolpersonal hos eduID.
+                example: "movip-eiral@eduid.se"
+              context:
+                type: string
+                description: >
+                  Anger för vilket sammanhang användaridentifieraren ska användas.
+                  Beskriv med en URI. Värdet kan överenskommas bilateralt mellan två
+                  integrerande parter. Skolverkets provtjänst tar emot och sparar endast
+                  en externa tjänst personidentifierare som har skapats i eduID. Därför
+                  ska värdet för "context" vara "https://eduid.se".
+                example: "https://eduid.se"
+              globallyUnique:
+                type: boolean
+                example: true
+                default: true
+                description: >
+                  Anger om identifieraren är så utformad att den kan anses vara
+                  globalt unik.
+            required:
+              - context
+              - value
         civicNo:
           type: object
           description: >
