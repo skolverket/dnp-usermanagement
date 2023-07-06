@@ -12,10 +12,8 @@ info:
 
     Notera att provtjänsten har specifika krav på uppgifter som skickas från
     skolhuvudman. Mer information finns i
-    [Skolverkets publika github](https://github.com/skolverket/dnp-usermanagement/tree\
-    /main/provisioning-api) och på [Skolverkets hemsida](https://www.skolverket.se/om-oss\
-    /var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov\
-    /tekniska-forutsattningar-for-skolorna-att-kunna-genomfora-digitala-nationella-prov).
+    [Skolverkets publika github](https://github.com/skolverket/dnp-usermanagement/tree/main/provisioning-api) och på
+    [Skolverkets hemsida](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/tekniska-forutsattningar-for-digitala-nationella-prov/overforing-av-uppgifter-till-skolverket).
   version: 1.0.0
   title: Provtjänstens Provisioning API
   contact:
@@ -2049,6 +2047,7 @@ components:
             $ref: "#/components/schemas/Enrolment"
       required:
         - id
+        - civicNo
         - givenName
         - familyName
         - eduPersonPrincipalNames
