@@ -1,5 +1,5 @@
 # API för autentisering
-API för autentisering används för att autentisera klienter inför maskin-till-maskin-överföring av uppgifter till
+API för autentisering används för att autentisera klienter inför maskinell överföring av uppgifter till
 Skolverkets provtjänst. API:et kallas också för auktoriseringsserver eftersom det utfärdar auktoriseringstoken
 till klienter efter autentisering.
 
@@ -8,18 +8,37 @@ detta dokument uppdateras kontinuerligt.** Informationen är med andra ord inte 
 av Skolverket, utan ska betraktas som ett innehåll i ett arbetsdokument.
 
 ## Förutsättningar för autentisering och auktorisering
-För att kunna överföra uppgifter till Skolverkets provtjänst behöver en huvudman uppfylla ett av följande krav.
+För att kunna överföra uppgifter till Skolverkets provtjänst behöver du som huvudman uppfylla ett av följande
+huvudkrav:
 
-1. Huvudmannen behöver ansluta sig till en TLS-federation som är ansluten till [FIDUS](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/tekniska-forutsattningar-for-digitala-nationella-prov/fidus)
-   samt se till att sitt klientcertifikat är med i ett metadataregister som TLS-federationen tillhandahåller.
-   [Läs mer om TLS-federation](https://www.ietf.org/archive/id/draft-halen-fed-tls-auth-00.html).
-2. Huvudmannen behöver skaffa ett klientcertifikat från en certifikatutfärdare som är godkänd av FIDUS.
+1. Ansluta till en TLS-federation som är ansluten till [Fidus](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/tekniska-forutsattningar-for-digitala-nationella-prov/fidus)
+   samt se till att huvudmannens klientcertifikat är registrerat i ett metadataregister som TLS-federationen
+   tillhandahåller.
+   > [Läs mer om TLS-federation](https://www.ietf.org/archive/id/draft-halen-fed-tls-auth-00.html).
+2. Skaffa ett klientcertifikat från en certifikatutfärdare som är godkänd av Fidus.
+
+Utöver huvudkraven ovan gäller följande specifika krav:
+
+* Klientcertifikatet används för att identifiera huvudmannen. Därför ska varje huvudman ha minst ett
+  klientcertifikat. Leverantörer som hanterar överföring av uppgifter för flera huvudmän behöver tillhandahålla
+  minst ett klientcertifikat per huvudman.
+* Klientcertifikatet ska ha en koppling till huvudmannens organisationsnummer.
+    * En huvudman som är ansluten till en TLS-federation ska registrera både klientcertifikat och
+      organisationsnummer i sitt metadata.
+    * En huvudman som har ett klientcertifikat från en certifikatutfärdare ska se till att sitt
+      organisationsnummer finns i certifikatet.
+* Följande alternativ finns för huvudmän som hanterar överföring av uppgifter med flera klienter eller flera
+  SS 12000-API:er:
+    * Tillhandahålla ett klientcertifikat per klient eller SS 12000-API. Notera att Skolverkets provtjänst
+      behandlar klientcertifikaten som tillhör en huvudman lika, det vill säga att varje certifikatinnehavare
+      har full åtkomst till huvudmannens data i provtjänsten.
+    * Använda ett klientcertifikat för alla sina klienter eller SS 12000-API:er.
 
 **I dagsläget är provtjänstens auktoriseringsserver konfigurerad med en TLS-federation. Skolverket arbetar med
 att integrera andra TLS-federationer samt vissa certifikatutfärdare till auktoriseringsservern.**
 
 ## Autentisering utifrån vald metod för överföring av uppgifter
-Inför maskin-till-maskin-överföring av uppgifter till Skolverkets provtjänst krävs det att klienter autentiserar
+Inför maskinell överföring av uppgifter till Skolverkets provtjänst krävs det att klienter autentiserar
 sig mot provtjänstens auktoriseringsserver enligt principen mTLS ("mutual Transport Layer Security") och hämtar
 JWT ("JSON Web Token").
 
