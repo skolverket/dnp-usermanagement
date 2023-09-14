@@ -133,5 +133,21 @@ hittas i attributet `access_token.value`.
 }
 ````
 
+JWT som utfärdas av auktoriseringsservern kan verifieras med hjälp av nyckeln som finns i denna
+URL: https://nutid-auth-test.sunet.se/.well-known/jwks.json. Nedan finns exempel.
+````json
+{
+  "keys": [
+    {
+      "kty": "EC",
+      "kid": "default",
+      "crv": "P-256",
+      "x": "xyuSyzrasTzUeKcU3GlzoZ8-uWOJtMY-R8vANsBn20c",
+      "y": "xVCe-G7WFkZexRgk5JjUNAUXXnZPXk2zhDEhg3Nopnc"
+    }
+  ]
+}
+````
+
 ## Kontakt
 https://www.skolverket.se/kontakt
