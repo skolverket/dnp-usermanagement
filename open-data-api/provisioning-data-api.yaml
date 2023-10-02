@@ -351,6 +351,15 @@ components:
 
             * _Provaktivitet_ - En aktivitet som är avsedd för att definiera ett
             eller flera provtillfällen
+        schoolType:
+          allOf:
+            - $ref: "#/components/schemas/Code_SchoolType"
+            - description: >
+                Utbildningsform för provaktiviteten.
+        schoolYear:
+          description: Årskurs för provaktiviteten.
+          type: integer
+          example: 3
         comment:
           type: string
           description: En text med kompletterande information.
@@ -359,6 +368,8 @@ components:
       required:
         - id
         - displayName
+        - activityType
+        - schoolType
     Code_SchoolType:
       title: Code_SchoolType
       description: |
