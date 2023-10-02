@@ -1,12 +1,12 @@
 # DNP Användarhantering
-Skolverket digitaliserar de nationella proven (DNP).
+Skolverket digitaliserar de nationella proven (DNP). 
 
 I Skolverkets bibliotek DNP Användarhantering finns API-specifikationer och dokumentation som
 beskriver hur skolhuvudmän kan hantera användarprovisionering i Skolverkets provtjänst.
 
 **Notera att arbetet med digitala nationella prov (DNP) är ett pågående projekt och att
 materialet i DNP användarhantering uppdateras kontinuerligt.** Det är inte fastställd
-information från Skolverket, utan dokumenten kommer att uppdateras.
+information från Skolverket, utan dokumenten kommer att uppdateras. 
 
 ## Skolverkets API:er för digitala nationella prov
 Skolverket erbjuder tre alternativ för överföring av uppgifter till Skolverkets provtjänst.
@@ -33,7 +33,7 @@ Detta är ett API för autentisering och auktorisering som används för att aut
 >[Läs mer om authentication-api](./authentication-api/README.md)
 
 ### Provisioning API
-Genom detta API kan huvudman överföra uppgifter till Skolverkets provtjänst genom att skicka data från en klient.
+Genom detta API kan huvudman överföra uppgifter till Skolverkets provtjänst genom att skicka data från en klient.  
 
 API:et bygger på en delmängd ur datamodellen i standarden SS 12000.
 
@@ -48,7 +48,7 @@ en SS 12000 klient.
 
 ### Administration provtjänsten
 För huvudman som inte kan överföra uppgifter maskinellt tillhandahåller Skolverkets provtjänst en e-tjänst som
-möjliggör manuell överföring av uppgifter via filinläsning.
+möjliggör manuell överföring av uppgifter via filinläsning. 
 >[Läs mer om administration-provtjänsten](./administration-provtjansten/README.md)
 
 ## Övergripande instruktion för överföring av uppgifter
