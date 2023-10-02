@@ -1,70 +1,73 @@
->[Information på svenska](#dnp-anv%C3%A4ndarhantering)
-
-# DNP User Management
-The Swedish National Agency for Education implements digital national assessments (DNP). 
-
-This repository includes API specifications and documentation that describe how schools and school organisers (skolhuvudmän) can manage user provisioning in the Swedish National Agency for Education’s digital national assessments service.
-
-**Important notice: The implementation of a digital national assessments service is an ongoing project and the information in this repository will be continuously updated.** The material is not an official publication and should be considered as work in progress.
-
-
-## The Swedish National Agency for Education’s APIs for the digital national assessments service
-### API for user provisioning (provisioning-api)
-API for user provisioning is used for adding, updating, and deleting pupils and personnel from the digital national assessments service. 
-
-The API is based on part of the data model in the standard SS12000:2020.
-
-API for user provisionering (provisioning-api) requires that the client is authenticated.
-
-### API for fetching controlled values (data-api)
-By using the API for fetching controlled values school systems can fetch data about school units, education programme, and other values controlled by the Swedish National Agency for Education for user provisioning. In this way, data can be verified prior to transferring it to the Swedish National Agency for Education. The purpose is to increase data quality and to minimize the number of errors.
-
-The API also offer a feature to fetch an id (UUID) when creating references, such as between person and school unit.
-
-The API for fetching controlled values (data-api) is an open-api.
-
-### API for authentication (authentication-api)
-API for authentication is used to authenticate a client that will use the API for user provisioning.
-
-## References
-Information about the digitalisation of the national assessments is available at the [Swedish National Agency for Education’s web site (in Swedish)](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/digitalisering-av-de-nationella-proven)
-
-SS 12000 specification is available at [https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/](https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/)
-
-## Contact
-https://www.skolverket.se/kontakt
-___
->[Information in english](#dnp-user-management)
-
 # DNP Användarhantering
-Skolverket digitaliserar de nationella proven (DNP). 
+Skolverket digitaliserar de nationella proven (DNP).
 
-I Skolverkets bibliotek DNP Användarhantering finns API-specifikationer och dokumentation som beskriver hur skola och huvudman kan hantera användarprovisionering i Skolverkets provtjänst för digitala nationella prov (DNP).
+I Skolverkets bibliotek DNP Användarhantering finns API-specifikationer och dokumentation som
+beskriver hur skolhuvudmän kan hantera användarprovisionering i Skolverkets provtjänst.
 
-**Notera att arbetet med digitala nationella prov (DNP) är ett pågående projekt och att materialet i DNP användarhantering uppdateras kontinuerligt.** Det är inte fastställd information från Skolverket, utan dokumenten kommer att uppdateras. 
+**Notera att arbetet med digitala nationella prov (DNP) är ett pågående projekt och att
+materialet i DNP användarhantering uppdateras kontinuerligt.** Det är inte fastställd
+information från Skolverket, utan dokumenten kommer att uppdateras.
 
 ## Skolverkets API:er för digitala nationella prov
-### API för användarprovisionering (provisioning-api)
-API för användarprovisionering används för att skapa, uppdatera och ta bort elever och personal i Skolverkets provtjänst för digitala nationella prov. 
+Skolverket erbjuder tre alternativ för överföring av uppgifter till Skolverkets provtjänst.
+* Provisionering via Provisionerings-API – data skickas till Skolverket.
+* Provisionering enligt standarden SS 12000 – Skolverket hämtar data
+* Provisionering via filinläsning
 
-API:et bygger på en delmängd ur datamodellen i standarden SS12000:2020.
+Läs mer om provisionerings alternativen på [Skolverkets hemsida](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/tekniska-forutsattningar-for-att-genomfora-digitala-nationella-prov#skvtableofcontent6937).
 
-API för användarprovisionering (provisioning-api) kräver att klienten är autentiserad.
+Skolverket tillhandahåller följande komponenter som möjliggör överföring av uppgifter till
+Skolverkets provtjänst.
 
-### API för inhämtning av kontrollerade värden (data-api)
-Genom API för inhämtning av kontrollerade värden kan skolans system inhämta data om skolenheter, studievägar och andra värden som kontrolleras av Skolverket vid användarprovisionering. På så sätt kan data kontrolleras i förväg innan värden överförs till Skolverket. Syftet är att bidra till ökad datakvalitet och minska antalet fel.
+### Open-data API
+Genom Open-data API kan skolans system inhämta data som kontrolleras av Skolverket vid provisionering.
+Information som kan hämtas från Open-data API inkluderar:
+* Skolenhetsinformation med identifierare i UUID-format
+* Studievägsinformation
+* Aktuella ämnen och kurser där det genomförs nationella prov och bedömningsstöd.
+>[Läs mer om open-data API](./open-data-api/README.md)
 
-API:et erbjuder även en funktion för att hämta id (UUID) när man skapar referenser, exempelvis mellan person och skolenhet. 
+### Authentication API (Provtjänstens auktoriseringsserver)
+Detta är ett API för autentisering och auktorisering som används för att autentisera klienter inför maskinell
+överföring av uppgifter till Skolverkets provtjänst.
+>[Läs mer om authentication-api](./authentication-api/README.md)
 
-API för inhämtning av kontrollerade värden (data-api) är ett öppet API.
+### Provisioning API
+Genom detta API kan huvudman överföra uppgifter till Skolverkets provtjänst genom att skicka data från en klient.
 
-### API för autentisering (authentication-api)
-API för autentisering används för att autentisera en klient som ska använda API för användarprovisionering.
+API:et bygger på en delmängd ur datamodellen i standarden SS 12000.
+
+Provisioning API kräver att klienten som skickar data har en auktoriserings-token
+som utfärdats av Authentication API (auktoriseringsserver för provisionering till provtjänsten).
+>[Läs mer om provisioning-api](./provisioning-api/README.md)
+
+### SS 12000 Klient
+För att möjliggöra överföring av uppgifter enligt standarden SS 12000 tillhandahåller Skolverkets provtjänst
+en SS 12000 klient.
+>[Läs mer om ss12000-client](./ss12000-client/README.md)
+
+### Administration provtjänsten
+För huvudman som inte kan överföra uppgifter maskinellt tillhandahåller Skolverkets provtjänst en e-tjänst som
+möjliggör manuell överföring av uppgifter via filinläsning.
+>[Läs mer om administration-provtjänsten](./administration-provtjansten/README.md)
+
+## Övergripande instruktion för överföring av uppgifter
+För en lyckad överföring av uppgifter till Skolverkets provtjänst behöver huvudmän följa nedanstående checklistor
+som är grupperade utifrån vald metod för överföring av uppgifter.
+
+**Notera att checklistorna är framtagna som stöd till IT-teknisk personal med ansvar för förberedelser inför överföring
+av uppgifter till Skolverkets provtjänst.**
+
+1. >[Checklista för huvudmän som överför uppgifter enligt standarden SS 12000](./checklists/checklista-för-provisionering-enlig-standarden-SS12000.md)
+2. >[Checklista för huvudmän som överför uppgifter genom att skicka data till provtjänstens Provisioning API](./checklists/checklista-för-provisionering-via-Provisioning-API.md)
+3. >[Checklista för huvudmän som överför uppgifter via filinläsning](./checklists/checklista-för-provisionering-via-filinläsning.md)
 
 ## Referenser
-Information om digitalisering av de nationella proven finns på [Skolverkets webbplats](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/digitalisering-av-de-nationella-proven)
+Information om digitalisering av de nationella proven finns på
+[Skolverkets webbplats](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/digitalisering-av-de-nationella-proven)
 
-SS 12000 specifikation finns på [https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/](https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/)
+SS 12000 specifikation finns på
+[https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/](https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/)
 
 ## Kontakt
 https://www.skolverket.se/kontakt
