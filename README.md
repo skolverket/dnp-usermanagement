@@ -14,7 +14,7 @@ Skolverket erbjuder tre metoder för överföring av uppgifter till Skolverkets 
 * Provisionering enligt standarden SS 12000 – Skolverket hämtar data
 * Provisionering via filinläsning
 
-> [Läs mer om metoderna för överföring av uppgifter](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/tekniska-forutsattningar-for-digitala-nationella-prov/overforing-av-uppgifter-till-skolverket).
+> [Läs mer om metoderna för överföring av uppgifter](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/tekniska-forutsattningar-for-digitala-nationella-prov/overforing-av-uppgifter-till-skolverket)
 
 Skolverket tillhandahåller följande komponenter som möjliggör överföring av uppgifter till
 Skolverkets provtjänst.
