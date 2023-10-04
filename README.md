@@ -9,12 +9,12 @@ materialet i DNP användarhantering uppdateras kontinuerligt.** Det är inte fas
 information från Skolverket, utan dokumenten kommer att uppdateras. 
 
 ## Skolverkets API:er för digitala nationella prov
-Skolverket erbjuder tre alternativ för överföring av uppgifter till Skolverkets provtjänst.
+Skolverket erbjuder tre metoder för överföring av uppgifter till Skolverkets provtjänst.
 * Provisionering via Provisionerings-API – data skickas till Skolverket.
 * Provisionering enligt standarden SS 12000 – Skolverket hämtar data
 * Provisionering via filinläsning
 
-Läs mer om provisionerings alternativen på [Skolverkets hemsida](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/tekniska-forutsattningar-for-att-genomfora-digitala-nationella-prov#skvtableofcontent6937).
+> [Läs mer om metoderna för överföring av uppgifter](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/tekniska-forutsattningar-for-digitala-nationella-prov/overforing-av-uppgifter-till-skolverket).
 
 Skolverket tillhandahåller följande komponenter som möjliggör överföring av uppgifter till
 Skolverkets provtjänst.
@@ -43,11 +43,11 @@ som utfärdats av Authentication API (auktoriseringsserver för provisionering t
 
 ### SS 12000 Klient
 För att möjliggöra överföring av uppgifter enligt standarden SS 12000 tillhandahåller Skolverkets provtjänst
-en SS 12000 klient.
+en SS12000-klient.
 >[Läs mer om ss12000-client](./ss12000-client/README.md)
 
 ### Administration provtjänsten
-För huvudman som inte kan överföra uppgifter maskinellt tillhandahåller Skolverkets provtjänst en e-tjänst som
+Huvudmän som inte kan överföra uppgifter maskinellt tillhandahåller Skolverkets provtjänst en e-tjänst som
 möjliggör manuell överföring av uppgifter via filinläsning. 
 >[Läs mer om administration-provtjänsten](./administration-provtjansten/README.md)
 

@@ -47,15 +47,15 @@
       både lyckade och misslyckade uppgifter. Misslyckade uppgifter behöver rättas och läsas in igen.
 6. Uppgifter som har ändrats från tidigare inläsning bör förberedas i en ny fil och läsas in via
    Administration provtjänsten, exempelvis:
-   * Personuppgifter för elever eller personal har ändrats
-   * Elev byter skola inom samma huvudman
+   * Personuppgifter för elever eller personal har ändrats.
+   * Elev byter skola inom samma huvudman.
    * Elev byter till en skola som bedrivs av annan huvudman. Avslut av elevinskrivning ska rapporteras till
-         Skolverket med att sätta "Ja" i "Ta bort" kolumnen för den specifika elevinskrivning.
+     Skolverket med att sätta "Ja" i "Ta bort" kolumnen för den specifika elevinskrivning.
    * Personals tjänstgöring i en skolenhet har avslutat. Detta ska också rapporteras till Skolverket
-         med att sätta "Ja" i "Ta bort" kolumnen för den specifika tjänstgöring.
-   * Ny elev har registrerats
+     med att sätta "Ja" i "Ta bort" kolumnen för den specifika tjänstgöring.
+   * Ny elev har registrerats.
    * Ny personal har registrerats eller befintlig personal har fått ny tjänstgöring.
-   * Ny klass eller ämnesgrupp har skapats
-   * Elevs klass- eller ämnesgrupp tillhörighet har ändrats
-   * Personals ämnesgrupp tillhörighet har ändrats
+   * Ny klass eller ämnesgrupp har skapats.
+   * Elevs klass- eller ämnesgrupp tillhörighet har ändrats.
+   * Personals ämnesgrupp tillhörighet har ändrats.
    * Namn på en klass eller ämnesgrupp har ändrats.

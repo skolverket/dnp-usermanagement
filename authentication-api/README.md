@@ -289,7 +289,7 @@ JWT som skickas från provtjänstens SS12000-klient till huvudmannens SS12000-AP
 ````
 Huvudmän ska göra följande kontroll på en JWT som skickas från SS12000-klienten. 
 
-1. Verifiera att JWT är utfärdats av rätt auktoriseringsservern med hjälp av nyckeln ("JSON Web Key Set - JWKS") som
+1. Verifiera att JWT har utfärdats av rätt auktoriseringsservern med hjälp av nyckeln ("JSON Web Key Set - JWKS") som
    finns i denna URL: https://nutid-auth-test.sunet.se/.well-known/jwks.json. Nedan finns ett exempel på nyckel.
     ````json
     {
