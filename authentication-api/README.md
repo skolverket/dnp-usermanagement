@@ -96,7 +96,7 @@ Nedan finns 3 exempelanrop för hur JWT kan hämtas från provtjänstens auktori
 ### JWT för åtkomst till Provisioning API
 ````shell script
 $curl --cert login-test.crt --key login-test-private.key \
-     --pinnedpubkey sha256//gWH4cyRuOw9GnGoQNR5NazM3gt36IkK6fszCvqkSll0=  \
+     --pinnedpubkey sha256//A92nvLZeX4wdmZJnLvG0iddOyke/j9X0/itqoKTFKXo=  \
      -X POST -H "Content-Type: application/json" -d @body.json \
      https://nutid-auth-test.sunet.se/transaction
 ````
@@ -160,7 +160,7 @@ hittas i attributet `access_token.value`.
 Exempel anrop:
 ````shell script
 $curl --cert login-test.crt --key login-test-private.key \
-     --pinnedpubkey sha256//gWH4cyRuOw9GnGoQNR5NazM3gt36IkK6fszCvqkSll0=  \
+     --pinnedpubkey sha256//A92nvLZeX4wdmZJnLvG0iddOyke/j9X0/itqoKTFKXo=  \
      -X POST -H "Content-Type: application/json" -d @body.json \
      https://nutid-auth-test.sunet.se/transaction
 ````
@@ -213,7 +213,7 @@ Exempel anrop som skickas från provtjänstens SS12000-klient till auktorisering
 SS12000-API:
 ````shell script
 $curl --cert login-test.crt --key login-test-private.key \
-     --pinnedpubkey sha256//gWH4cyRuOw9GnGoQNR5NazM3gt36IkK6fszCvqkSll0=  \
+     --pinnedpubkey sha256//A92nvLZeX4wdmZJnLvG0iddOyke/j9X0/itqoKTFKXo=  \
      -X POST -H "Content-Type: application/json" -d @body.json \
      https://nutid-auth-test.sunet.se/transaction
 ````
