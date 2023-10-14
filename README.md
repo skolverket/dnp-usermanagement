@@ -25,12 +25,12 @@ Information som kan hämtas från Open-data API inkluderar:
 * Skolenhetsinformation med identifierare i UUID-format
 * Studievägsinformation
 * Aktuella ämnen och kurser där det genomförs nationella prov och bedömningsstöd.
->[Läs mer om open-data API](./open-data-api/README.md)
+>[Läs mer om open-data API](https://github.com/skolverket/dnp-usermanagement/blob/main/open-data-api/README.md)
 
 ### Authentication API (Provtjänstens auktoriseringsserver)
 Detta är ett API för autentisering och auktorisering som används för att autentisera klienter inför maskinell
 överföring av uppgifter till Skolverkets provtjänst.
->[Läs mer om authentication-api](./authentication-api/README.md)
+>[Läs mer om authentication-api](https://github.com/skolverket/dnp-usermanagement/blob/main/authentication-api/README.md)
 
 ### Provisioning API
 Genom detta API kan huvudman överföra uppgifter till Skolverkets provtjänst genom att skicka data från en klient.  
@@ -39,17 +39,17 @@ API:et bygger på en delmängd ur datamodellen i standarden SS 12000.
 
 Provisioning API kräver att klienten som skickar data har en auktoriserings-token
 som utfärdats av Authentication API (auktoriseringsserver för provisionering till provtjänsten).
->[Läs mer om provisioning-api](./provisioning-api/README.md)
+>[Läs mer om provisioning-api](https://github.com/skolverket/dnp-usermanagement/blob/main/provisioning-api/README.md)
 
 ### SS 12000 Klient
 För att möjliggöra överföring av uppgifter enligt standarden SS 12000 tillhandahåller Skolverkets provtjänst
 en SS12000-klient.
->[Läs mer om ss12000-client](./ss12000-client/README.md)
+>[Läs mer om ss12000-client](https://github.com/skolverket/dnp-usermanagement/blob/main/ss12000-client/README.md)
 
 ### Administration provtjänsten
 Huvudmän som inte kan överföra uppgifter maskinellt tillhandahåller Skolverkets provtjänst en e-tjänst som
 möjliggör manuell överföring av uppgifter via filinläsning. 
->[Läs mer om administration-provtjänsten](./administration-provtjansten/README.md)
+>[Läs mer om administration-provtjänsten](https://github.com/skolverket/dnp-usermanagement/blob/main/administration-provtjansten/README.md)
 
 ## Övergripande instruktion för överföring av uppgifter
 För en lyckad överföring av uppgifter till Skolverkets provtjänst behöver huvudmän följa nedanstående checklistor
@@ -58,9 +58,9 @@ som är grupperade utifrån vald metod för överföring av uppgifter.
 **Notera att checklistorna är framtagna som stöd till IT-teknisk personal med ansvar för förberedelser inför överföring
 av uppgifter till Skolverkets provtjänst.**
 
-1. >[Checklista för huvudmän som överför uppgifter enligt standarden SS 12000](./checklists/checklista-för-provisionering-enlig-standarden-SS12000.md)
-2. >[Checklista för huvudmän som överför uppgifter genom att skicka data till provtjänstens Provisioning API](./checklists/checklista-för-provisionering-via-Provisioning-API.md)
-3. >[Checklista för huvudmän som överför uppgifter via filinläsning](./checklists/checklista-för-provisionering-via-filinläsning.md)
+1. >[Checklista för huvudmän som överför uppgifter enligt standarden SS 12000](https://github.com/skolverket/dnp-usermanagement/blob/main/checklists/checklista-f%C3%B6r-provisionering-enlig-standarden-SS12000.md)
+2. >[Checklista för huvudmän som överför uppgifter genom att skicka data till provtjänstens Provisioning API](https://github.com/skolverket/dnp-usermanagement/blob/main/checklists/checklista-f%C3%B6r-provisionering-via-Provisioning-API.md)
+3. >[Checklista för huvudmän som överför uppgifter via filinläsning](https://github.com/skolverket/dnp-usermanagement/blob/main/checklists/checklista-f%C3%B6r-provisionering-via-filinl%C3%A4sning.md)
 
 ## Referenser
 Information om digitalisering av de nationella proven finns på
