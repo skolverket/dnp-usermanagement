@@ -16,7 +16,7 @@
 3. Tillgängliggöra uppgifter via SS12000-API.<br />
    Skolverket har tagit fram en referensimplementation för standarden
    SS12000. Referens API:et finns tillgängligt som öppen källkod på Skolverket Github.
-   >[Läs mer om referens-API](https://github.com/skolverket/provisioning-reference-api)  
+   >[Läs mer om provtjänstens SS12000 reference API](https://github.com/skolverket/dnp-ss12000-reference-api)
 
    >**Notera att det är endast de uppgifter som huvudmannen tillgängliggör via API som Skolverket hämtar. Därför
    är det rekommenderat att etablera en profil för Skolverkets SS12000-klient med en definition av vilka uppgifter
