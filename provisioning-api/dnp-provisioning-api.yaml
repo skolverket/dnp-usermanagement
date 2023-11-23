@@ -27,7 +27,7 @@ tags:
       * För närvarande **ska** det skickas endast en eduPersonPrincipalName i person objektet.
       * För närvarande **ska** det skickas olika eduPersonPrincipalName för rollen elev och personal.
       * E-postadress är obligatoriskt för skolpersonal.
-      * För närvarande tillåts endast Svenskt personnummer.
+      * För närvarande tillåts endast svenskt personnummer.
       * Värdet som skickas för `enroledAt.id` under attributet `enrolments` **ska** vara ett
       UUID-värde som är genererat av Skolverket.
   - name: Duty
@@ -60,7 +60,7 @@ paths:
           in: query
           schema:
             type: string
-            example: "201002037271"
+            example: "200901272385"
         - name: eduPersonPrincipalName
           description: >-
             Begränsa urvalet till den person vars eduPersonPrincipalNames
@@ -158,7 +158,7 @@ paths:
                 ids:
                   - "d544563a-747a-42d3-8d37-415a101537fa"
                 civicNos:
-                  - "201002037271"
+                  - "200901272385"
         required: true
   "/persons/{id}":
     get:
@@ -1887,7 +1887,7 @@ components:
         civicNo:
           type: object
           description: >
-            Personnummer. Just nu är personnummer obligatoriskt och endast Svenskt personnummer
+            Personnummer. Just nu är personnummer obligatoriskt och endast svenskt personnummer
             ska skickas. Utredning pågår om hur TF-nummer, samordningsnummer och utländska
             personnummer hanteras i provtjänsten.
           properties:
@@ -1895,14 +1895,14 @@ components:
               type: string
               description: >
                 Svenskt personnummer för personen. Personnummer **Ska** anges med 12 siffror
-                utan separatorer. _Exempel: 201002037271_
-              example: "201002037271"
+                utan separatorer. _Exempel: 200901272385_
+              example: "200901272385"
             nationality:
               type: string
               description: >
                 Landskod för det land som personnumret härstammar från, enligt
                 ISO 3166-1 alpha-3. För närvarande ska det skickas endast personnummer som
-                är utfärdats i Sverige, därför värdet ska vara `SWE`.
+                är utfärdats i Sverige, därför ska värdet vara `SWE`.
               default: "SWE"
               example: "SWE"
           required:
