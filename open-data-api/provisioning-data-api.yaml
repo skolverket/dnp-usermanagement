@@ -1,16 +1,17 @@
 openapi: 3.0.2
 servers:
-  - description: Skolverket
-    url: "https://api.skolverket.se/dnp/iga/open-data"
+  - url: "https://api.skolverket.se/provtjanst/open-data/v1"
+    description: Produktionsmiljö
 info:
   description: >
-    API:et exponerar information om huvudman (organisation), skolenhet och studieväg.
-    Via detta API kan skolans system inhämta data om skolenheter, studievägar och andra
-    värden som kontrolleras av Skolverket vid användarprovisionering. På så sätt kan data
+    API:et exponerar information om skolhuvudman (organisation), skolenhet, studieväg och
+    provaktiviteter. Via detta API kan huvudmans system inhämta data om skolenheter, studievägar
+    och aktuella ämnen och kurser där det genomförs nationella prov och bedömningsstöd
+    som kontrolleras av Skolverket vid användarprovisionering. På så sätt kan data
     kontrolleras redan i förväg innan värden överförs till Skolverket. Syftet är att bidra
     till ökad datakvalitet och minska antalet fel.
   version: 1.0.0
-  title: Provisioning Open Data API
+  title: Provtjänstens Open-data API
   contact:
     name: Statens Skolverk
     email: digit-np@skolverket.se
@@ -26,7 +27,7 @@ tags:
   - name: Programme
     description: Studievägar för olika gymnasieprogram där nationella prov genomförs.
   - name: Activity
-    description: Provaktiviteter i provtjänsten (DNP).
+    description: Provaktiviteter i provtjänsten.
 paths:
   "/organisations/{id}":
     get:
@@ -655,8 +656,8 @@ components:
           $ref: "#/components/schemas/Code_SchoolType"
         dnpStatus:
           description: >
-            Attribut som visar utbildningsformens tillgänglihet för den specifika
-            skolenheten i provtjänsten (DNP).
+            Attribut som visar att utbildningsformen finns för den specifika
+            skolenheten i provtjänsten.
           type: boolean
           example: true
         schoolYears:
@@ -700,9 +701,14 @@ components:
         municipalityCode:
           type: string
           description: >
-            Kommunkodför den kommun där skolan är belägen, exempelvis 0180 där 01 anger
+            Kommunkod för den kommun där skolan är belägen, exempelvis 0180 där 01 anger
             länet och 80 anger kommunen.
           example: "0180"
+        municipalityName:
+          type: string
+          description: >
+            Kommunnamn för den kommun där skolan är belägen.
+          example: "Stockholm"
         status:
           allOf:
             - $ref: "#/components/schemas/Code_Status"
@@ -714,7 +720,7 @@ components:
                   - _Expired_ - Skolenheten har upphört att bedriva verksamhet
         dnpStatus:
           description: >
-            Attribut som visar skolenhetens tillgänglighet i provtjänsten (DNP).
+            Attribut som visar att skolenheten finns i provtjänsten.
           type: boolean
           example: true
         parentOrganisation:
@@ -739,8 +745,8 @@ components:
           example: 3
         dnpStatus:
           description: >
-            Attribut som visar årskursens tillgänglihet under specifik skolenhet och
-            utbildningsform i provtjänsten (DNP).
+            Attribut som visar att årskursen finns under specifika skolenheten och
+            utbildningsformen i provtjänsten.
           type: boolean
           example: true
   responses:
@@ -754,47 +760,47 @@ components:
             items:
               $ref: "#/components/schemas/Error"
             example:
-                {
-                  "code": 400,
-                  "message": "Invalid parameter: id",
-                  "timeStamp": "2021-06-10T17:50:49+02:00"
-                }
+              {
+                "code": 400,
+                "message": "Invalid parameter: id",
+                "timeStamp": "2021-06-10T17:50:49+02:00"
+              }
     404_organisation_not_found:
-       description: Huvudman (organisation) hittades inte.
-       content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-              example:
-                {
-                  "code": 404,
-                  "message": "Organisation not found",
-                  "timeStamp": "2021-06-10T17:39:38+02:00"
-                }
+      description: Huvudman (organisation) hittades inte.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            {
+              "code": 404,
+              "message": "Organisation not found",
+              "timeStamp": "2021-06-10T17:39:38+02:00"
+            }
     404_schoolunit_not_found:
-       description: Skolenhet hittades inte.
-       content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-              example:
-                {
-                  "code": 404,
-                  "message": "School unit not found",
-                  "timeStamp": "2021-06-10T17:39:38+02:00"
-                }
+      description: Skolenhet hittades inte.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            {
+              "code": 404,
+              "message": "School unit not found",
+              "timeStamp": "2021-06-10T17:39:38+02:00"
+            }
     404_programme_not_found:
-       description: Studieväg hittades inte.
-       content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-              example:
-                {
-                  "code": 404,
-                  "message": "Programme not found",
-                  "timeStamp": "2021-06-10T17:39:38+02:00"
-                }
+      description: Studieväg hittades inte.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            {
+              "code": 404,
+              "message": "Programme not found",
+              "timeStamp": "2021-06-10T17:39:38+02:00"
+            }
     404_activity_not_found:
       description: Provaktiviteten hittades inte.
       content:
