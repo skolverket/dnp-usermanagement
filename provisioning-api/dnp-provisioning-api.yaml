@@ -60,7 +60,7 @@ paths:
           in: query
           schema:
             type: string
-            example: "201011832381"
+            example: "201002037271"
         - name: eduPersonPrincipalName
           description: >-
             Begränsa urvalet till den person vars eduPersonPrincipalNames
@@ -158,7 +158,7 @@ paths:
                 ids:
                   - "d544563a-747a-42d3-8d37-415a101537fa"
                 civicNos:
-                  - "201011832381"
+                  - "201002037271"
         required: true
   "/persons/{id}":
     get:
@@ -1895,8 +1895,8 @@ components:
               type: string
               description: >
                 Svenskt personnummer för personen. Personnummer **Ska** anges med 12 siffror
-                utan separatorer. _Exempel: 201011832381_
-              example: "201011832381"
+                utan separatorer. _Exempel: 201002037271_
+              example: "201002037271"
             nationality:
               type: string
               description: >
