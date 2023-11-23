@@ -1,17 +1,17 @@
 openapi: 3.0.2
 servers:
-  - description: Provtjänstens Provisioning API
-    url: "https://api.skolverket.se/dnp/iga/provisioning/v1"
+  - url: "https://api.skolverket.se/provtjanst/provisioning/v1"
+    description: Produktionsmiljö (endast för skarpt data)
 info:
   description: |
-    Detta är Skolverkets API för användarprovisionering till provtjänsten.
+    Detta är ett API för överföring av uppgifter till Skolverkets provtjänst.
     Via detta API kan en huvudman skicka uppgifter om elever, personal och
     grupper från sin klient. API:et tillämpar en delmängd ur
     datamodellen i standarden SS 12000
     [TK450](https://www.sis.se/standardutveckling/tksidor/tk400499/sistk450/).
 
     Notera att provtjänsten har specifika krav på uppgifter som skickas från
-    skolhuvudman. Mer information finns i
+    skolhuvudmän. Mer information finns i
     [Skolverkets publika github](https://github.com/skolverket/dnp-usermanagement/tree/main/provisioning-api) och på
     [Skolverkets hemsida](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/tekniska-forutsattningar-for-digitala-nationella-prov/overforing-av-uppgifter-till-skolverket).
   version: 1.0.0
@@ -27,7 +27,7 @@ tags:
       * För närvarande **ska** det skickas endast en eduPersonPrincipalName i person objektet.
       * För närvarande **ska** det skickas olika eduPersonPrincipalName för rollen elev och personal.
       * E-postadress är obligatoriskt för skolpersonal.
-      * För närvarande tillåts endast Svenskt personnummer, samordningsnummer och TF-nummer.
+      * För närvarande tillåts endast Svenskt personnummer.
       * Värdet som skickas för `enroledAt.id` under attributet `enrolments` **ska** vara ett
       UUID-värde som är genererat av Skolverket.
   - name: Duty
@@ -52,7 +52,7 @@ paths:
       operationId: getPersons
       tags:
         - Person
-      summary: Hämta en lista med personer.
+      summary: Hämta en lista med personer. Ej implementerad!
       parameters:
         - name: civicNo
           description: >-
@@ -60,7 +60,7 @@ paths:
           in: query
           schema:
             type: string
-            example: "200112240123"
+            example: "201011832381"
         - name: eduPersonPrincipalName
           description: >-
             Begränsa urvalet till den person vars eduPersonPrincipalNames
@@ -115,7 +115,7 @@ paths:
       operationId: searchPersons
       tags:
         - Person
-      summary: Hämta många personer baserat på en lista av ID:n eller personnummer.
+      summary: Hämta många personer baserat på en lista av ID:n eller personnummer. Ej implementerad!
       description: >-
         Istället för att hämta personer en i taget med en loop av GET-anrop så
         finns det även möjlighet att hämta många personer på en gång genom att
@@ -152,27 +152,24 @@ paths:
                   type: array
                   items:
                     description: >
-                      Personnummer, samordningsnummer eller tillfälliga
-                      personnummer, och motsvarande för andra länder. För
-                      svenska personnummner **ska** formatet 12 tecken utan
-                      divis användas. Se exempel.
+                      Svenskt personnummer.
                     type: string
               example:
                 ids:
                   - "d544563a-747a-42d3-8d37-415a101537fa"
                 civicNos:
-                  - "201002037271"
+                  - "201011832381"
         required: true
   "/persons/{id}":
     get:
       operationId: getPersonById
       tags:
         - Person
-      summary: Get person by person id
+      summary: Get person by person id. Ej implementerad!
       parameters:
         - name: id
           in: path
-          description: ID för personen som ska hämtas
+          description: ID för personen som ska hämtas.
           required: true
           schema:
             type: string
@@ -292,11 +289,11 @@ paths:
       operationId: getPersonsBulkJobStatusById
       tags:
         - Person
-      summary: Hämta status för bulk-jobb med id
+      summary: Hämta status för bulk-jobb med id.
       parameters:
         - name: id
           in: path
-          description: ID för bulk-jobbet som ska hämtas
+          description: ID för bulk-jobbet som ska hämtas.
           required: true
           schema:
             type: string
@@ -382,7 +379,7 @@ paths:
       operationId: getDuties
       tags:
         - Duty
-      summary: Hämta en lista med tjänstgöringar.
+      summary: Hämta en lista med tjänstgöringar. Ej implementerad!
       parameters:
         - name: organisation
           description: >
@@ -395,7 +392,7 @@ paths:
         - name: person
           description: >
             Begränsa urvalet till de tjänstgöringar som är kopplade till person
-            ID
+            ID.
           in: query
           schema:
             type: string
@@ -437,7 +434,7 @@ paths:
       operationId: searchDuties
       tags:
         - Duty
-      summary: "Hämta många tjänstgöringar baserat på en lista av ID:n."
+      summary: "Hämta många tjänstgöringar baserat på en lista av ID:n. Ej implementerad!"
       description: >-
         Istället för att hämta tjänstgöringar en i taget med en loop av
         GET-anrop så finns det även möjlighet att hämta många tjänstgöringar på
@@ -469,7 +466,7 @@ paths:
       operationId: getDutyById
       tags:
         - Duty
-      summary: Hämta tjänstgöring baserat på tjänstgörings ID
+      summary: Hämta tjänstgöring baserat på tjänstgörings ID. Ej implementerad!
       parameters:
         - name: id
           in: path
@@ -498,7 +495,7 @@ paths:
       operationId: addDuties
       tags:
         - Duty
-      summary: Skapa flera tjänstgöringar
+      summary: Skapa flera tjänstgöringar.
       description: >-
         Det går att skapa/uppdatera en eller flera tjänstgöringar via denna operation.
         Tjänstgöring skapas/uppdateras asynkront.
@@ -530,7 +527,7 @@ paths:
       operationId: updateDuties
       tags:
         - Duty
-      summary: Uppdatera flera tjänstgöringar
+      summary: Uppdatera flera tjänstgöringar.
       description: >-
         Det går att uppdatera en eller flera tjänstgöringar via denna operation.
         Uppdatering av tjänstgöringar görs asynkront.
@@ -561,7 +558,7 @@ paths:
       operationId: deleteDuties
       tags:
         - Duty
-      summary: Radera flera tjänstgöringar
+      summary: Radera flera tjänstgöringar.
       description: >-
         Det går att radera en eller flera tjänstgöringar via denna operation.
         Borttagning av tjänstgöringar görs asynkront.
@@ -593,11 +590,11 @@ paths:
       operationId: getDutiesBulkJobStatusById
       tags:
         - Duty
-      summary: Hämta status för bulk-jobb med id
+      summary: Hämta status för bulk-jobb med id.
       parameters:
         - name: id
           in: path
-          description: ID för bulk-jobbet som ska hämtas
+          description: ID för bulk-jobbet som ska hämtas.
           required: true
           schema:
             type: string
@@ -651,11 +648,11 @@ paths:
       operationId: getDutiesBulkJobIsCompleted
       tags:
         - Duty
-      summary: Kontrollera om bulk-processen är klar
+      summary: Kontrollera om bulk-processen är klar.
       parameters:
         - name: id
           in: path
-          description: ID för bulk-jobbet som ska hämtas
+          description: ID för bulk-jobbet som ska hämtas.
           required: true
           schema:
             type: string
@@ -682,7 +679,7 @@ paths:
       operationId: getGroups
       tags:
         - Group
-      summary: Hämta en lista med grupper.
+      summary: Hämta en lista med grupper. Ej implementerad!
       parameters:
         - name: groupType
           description: |
@@ -748,7 +745,7 @@ paths:
       operationId: searchGroups
       tags:
         - Group
-      summary: "Hämta många grupper baserat på en lista av ID:n."
+      summary: "Hämta många grupper baserat på en lista av ID:n. Ej implementerad!"
       description: >-
         Istället för att hämta grupper en i taget med en loop av GET-anrop så
         finns det även möjlighet att hämta många grupper på en gång genom att
@@ -779,11 +776,11 @@ paths:
       operationId: getGroupById
       tags:
         - Group
-      summary: Hämta grupp baserat på gruppens ID
+      summary: Hämta grupp baserat på gruppens ID. Ej implementerad!
       parameters:
         - name: id
           in: path
-          description: ID för gruppen som ska hämtas
+          description: ID för gruppen som ska hämtas.
           required: true
           schema:
             type: string
@@ -994,7 +991,7 @@ paths:
       operationId: getActivities
       tags:
         - Activity
-      summary: Hämta en lista med aktiviteter baserat på ett antal sökparametrar.
+      summary: Hämta en lista med aktiviteter baserat på ett antal sökparametrar. Ej implementerad!
       parameters:
         - name: teacher
           description: >-
@@ -1056,7 +1053,7 @@ paths:
       operationId: searchActivities
       tags:
         - Activity
-      summary: "Hämta en lista med aktiviteter baserat på motsvarande lista av ID:n."
+      summary: "Hämta en lista med aktiviteter baserat på motsvarande lista av ID:n. Ej implementerad!"
       description: >-
         Istället för att hämta aktiviteter en i taget med en loop av GET-anrop
         så finns det även möjlighet att hämta många aktiviteter på en gång genom
@@ -1087,11 +1084,11 @@ paths:
       operationId: getActivityById
       tags:
         - Activity
-      summary: Hämta en aktivitet baserat på dess ID
+      summary: Hämta en aktivitet baserat på dess ID. Ej implementerad!
       parameters:
         - name: id
           in: path
-          description: ID för aktivitet som ska hämtas
+          description: ID för aktivitet som ska hämtas.
           required: true
           schema:
             type: string
@@ -1315,20 +1312,6 @@ components:
         displayName:
           type: string
           description: "Namn på aktiviteten, i presentationssyfte."
-        startDate:
-          type: string
-          format: date
-          description: >
-            Datum för när aktiviteten startar (RFC 3339-format, t.ex.
-            "2016-10-15").
-          example: "2021-09-01"
-        endDate:
-          type: string
-          format: date
-          description: >
-            Datum för när aktiviteten slutar (RFC 3339-format, t.ex.
-            "2016-10-15").
-          example: "2022-06-15"
         activityType:
           type: string
           title: Code_ActivityType
@@ -1381,25 +1364,6 @@ components:
             properties:
               duty:
                 $ref: "#/components/schemas/DutyReference"
-              startDate:
-                type: string
-                format: date
-                description: >
-                  Datum för när lärarens deltagande i aktiviteten startar (RFC
-                  3339-format, t.ex. "2016-10-15").
-                example: "2021-09-01"
-              endDate:
-                type: string
-                format: date
-                description: >
-                  Datum för när lärarens deltagande i aktiviteten slutar (RFC
-                  3339-format, t.ex. "2016-10-15").
-                example: "2022-06-01"
-              grader:
-                type: boolean
-                description: >-
-                  Markerar att läraren har rollen som betygsättande lärare för
-                  aktiviteten
         organisation:
           allOf:
             - $ref: "#/components/schemas/OrganisationReference"
@@ -1423,7 +1387,6 @@ components:
       required:
         - id
         - displayName
-        - startDate
         - activityType
         - groups
         - organisation
@@ -1621,26 +1584,11 @@ components:
             - description: >
                 Syfte med tjänsten, den roll tjänsten avser, till exempel lärare
                 eller rektor.
-        startDate:
-          type: string
-          format: date
-          description: >
-            Startdatum för personens anställning på en viss skolenhet eller
-            skola (RFC 3339-format, t.ex. "2016-10-15"). Inkluderande.
-          example: "2021-09-01"
-        endDate:
-          type: string
-          format: date
-          description: >
-            Slutdatum för personens anställning på en viss skolenhet eller skola
-            (RFC 3339-format, e.g. "2016-10-15"). Inkluderande.
-          example: "2022-06-01"
       required:
         - id
         - person
         - dutyAt
         - dutyRole
-        - startDate
     DutyReference:
       allOf:
         - $ref: "#/components/schemas/ObjectReference"
@@ -1656,26 +1604,13 @@ components:
           type: integer
           description: >
             Värdet årskurs anger det år efter skolstarten för vilket en student
-            följer undervisningen. Värde måste anges för utbildningsform `GY`.
+            följer undervisningen. Värde måste anges för utbildningsformerna `GR`,
+            `SP` och `SAM`.
           minimum: 1
           maximum: 10
           example: 1
         schoolType:
           $ref: "#/components/schemas/Code_SchoolType"
-        startDate:
-          type: string
-          format: date
-          description: >
-            Startdatum för inskrivningen (RFC 3339-format, t.ex.
-            "2016-10-15").Inkluderande.
-          example: "2020-01-12"
-        endDate:
-          type: string
-          format: date
-          description: >
-            Slutdatum för inskrivningen (RFC 3339-format, t.ex. "2016-10-15").
-            Inkluderande.
-          example: "2020-06-05"
         cancelled:
           type: boolean
           description: Inskrivningen har avbrutits i förväg.
@@ -1685,12 +1620,11 @@ components:
           type: string
           description: >
             Studievägskod för den aktuella inskrivningen. Värde måste anges för
-            utbildningsform `GY`.
+            utbildningsformen `GY`.
           example: "RLKOK11"
       required:
         - enroledAt
         - schoolType
-        - startDate
     Group:
       allOf:
         - $ref: "#/components/schemas/GroupFragment"
@@ -1707,20 +1641,6 @@ components:
                 properties:
                   person:
                     $ref: "#/components/schemas/PersonReference"
-                  startDate:
-                    description: >
-                      Startdatum för personens medlemskap i gruppen (RFC
-                      3339-format, t.ex. "2016-10-15"). Inkluderande.
-                    type: string
-                    format: date
-                    example: "2021-09-01"
-                  endDate:
-                    description: >
-                      Slutdatum för personens medlemskap i gruppen (RFC
-                      3339-format, t.ex. "2016-10-15"). Inkluderande.
-                    type: string
-                    format: date
-                    example: "2021-09-01"
     GroupFragment:
       type: object
       description: >
@@ -1738,18 +1658,6 @@ components:
         displayName:
           description: Gruppens benämning.
           type: string
-        startDate:
-          type: string
-          format: date
-          description: >
-            Startdatum för gruppens giltighetstid (RFC 3339-format, t.ex.
-            "2016-10-15"). Inkluderande.
-        endDate:
-          type: string
-          format: date
-          description: >
-            Slutdatum för gruppens giltighetstid (RFC 3339-format, t.ex.
-            "2016-10-15"). Inkluderande.
         groupType:
           $ref: "#/components/schemas/Code_GroupType"
         schoolType:
@@ -1761,7 +1669,6 @@ components:
         - displayName
         - groupType
         - schoolType
-        - startDate
         - organisation
     GroupReference:
       allOf:
@@ -1798,7 +1705,7 @@ components:
         message:
           description: Situationsspecifik text rörande felmeddelanden.
           type: string
-          example: "Ogiltigt format på <startDate>. Format ska vara enligt RFC3339. Se https://tools.ietf.org/html/rfc3339.txt."
+          example: "Ogiltigt format på <schoolYear>."
         parameterName:
           type: string
           description: >
@@ -1817,14 +1724,14 @@ components:
           example: "3fa85f64-5717-4562-b3fc-2c963f66afa7"
         attributeName:
           description: >
-            Namn på attribut där felet inträffade.
+            Namn på attributet som felet är kopplade till.
           type: string
-          example: "Enrolment.startDate"
+          example: "Enrolment.schoolYear"
         attributeValue:
           description: >
-            Värde på attribut som orsakade felet.
+            Värde på attributet som felet är kopplade till.
           type: string
-          example: "2020xxxx"
+          example: 0
         severityLevel:
           type: string
           description: >
@@ -1980,26 +1887,16 @@ components:
         civicNo:
           type: object
           description: >
-            Personnummer. Just nu är personnummer obligatoriskt och endast personnummer
-            som är utfärdats i Sverige ska skickas. Utredning pågår om hur utländska
+            Personnummer. Just nu är personnummer obligatoriskt och endast Svenskt personnummer
+            ska skickas. Utredning pågår om hur TF-nummer, samordningsnummer och utländska
             personnummer hanteras i provtjänsten.
           properties:
             value:
               type: string
               description: >
-                * Svenskt personnummer, tilldelat personnummer eller Skatteverkets
-                samordningsnummer för personen. **Ska** anges med 12 siffror
-                utan separatorer. _Exempel: 200112240123_
-                
-                * Samordningsnummer ska anges med 12 siffror utan separator.
-                Födelsedagen adderas med talet 60, det vill säga någon född
-                den 24 i en månad får talet 84 som dag. _Exempel: 200112840123_
-
-                * Saknas både personnummer och samordningsnummer så förekommer det
-                att "tillfälligt personnummer" definieras i elevregistret. Dessa är
-                möjliga att beskriva i detta fält och i så fall tillåts de två första
-                positionerna efter datumdelen att vara bokstäver. _Exempel: 20130101TF10_
-              example: "200112240123"
+                Svenskt personnummer för personen. Personnummer **Ska** anges med 12 siffror
+                utan separatorer. _Exempel: 201011832381_
+              example: "201011832381"
             nationality:
               type: string
               description: >
