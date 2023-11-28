@@ -11,14 +11,11 @@
    Notera att det är Skolverkets identifierare (UUID) för skolenheter och provaktiviteter som ska användas vid
    överföring av uppgifter.
    >[Läs mer om open-data API](../open-data-api/README.md)
-
-   >[URL till Open-data API](https://api-pre.skolverket.se/dnp/iga/open-data/swagger-ui.html)
+   
 3. Skaffa klientcertifikat och etablera integration mot provtjänstens auktoriseringsserver.
    >[Läs mer om provtjänstens auktoriseringsserver](../authentication-api/README.md)
-
-   >[URL till provtjänstens auktoriseringsserver](https://nutid-auth-test.sunet.se/transaction)
+   
 4. Huvudmannens klient skickar uppgifter till provtjänstens Provisioning API.
-   >[URL till provtjänstens Provisioning API](https://api-pre.skolverket.se/dnp/iga/provisioning/v1/swagger-ui.html)
    
    Överföring av uppgifter ska ske enligt nedanstående flöde:
    1. Huvudmannens klient hämtar JWT från provtjänstens auktoriseringsserver.

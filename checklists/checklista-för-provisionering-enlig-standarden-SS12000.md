@@ -11,8 +11,7 @@
    Notera att det är Skolverkets identifierare (UUID) för provaktiviteter som ska användas vid
    överföring av uppgifter.
    >[Läs mer om open-data API](../open-data-api/README.md)
-
-   >[URL till Open-data API](https://api-pre.skolverket.se/dnp/iga/open-data/swagger-ui.html)
+   
 3. Tillgängliggöra uppgifter via SS12000-API.<br />
    Skolverket har tagit fram en referensimplementation för standarden
    SS12000. Referens API:et finns tillgängligt som öppen källkod på Skolverket Github.
@@ -25,14 +24,11 @@
 4. Skaffa klientcertifikat och etablera integration mot provtjänstens auktoriseringsserver.
    >[Läs mer om provtjänstens auktoriseringsserver](../authentication-api/README.md)
    
-   >[URL till provtjänstens auktoriseringsserver](https://nutid-auth-test.sunet.se/transaction)
 5. Skaffa fullmakt i _**Mina ombud**_ för de personer som administrerar provisionering för huvudmannens räkning i
    Skolverkets e-tjänst _**Administration provtjänsten**_. 
    >[URL till Mina ombud](https://minaombud.se/)
 
    >[Läs mer om Administration provtjänsten](https://www.skolverket.se/skolverkets-e-tjanst-administration-provtjansten)
-
-   >[URL till Administration provtjänstens testmiljö](https://administrationprovtjansten-pre.skolverket.se)
 
 6. Registrera URL till huvudmannens SS12000-API via Skolverkets e-tjänst Administration provtjänsten. Notera att en
    huvudman kan registrera flera SS12000-API URL:er. Registrering av SS12000-API URL ska ske enligt nedanstående flöde:

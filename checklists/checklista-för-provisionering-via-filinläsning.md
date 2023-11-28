@@ -7,8 +7,7 @@
    från _**open-data API**_ för att sedan kontrollera uppgifter innan överföring till Skolverkets provtjänst.
    
    >[Läs mer om open-data API](../open-data-api/README.md)
-
-   >[URL till Open-data API](https://api-pre.skolverket.se/dnp/iga/open-data/swagger-ui.html)
+   
 3. Förbereda uppgifter enligt Skolverkets mall för filinläsning.
    1. Ta bort exempeldata i Excelmallen
    2. Fyll i följande fyra flikar i Excelmallen:
@@ -34,8 +33,6 @@
    
 5. Läsa in fil via Skolverkets e-tjänst Administration provtjänsten.
    >[Läs mer om Administration provtjänsten](https://www.skolverket.se/skolverkets-e-tjanst-administration-provtjansten)
-
-   >[URL till Administration provtjänstens testmiljö](https://administrationprovtjansten-pre.skolverket.se)
 
    Filinläsning ska ske enligt nedanstående flöde:
    1. Huvudmannens ombud loggar in i Administration provtjänsten. 
