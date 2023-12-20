@@ -2,7 +2,8 @@
 
 1. Samla in uppgifter som ska överföras till Skolverkets provtjänst. Uppgifter som behövs i Skolverkets 
    provtjänst finns i följande Excelmall. 
-   >[Se Excelmall för överföring av uppgifter via filinläsning](https://www.skolverket.se/download/18.a1a676d18aaddf64d713e4/1695665450567/Excelmall%20f%C3%B6r%20filinl%C3%A4sning%20v0.8_2023-09-25.xlsx).
+   >[Se Excelmall för överföring av uppgifter via filinläsning på den här sidan]
+(https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/tekniska-forutsattningar-for-digitala-nationella-prov/overforing-av-uppgifter-till-skolverket).
 2. Det är inte obligatoriskt men är rekommenderats av Skolverket att hämta studievägs- och skolenhetsinformation
    från _**open-data API**_ för att sedan kontrollera uppgifter innan överföring till Skolverkets provtjänst.
    
