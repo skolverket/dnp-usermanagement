@@ -67,6 +67,8 @@ I dagsläget är provtjänstens auktoriseringsserver integrerats med följande 3
 Följande tabeller beskriver de specifika utfärdarcertifikat som finns konfigurerats i test- och
 produktionsmiljö av provtjänstens auktoriseringsserver.
 
+Se [Hämta JWT med certifikat från godkänd certifikatutfärdare](#hämta-jwt-för-åtkomst-till-provisioning-api-med-certifikat-från-en-godkänd-certifikatutfärdare).
+
 #### CA för produktionsmiljö av auktoriseringsserver (https://nutid-auth.sunet.se/transaction)
 
 | **Utfärdarcertifikat (CA)**                | **Utfärdare organisation**                          |
@@ -114,7 +116,7 @@ Nedan beskrivs specifika flöden för autentisering utifrån vald metod för öv
 4. Huvudmannens klient presenterar JWT vid överföring av uppgifter till provtjänstens
    Provisioning-API.
 
-Se [JWT för åtkomst till Provisioning API](#jwt-för-åtkomst-till-provisioning-api).
+Se [Hämta JWT för åtkomst till Provisioning API](#hämta-jwt-för-åtkomst-till-provisioning-api-med-certifikat-i-en-tls-federation).
 
 ### Autentiseringsflöde för huvudmän som överför uppgifter enligt standarden SS 12000 – Skolverket hämtar data
 
@@ -139,7 +141,7 @@ från huvudmannens SS 12000-API. Autentiseringsflöden för dessa två steg besk
 4. Notifieringsklienten presenterar JWT vid notifiering av förändringar till provtjänstens SS
    12000-klient.
 
-Se [JWT för åtkomst till notifieringsändpunkt av SS12000-klienten](#jwt-för-åtkomst-till-notifierings-ändpunkten-av-provtjänstens-ss12000-klient).
+Se [Hämta JWT för åtkomst till notifieringsändpunkt av SS12000-klienten](#hämta-jwt-för-åtkomst-till-notifierings-ändpunkten-av-provtjänstens-ss12000-klient-med-certifikat-i-en-tls-federation).
 
 #### _Autentiseringsflöde vid datainhämtning_
 
@@ -155,7 +157,7 @@ Se [JWT för åtkomst till notifieringsändpunkt av SS12000-klienten](#jwt-för-
 4. Skolverkets SS 12000-klient presenterar JWT till huvudmannens SS 12000-API vid hämtning av
    förändrade uppgifter.
 
-Se [JWT för åtkomst till SS12000-API hos huvudman](#jwt-för-åtkomst-till-huvudmannens-ss12000-api).
+Se [Hämta JWT för åtkomst till SS12000-API hos huvudman](#hämta-jwt-för-åtkomst-till-huvudmannens-ss12000-api-med-certifikat-i-en-tls-federation).
 
 ## HTTP-anrop mot auktoriseringsserver
 
