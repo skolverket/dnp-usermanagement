@@ -58,7 +58,7 @@ TLS-federation är Moa ("Machine and Organization Authentication") från Interne
 I dagsläget är provtjänstens auktoriseringsserver integrerats med följande 3 certifikatutfärdare:
 
 * SITHS
-  funktionscertifikat. [Läs mer om SITHS funktionscertifikat](https://wiki.federationer.internetstiftelsen.se/pages/viewpage.action?pageId=20545581).
+  funktionscertifikat. [Läs mer om SITHS funktionscertifikat](https://inera.atlassian.net/wiki/spaces/IAM/pages/359105489/Certifikatspecifikationer).
 * E-identitet för offentlig sektor -
   EFOS. [Läs mer om EFOS](https://www.forsakringskassan.se/myndigheter-och-samarbetspartner/e-tjanster-for-myndigheter-och-samarbetspartner/e-identitet-for-offentlig-sektor-efos).
 * Expisoft
