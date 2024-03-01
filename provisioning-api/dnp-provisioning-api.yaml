@@ -1823,7 +1823,7 @@ components:
           example: "Pippilotta Viktualia Rullgardina Krusmynta"
         middleName:
           type: string
-          description: Mellannamn.
+          description: Mellannamn enligt Skatteverket.
           example: "Efraimsdotter"
         familyName:
           type: string
@@ -1837,7 +1837,7 @@ components:
             persistent och globalt unik sträng. Den ska bestå av en lokalt
             unik användaridentifierare, ett ’@’ och en domän. En domän är
             ofta, men inte nödvändigtvis, samma som organisationens
-            internet-domännamn. _Exempel: kalko@edu.goteborg.se_.
+            internet-domännamn. _Exempel: fc79e369-18a3-40c4-aa33-d92057bfff65@edu.huvudman.se_.
             För närvarande får man skicka bara en federationsanvändarnamn
             (`eduPersonPrincipalName`), därför `eduPersonPrincipalNames` listan
             får inte innehålla mer än ett värde.
@@ -1845,15 +1845,16 @@ components:
           maxItems: 1
           items:
             type: string
-            example: "piplan145@soderhavetsgymnasium.se"
+            example: "fc79e369-18a3-40c4-aa33-d92057bfff65@edu.huvudman.se"
         externalIdentifiers:
           type: array
           description: >
             Teknisk personidentifierare för en person hos externa tjänster. Skolverkets
             provtjänst använder detta objekt för att ta emot federationsanvändarnamn
-            (`eduPersonPrincipalName`) av skolpersonal hos [eduID](https://eduid.se/).
+            (`eduPersonPrincipalName`) av skolpersonal hos [EduID](https://eduid.se/).
             `externalIdentifiers` ska skickas endast för skolpersonal från skolhuvudmän
-            som har egen inloggningstjänst (IDP) men saknar godkänd e-legitimation.
+            som har egen inloggningstjänst (IdP), men som har beställt stöd för e-legitimation
+            via e-tjänsten Administration provtjänsten.
           maxItems: 1
           items:
             type: object
@@ -1863,7 +1864,7 @@ components:
                 type: string
                 description: >
                   Detta är federationsanvändarnamn (`eduPersonPrincipalName`) för
-                  skolpersonal hos eduID.
+                  skolpersonal hos EduID.
                 example: "movip-eiral@eduid.se"
               context:
                 type: string
@@ -1887,9 +1888,10 @@ components:
         civicNo:
           type: object
           description: >
-            Personnummer. Just nu är personnummer obligatoriskt och endast svenskt personnummer
-            ska skickas. Utredning pågår om hur TF-nummer, samordningsnummer och utländska
-            personnummer hanteras i provtjänsten.
+            Personnummer. Just nu är personnummer obligatoriskt och endast verkliga svenska personnummer
+            ska skickas. Huvudmän behöver vara extra uppmärksam på att inte överföra personuppgifter
+            med påhittade personnummer eller test-personnummer från Skatteverket till Skolverkets
+            provtjänst.
           properties:
             value:
               type: string
@@ -1901,10 +1903,10 @@ components:
               type: string
               description: >
                 Landskod för det land som personnumret härstammar från, enligt
-                ISO 3166-1 alpha-3. För närvarande ska det skickas endast personnummer som
-                är utfärdats i Sverige, därför ska värdet vara `SWE`.
-              default: "SWE"
-              example: "SWE"
+                ISO 3166-1 alpha-2. För närvarande ska det skickas endast personnummer som
+                är utfärdats i Sverige, därför ska värdet vara `SE`.
+              default: "SE"
+              example: "SE"
           required:
             - value
         emails:
