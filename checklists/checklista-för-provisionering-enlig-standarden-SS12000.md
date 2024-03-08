@@ -1,7 +1,7 @@
 ## Checklista for en huvudman som överför uppgifter enligt standarden SS 12000
 
-1. Samla in och förbereda uppgifter som ska överföras till Skolverkets provtjänst.
-   >[Se attributlista för provisionering](https://www.skolverket.se/download/18.3c0656d5188bc287d51332f/1688496183174/Uppgifter%20vid%20maskin-till-maskin%20provisionering%20v0.3_23-07-03.pdf).
+1. Samla in och förbereda uppgifter som behöver överföras till Skolverkets provtjänst.
+   >[Se attributlista för provisionering](https://www.skolverket.se/skolutveckling/digitala-nationella-prov/overforing-av-uppgifter-till-skolverket#h-UppgiftersombehoveroverforastillSkolverket).
 2. Hämta provtjänstens öppna data från _**open-data API**_.<br />
    Provaktiviteter som motsvarar ämnen eller kurser där det genomförs nationella prov och bedömningsstöd ska
    hämtas från open-data API och konfigureras i huvudmannens system. Notera att undervisningsgrupper som genomför
