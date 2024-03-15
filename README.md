@@ -4,9 +4,9 @@ Skolverket digitaliserar de nationella proven (DNP).
 I Skolverkets bibliotek DNP Användarhantering finns API-specifikationer och dokumentation som
 beskriver hur skolhuvudmän kan hantera användarprovisionering i Skolverkets provtjänst.
 
-**Notera att arbetet med digitala nationella prov (DNP) är ett pågående projekt och att
-materialet i DNP användarhantering uppdateras kontinuerligt.** Det är inte fastställd
-information från Skolverket, utan dokumenten kommer att uppdateras. 
+Arbetet med att införa digitala nationella prov (DNP) är ett pågående projekt. Materialet i DNP
+användarhantering kan därför komma att justeras. Håll dig uppdaterad om den senaste informationen
+här på Github och på [skolverket.se/dnp](https://www.skolverket.se/skolutveckling/digitala-nationella-prov).
 
 ## Skolverkets API:er för digitala nationella prov
 Skolverket erbjuder tre metoder för överföring av uppgifter till Skolverkets provtjänst.
