@@ -27,7 +27,9 @@ Utöver huvudkraven ovan gäller följande specifika krav:
   minst ett klientcertifikat per huvudman.
 * Klientcertifikatet ska ha en koppling till huvudmannens organisationsnummer.
     * En huvudman som är ansluten till en TLS-federation ska registrera både klientcertifikat och
-      organisationsnummer i sitt metadata.
+      organisationsnummer i sitt metadata. Huvudman som har en certifikatkedja som består av
+      rot-certifikat, mellancertifikat och klientcertifikat kan registrera alla certifikaten i kedjan
+      som `issuers` i sitt metadata, men värdet för `pins` behöver beräknas från klientcertifikatet.
     * En huvudman som har ett klientcertifikat från en certifikatutfärdare ska se till att sitt
       organisationsnummer finns i certifikatet.
 * Följande alternativ finns för huvudmän som hanterar överföring av uppgifter med flera klienter
