@@ -6,7 +6,7 @@ Pull metoden är huvudsakliga metoden för provisionering till DNP.
 ## Registrera en prenumeration.
 Subscription registrering (även kallt webhook registrering) sker via Administration Provtjänsten (AP). 
 Huvudmannen förväntas tillhandahålla en bas-URL för ett SS12000 API (för vidare dokumentation om ["Huvudmannens api"](#huvudmannens-api) se nedan). 
-Vid registrering via AP så gör SS12000 Client ett anrop till den angivna APIets subscriptions enpunkt för att registrera webhooken. 
+Vid registrering via AP så gör SS12000 Client ett anrop till den angivna APIets subscriptions endpunkt för att registrera webhooken. 
 Vid en lyckad registrering så aviseras AP om lyckade registreringen av preparation samt hämtningen av data påbörjas.  
 Registreringen av prenumeration innehåller en `target` URL som huvudmannens API måste använda vid notifieringar om förändringar och borttag av data.
 `target` URLen är unik för den specifika prenumerationen och bör inte delas mellan flera system. 
