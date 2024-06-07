@@ -24,3 +24,5 @@
       ````
       Person -> Duty -> Group -> Activity
       ````
+
+5. Borttag av uppgifter kan ske i vilken ordning som helst. Exempel: En person som tas bort, tas bort från alla grupper den ingår i. Men lämpligen tas uppgifter bort i omvänd ordning mot hur uppgifterna skickas in, dvs Activity -> Group -> Duty -> Person. 
