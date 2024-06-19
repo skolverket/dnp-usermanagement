@@ -360,9 +360,8 @@ JWT som skickas från provtjänstens SS12000-klient till huvudmannens SS12000-AP
 Huvudmän behöver göra följande kontroll på en JWT som skickas från SS12000-klienten.
 
 1. Verifiera att JWT har utfärdats av rätt auktoriseringsservern med hjälp av nyckeln ("JSON Web Key
-   Set - JWKS") som
-   finns i denna URL: https://nutid-auth.sunet.se/.well-known/jwks.json. Nedan finns ett exempel på
-   nyckel.
+   Set - JWKS") som finns i denna URL: https://nutid-auth.sunet.se/.well-known/jwks.json. Nedan
+   finns ett exempel på nyckel.
     ````json
     {
     "keys": [
@@ -374,6 +373,14 @@ Huvudmän behöver göra följande kontroll på en JWT som skickas från SS12000
             "y": "D1BKcyK-n4biTlnea_69YOVvA0KY-ei-4AlV-dfPBnU"
         }
       ]
+    }
+    ````
+   För att välja rätt nyckel vid verifiering av JWT, använd `kid` från JWT och matcha det med `kid`
+   från JWKS. `kid` anges som header i JWT.
+   ````json
+    {
+        "alg": "ES256",
+        "kid": "nutid_auth_202201"
     }
     ````
 2. Kontrollera att `organization_id` i JWT är Skolverkets organisationsnummer (SE2021004185).
