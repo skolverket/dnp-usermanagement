@@ -27,7 +27,7 @@ tags:
       * För närvarande **ska** det skickas endast en eduPersonPrincipalName i person objektet.
       * För närvarande **ska** det skickas olika eduPersonPrincipalName för rollen elev och personal.
       * E-postadress är obligatoriskt för skolpersonal.
-      * För närvarande tillåts endast svenskt personnummer.
+      * För närvarande tillåts endast svenskt personnummer, samordningsnummer eller tillfälligt personnummer.
       * Värdet som skickas för `enroledAt.id` under attributet `enrolments` **ska** vara ett
       UUID-värde som är genererat av Skolverket.
   - name: Duty
@@ -152,7 +152,7 @@ paths:
                   type: array
                   items:
                     description: >
-                      Svenskt personnummer.
+                      Svenskt personnummer, samordningsnummer eller tillfälligt personnummer.
                     type: string
               example:
                 ids:
@@ -1885,19 +1885,38 @@ components:
             required:
               - context
               - value
+        securityMarking:
+          type: string
+          title: Code_SecurityMarking
+          description: |
+            Återspeglar värdet från folkbokföringsregistret.
+          enum:
+            - Ingen
+            - Sekretessmarkering
+            - Skyddad folkbokföring
         civicNo:
           type: object
           description: >
-            Personnummer. Just nu är personnummer obligatoriskt och endast verkliga svenska personnummer
-            ska skickas. Huvudmän behöver vara extra uppmärksam på att inte överföra personuppgifter
-            med påhittade personnummer eller test-personnummer från Skatteverket till Skolverkets
-            provtjänst.
+            Personnummer.
           properties:
             value:
               type: string
-              description: >
-                Svenskt personnummer för personen. Personnummer **Ska** anges med 12 siffror
-                utan separatorer. _Exempel: 200901272385_
+              description: |
+                Detta värde måste vara ett svenskt personnummer, samordningsnummer eller ett 
+                tillfälligt personnummer.
+                
+                Svenskt personnummer **ska** anges med 12 siffror utan separatorer. _Exempel: 200901272385_.
+                
+                Samordningsnummer **ska** anges med 12 siffror utan separatorer och födelsedagen **ska** adderas
+                med talet 60. En person som är född den 27 en månad får talet 87 som dag. _Exempel:  200901872385_.
+                
+                Saknas både personnummer och samordningsnummer så förekommer det att ett tillfälligt personnummer
+                definieras i personregistret. Tillfälligt personnummer ska följa standarden ÅÅÅÅMMDDTF1x för
+                män och ÅÅÅÅMMDDTF2x för kvinnor. _Exempel:  20090127TF20_.
+
+                Huvudman behöver vara extra uppmärksam på att inte överföra personuppgifter med påhittade
+                personnummer, samordningsnummer eller test-personnummer från Skatteverket till Skolverkets
+                provtjänst.
               example: "200901272385"
             nationality:
               type: string
@@ -1926,7 +1945,7 @@ components:
                 type: string
                 title: Code_EmailType
                 description: |
-                  Email kan ha en av följanden typen:
+                  Email kan ha en av följande typen:
                   - _Privat_ - E-postadress för privatbruk.
                   - _Skola elev_ - E-postadress som används av elever i skolan.
                   - _Skola personal_ - E-postadress som används av skolpersonal i skolan.
@@ -2107,7 +2126,7 @@ components:
                 }
               ]
     503_overload:
-      description: Svaret är förstort för servern att hantera.
+      description: Svaret är för stort för servern att hantera.
       content:
         application/json:
           schema:
