@@ -8,6 +8,24 @@ Arbetet med att införa digitala nationella prov (DNP) är ett pågående projek
 användarhantering kan därför komma att justeras. Håll dig uppdaterad om den senaste informationen
 här på Github och på [skolverket.se/dnp](https://www.skolverket.se/skolutveckling/digitala-nationella-prov).
 
+# Viktig information om provtjänsten version 1.1
+I provtjänsten version 1.1 som lanseras under hösten 2024 kan huvudmän överföra skyddade personuppgifter. I samband
+med det kommer det också finnas stöd att ta emot personuppgift med samordningsnummer eller tillfälligt
+personnummer (TF-nummer). 
+
+Det är viktigt att kontrollera följande innan överföring av personuppgifter till Skolverkets provtjänst.
+* Varje huvudman behöver utse och ge fullmakt till minst en person som hanterar skyddade personuppgifter.
+  Huvudmän kan skapa fullmakt via [Mina ombud](https://minaombud.se/).
+* Huvudmannens representant med behörighet att hantera skyddade personuppgifter behöver se till att det
+  finns minst en aktuell e-postadress registrerad för mottagande av meddelanden om viktig information gällande skyddade
+  personuppgifter. Detta görs i e-tjänsten [Administration provtjänsten](https://administrationprovtjansten.skolverket.se).
+* Huvudmannens representant med behörighet att hantera skyddade personuppgifter behöver välja vilken
+  pseudonymiseringsmetod som huvudmannen vill använda vid överföring av skyddade personuppgifter. Om
+  ni vill undvika Skolverkets pseudonymisering är det viktigt att ni intygar er pseudonymiseringsmetod
+  och följer instruktionerna. Detta görs i e-tjänsten [Administration provtjänsten](https://administrationprovtjansten.skolverket.se).
+
+> [Läs mer om hur skyddade personuppgifter hanteras i Skolverkets provtjänst](https://www.skolverket.se/skolutveckling/digitala-nationella-prov/overforing-av-uppgifter-till-skolverket/hantera-skyddade-personuppgifter-i-skolverkets-provtjanst)
+
 ## Skolverkets API:er för digitala nationella prov
 Skolverket erbjuder tre metoder för överföring av uppgifter till Skolverkets provtjänst.
 * Provisionering via Provisionerings-API – data skickas till Skolverket.

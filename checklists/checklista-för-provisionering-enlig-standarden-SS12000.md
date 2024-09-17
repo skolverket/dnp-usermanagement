@@ -24,13 +24,16 @@
 4. Skaffa klientcertifikat och etablera integration mot provtjänstens auktoriseringsserver.
    >[Läs mer om provtjänstens auktoriseringsserver](../authentication-api/README.md)
    
-5. Skaffa fullmakt i _**Mina ombud**_ för de personer som administrerar provisionering för huvudmannens räkning i
-   Skolverkets e-tjänst _**Administration provtjänsten**_. 
+5. Skaffa fullmakt i _**Mina ombud**_ för de personer som hanterar överföring av uppgifter, inloggning och
+   skyddade personuppgifter för huvudmannens räkning i Skolverkets e-tjänst _**Administration provtjänsten**_. 
    >[URL till Mina ombud](https://minaombud.se/)
 
    >[Läs mer om Administration provtjänsten](https://www.skolverket.se/skolverkets-e-tjanst-administration-provtjansten)
 
-6. Registrera URL till huvudmannens SS12000-API via Skolverkets e-tjänst Administration provtjänsten. Notera att en
+6. Registrera e-postadress i _**Administration provtjänsten**_ för mottagande av meddelanden om viktig information gällande skyddade
+   personuppgifter.<br /><br />
+
+7. Registrera URL till huvudmannens SS12000-API via Skolverkets e-tjänst Administration provtjänsten. Notera att en
    huvudman kan registrera flera SS12000-API URL:er. Registrering av SS12000-API URL ska ske enligt nedanstående flöde:
    1. Huvudmannens ombud loggar in i Administration provtjänsten och anger SS12000-API URL.
    2. Administration provtjänsten tar emot och skickar URL:en vidare till provtjänstens _**SS12000-klient**_.
@@ -40,10 +43,10 @@
       SS12000-API. Vid prenumeration registrerar SS12000-klienten en specifik "target-URL" för varje SS12000-API URL
       som kommer att användas för att ta emot notifieringar.
    5. SS12000-klienten skickar flera anrop till huvudmannens SS12000-API för att hämta alla uppgifter som behövs i
-      provtjänsten.<br /><br />
+      provtjänsten.
    6. SS12000-klienten skickar statistik via ändpunkten "/statistics" för uppgifter som togs emot och lagrats i provtjänsten.
    7. När fel upptäckts i en uppgift skickar SS12000-klienten felmeddelande via ändpunkten "/log". 
-7. När uppgifter ändras ska huvudmannens SS12000-API skicka notifieringar till provtjänstens SS12000-klient.
+8. När uppgifter ändras ska huvudmannens SS12000-API skicka notifieringar till provtjänstens SS12000-klient.
    Notifiering om ändringar ska ske enligt nedanstående flöde:
    1. Huvudmannens notifieringsklient hämtar JWT från provtjänstens auktoriseringsserver.
    2. Huvudmannens notifieringsklient skickar notis med JWT till SS12000-klienten.

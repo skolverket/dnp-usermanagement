@@ -14,8 +14,17 @@
    
 3. Skaffa klientcertifikat och etablera integration mot provtjänstens auktoriseringsserver.
    >[Läs mer om provtjänstens auktoriseringsserver](../authentication-api/README.md)
-   
-4. Huvudmannens klient skickar uppgifter till provtjänstens Provisioning API.
+
+4. Skaffa fullmakt i _**Mina ombud**_ för de personer som hanterar överföring av uppgifter, inloggning och
+   skyddade personuppgifter för huvudmannens räkning i Skolverkets e-tjänst _**Administration provtjänsten**_.
+   >[URL till Mina ombud](https://minaombud.se/)
+
+   >[Läs mer om Administration provtjänsten](https://www.skolverket.se/skolverkets-e-tjanst-administration-provtjansten)
+
+5. Registrera e-postadress i _**Administration provtjänsten**_ för mottagande av meddelanden om viktig information gällande skyddade
+   personuppgifter.<br /><br />
+
+6. Överföra uppgifter till Skolverkets provtjänst med att skicka data till Provisioning API.
    
    Överföring av uppgifter ska ske enligt nedanstående flöde:
    1. Huvudmannens klient hämtar JWT från provtjänstens auktoriseringsserver.

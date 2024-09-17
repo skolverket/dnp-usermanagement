@@ -44,13 +44,13 @@ Utöver huvudkraven ovan gäller följande specifika krav:
 
 ### Godkända TLS-federationer
 
-I dagsläget är provtjänstens auktoriseringsserver integrerats med en TLS-federation. Denna
+I dagsläget är provtjänstens auktoriseringsserver integrerad med en TLS-federation. Denna
 TLS-federation är Moa ("Machine and Organization Authentication") från Internetstiftelsen.
 > [Läs mer om Moa](https://wiki.federationer.internetstiftelsen.se/pages/viewpage.action?pageId=20545581)
 
 ### Godkända certifikatutfärdare
 
-I dagsläget är provtjänstens auktoriseringsserver integrerats med följande 3 certifikatutfärdare:
+Provtjänstens auktoriseringsserver är integrerad med följande 3 certifikatutfärdare:
 
 * SITHS
   funktionscertifikat. [Läs mer om SITHS funktionscertifikat](https://inera.atlassian.net/wiki/spaces/IAM/pages/359105489/Certifikatspecifikationer).
