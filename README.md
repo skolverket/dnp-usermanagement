@@ -24,6 +24,9 @@ Det är viktigt att kontrollera följande innan överföring av personuppgifter 
   ni vill undvika Skolverkets pseudonymisering är det viktigt att ni intygar er pseudonymiseringsmetod
   och följer instruktionerna. Detta görs i e-tjänsten [Administration provtjänsten](https://administrationprovtjansten.skolverket.se).
 
+**Notera att det är viktigt att kontrollera ovanstående punkter även i verifieringstestmiljö innan genomförande
+av tekniskt verifieringstest för överföring av uppgifter till Skolverkets provtjänst.**
+
 > [Läs mer om hur skyddade personuppgifter hanteras i Skolverkets provtjänst](https://www.skolverket.se/skolutveckling/digitala-nationella-prov/overforing-av-uppgifter-till-skolverket/hantera-skyddade-personuppgifter-i-skolverkets-provtjanst)
 
 ## Skolverkets API:er för digitala nationella prov
