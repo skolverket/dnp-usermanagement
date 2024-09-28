@@ -1924,8 +1924,9 @@ components:
                 med talet 60. En person som är född den 27 en månad får talet 87 som dag. _Exempel:  200901872385_.
                 
                 Saknas både personnummer och samordningsnummer så förekommer det att ett tillfälligt personnummer
-                definieras i personregistret. Tillfälligt personnummer ska följa standarden ÅÅÅÅMMDDTF1x för
-                män och ÅÅÅÅMMDDTF2x för kvinnor. _Exempel:  20090127TF20_.
+                definieras i personregistret. Tillfälligt personnummer ska följa standarden ÅÅÅÅMMDDTFxx. Det näst
+                sista tecknet ska vara en jämn siffra för en kvinna och en udda siffra för en man. Det sista tecknet
+                kan vara valfri siffra. _Exempel:  `20090127TF20` för kvinna och `20090127TF12` för man_.
 
                 Huvudman behöver vara extra uppmärksam på att inte överföra personuppgifter med påhittade
                 personnummer, samordningsnummer eller test-personnummer från Skatteverket till Skolverkets
