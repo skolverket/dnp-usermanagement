@@ -1,7 +1,7 @@
 openapi: 3.0.2
 servers:
   - url: "https://api.skolverket.se/provtjanst/provisioning/v1"
-    description: Produktionsmiljö (endast för skarpt data)
+    description: Produktionsmiljö (Detta är en skarp miljö där endast verkliga uppgifter ska överföras)
 info:
   description: |
     Detta är ett API för överföring av uppgifter till Skolverkets provtjänst.
@@ -1292,6 +1292,19 @@ paths:
           $ref: "#/components/responses/404_not_found"
         default:
           $ref: "#/components/responses/default_error"
+  "/alive":
+    get:
+      operationId: alive
+      tags:
+        - Health
+      summary: Kontrollera om API:et är tillgängligt.
+      responses:
+        "200":
+          description: Tjänsten är tillgänglig.
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
+        default:
+          $ref: "#/components/responses/default_error"
 components:
   securitySchemes:
     BearerAuth:
@@ -2146,6 +2159,16 @@ components:
                   "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
                 }
               ]
+    503_service_unavailable:
+      description: Tjänsten är inte tillgänglig.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Tjänsten är inte tillgänglig. Försök igen senare."
     default_error:
       description: Okänt fel.
       content:

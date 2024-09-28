@@ -166,7 +166,7 @@ certifikatutfärdare.
 
 ````shell script
 $curl --cert huvudmans-fedtls-cert.crt --key huvudmans-fedtls-cert-private.key \
-     --pinnedpubkey sha256//R5cSCBU6RKC6WrzmAcuMhtay+tXuaHUh4CxSWmSal1g=  \
+     --pinnedpubkey sha256//qu2Ajpw7VZjE/i0FP+HI/T8HtUDArUypeO3ENG/+4Fk=  \
      -X POST 'https://nutid-auth.sunet.se/transaction' \
      -H "Content-Type: application/json" \
      --data-raw '{
@@ -197,7 +197,7 @@ Beskrivning av ovanstående `Curl` kommand:
 * `--cert huvudmans-fedtls-cert.crt` pekar på var certifikatets publika nyckel finns i filsystemet.
 * `--key huvudmans-fedtls-cert-private.key` pekar på var privata nyckel för certifikatet finns i
   filsystemet.
-* `--pinnedpubkey sha256//R5cSCBU6RKC6WrzmAcuMhtay+tXuaHUh4CxSWmSal1g=` används för att autentisera
+* `--pinnedpubkey sha256//qu2Ajpw7VZjE/i0FP+HI/T8HtUDArUypeO3ENG/+4Fk=` används för att autentisera
   server certifikatet av auktoriseringsservern.
 * `--data-raw` är JSON-data som skickas till auktoriseringsservern i anropet.
 * `client.key` i JSON-data är identifierare (entityId) för specifika metadata för klienten.
@@ -233,7 +233,7 @@ Exempel anrop:
 
 ````shell script
 $curl --cert huvudmans-fedtls-cert.crt --key huvudmans-fedtls-cert-private.key \
-     --pinnedpubkey sha256//R5cSCBU6RKC6WrzmAcuMhtay+tXuaHUh4CxSWmSal1g=  \
+     --pinnedpubkey sha256//qu2Ajpw7VZjE/i0FP+HI/T8HtUDArUypeO3ENG/+4Fk=  \
      -X POST 'https://nutid-auth.sunet.se/transaction' \
      -H "Content-Type: application/json" \
      --data-raw '{
@@ -268,7 +268,7 @@ SS12000-API:
 
 ````shell script
 $curl --cert skolverket-ss12k-klient.crt --key skolverket-ss12k-klient-private.key \
-     --pinnedpubkey sha256//R5cSCBU6RKC6WrzmAcuMhtay+tXuaHUh4CxSWmSal1g=  \
+     --pinnedpubkey sha256//qu2Ajpw7VZjE/i0FP+HI/T8HtUDArUypeO3ENG/+4Fk=  \
      -X POST 'https://nutid-auth.sunet.se/transaction' \
      -H "Content-Type: application/json" \
      --data-raw '{
