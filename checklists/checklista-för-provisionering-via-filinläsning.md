@@ -2,10 +2,10 @@
 
 1. Samla in uppgifter som ska överföras till Skolverkets provtjänst. Uppgifter som behövs i Skolverkets 
    provtjänst finns i följande Excelmall. 
-   >[Se Excelmall för överföring av uppgifter via filinläsning](https://www.skolverket.se/skolutveckling/digitala-nationella-prov/overforing-av-uppgifter-till-skolverket#h-Alternativ3Filinlasning).
+   >[Se Excelmall för överföring av uppgifter via filinläsning](https://www.skolverket.se/skolutveckling/digitala-nationella-prov/overforing-av-uppgifter-till-skolverket#h-Alternativ3Filinlasning)
+
 2. Det är inte obligatoriskt men är rekommenderats av Skolverket att hämta studievägs- och skolenhetsinformation
    från _**open-data API**_ för att sedan kontrollera uppgifter innan överföring till Skolverkets provtjänst.
-   
    >[Läs mer om open-data API](../open-data-api/README.md)
    
 3. Förbereda uppgifter enligt Skolverkets mall för filinläsning.
@@ -27,6 +27,7 @@
          som bedrivs av huvudmannen ska fyllas i på egen rad i Excelbladet.    
    3. Det är inte obligatoriskt men Skolverket rekommenderar att förbereda alla uppgifter i en fil vid första
       inläsning.<br /><br />
+   
 4. Skaffa fullmakt i _**Mina ombud**_ för de personer som hanterar överföring av uppgifter, inloggning och
    skyddade personuppgifter för huvudmannens räkning i Skolverkets e-tjänst _**Administration provtjänsten**_.
    >[URL till Mina ombud](https://minaombud.se/)
@@ -34,7 +35,7 @@
    >[Läs mer om Administration provtjänsten](https://www.skolverket.se/skolverkets-e-tjanst-administration-provtjansten)
 
 5. Registrera e-postadress i _**Administration provtjänsten**_ för mottagande av meddelanden om viktig information gällande skyddade
-   personuppgifter.<br /><br />
+   personuppgifter. <br /><br />
    
 6. Läsa in fil via Skolverkets e-tjänst Administration provtjänsten.
    >[Läs mer om Administration provtjänsten](https://www.skolverket.se/skolverkets-e-tjanst-administration-provtjansten)
@@ -46,7 +47,7 @@
    3. Huvudmannens ombud laddar upp fil och väntar på överföringsstatus. Notera att det kan ta alltifrån några sekunder
       till flera minuter att ladda upp fil.
    4. Administration provtjänsten presenterar överföringsstatus av alla uppgifter i en tabell. Tabellen innehåller
-      både lyckade och misslyckade uppgifter. Misslyckade uppgifter behöver rättas och läsas in igen.
+      både lyckade och misslyckade uppgifter. Misslyckade uppgifter behöver rättas och läsas in igen. <br /><br />
 7. Uppgifter som har ändrats från tidigare inläsning bör förberedas i en ny fil och läsas in via
    Administration provtjänsten, exempelvis:
    * Personuppgifter för elever eller personal har ändrats.
