@@ -7,39 +7,35 @@ auktoriseringstoken till klienter efter autentisering.
 
 ## Förutsättningar för autentisering och auktorisering
 
-För att kunna överföra uppgifter till Skolverkets provtjänst behöver du som huvudman uppfylla ett av
-följande
-huvudkrav:
+För att kunna överföra uppgifter till Skolverkets provtjänst maskinellt behöver du som huvudman
+uppfylla ett av följande huvudkraven.
 
-1. Ansluta till en TLS-federation som är ansluten
-   till [Fidus](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/tekniska-forutsattningar-for-digitala-nationella-prov/fidus)
+1. Vara medlem i en TLS-federation som är ansluten till [Fidus](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/tekniska-forutsattningar-for-digitala-nationella-prov/fidus)
    samt se till att huvudmannens klientcertifikat är registrerat i ett metadataregister som
-   TLS-federationen
-   tillhandahåller.
-   > [Läs mer om TLS-federation](https://www.ietf.org/archive/id/draft-halen-fed-tls-auth-00.html).
+   tillhandahålls av TLS-federationen.
+   > [Läs mer om TLS-federation](https://www.ietf.org/archive/id/draft-halen-fed-tls-auth-15.html).
 2. Skaffa ett klientcertifikat från en certifikatutfärdare som är godkänd av Fidus.
+   > [Läs mer om godkända certifikatutfärdare](#godkända-certifikatutfärdare).
 
 Utöver huvudkraven ovan gäller följande specifika krav:
 
 * Klientcertifikatet används för att identifiera huvudmannen. Därför ska varje huvudman ha minst ett
   klientcertifikat. Leverantörer som hanterar överföring av uppgifter för flera huvudmän behöver
-  tillhandahålla
-  minst ett klientcertifikat per huvudman.
+  tillhandahålla minst ett klientcertifikat per huvudman.
 * Klientcertifikatet ska ha en koppling till huvudmannens organisationsnummer.
     * En huvudman som är ansluten till en TLS-federation ska registrera både klientcertifikat och
-      organisationsnummer i sitt metadata. Huvudman som har en certifikatkedja som består av
-      rot-certifikat, mellancertifikat och klientcertifikat kan registrera alla certifikaten i kedjan
+      organisationsnummer i sitt metadata. En huvudman som har en certifikatkedja som består av
+      rot-certifikat, mellancertifikat och klientcertifikat behöver registrera endast rot-certifikatet
       som `issuers` i sitt metadata, men värdet för `pins` behöver beräknas från klientcertifikatet.
-    * En huvudman som har ett klientcertifikat från en certifikatutfärdare ska se till att sitt
+    * En huvudman som har ett klientcertifikat från en certifikatutfärdare behöver se till att sitt
       organisationsnummer finns i certifikatet.
+* Om klientcertifikatet har information som innehåller internationella tecken såsom `å`, `ä` och `ö` ska informationen var UTF-8 inkodat.
 * Följande alternativ finns för huvudmän som hanterar överföring av uppgifter med flera klienter
-  eller flera
-  SS 12000-API:er:
-    * Tillhandahålla ett klientcertifikat per klient eller SS 12000-API. Notera att Skolverkets
-      provtjänst
+  eller flera SS 12000-API:er:
+    * Tillhandahålla ett klientcertifikat per klient eller per SS 12000-API. Notera att certifikatet
+      är organisationsidentifierare inte klient eller leverantör identifierare. Skolverkets provtjänst
       behandlar klientcertifikaten som tillhör en huvudman lika, det vill säga att varje
-      certifikatinnehavare
-      har full åtkomst till huvudmannens data i provtjänsten.
+      certifikatinnehavare har full åtkomst till huvudmannens data i provtjänsten.
     * Använda ett klientcertifikat för alla sina klienter eller SS 12000-API:er.
 
 ### Godkända TLS-federationer
@@ -52,12 +48,9 @@ TLS-federation är Moa ("Machine and Organization Authentication") från Interne
 
 Provtjänstens auktoriseringsserver är integrerad med följande 3 certifikatutfärdare:
 
-* SITHS
-  funktionscertifikat. [Läs mer om SITHS funktionscertifikat](https://inera.atlassian.net/wiki/spaces/IAM/pages/359105489/Certifikatspecifikationer).
-* E-identitet för offentlig sektor -
-  EFOS. [Läs mer om EFOS](https://www.forsakringskassan.se/myndigheter-och-samarbetspartner/e-tjanster-for-myndigheter-och-samarbetspartner/e-identitet-for-offentlig-sektor-efos).
-* Expisoft
-  funktionscertifikat. [Läs mer om Expisoft funktionscertifikat](https://eid.expisoft.se/products/certificates/?product_id=5).
+* SITHS funktionscertifikat. [Läs mer om SITHS funktionscertifikat](https://inera.atlassian.net/wiki/spaces/IAM/pages/359105489/Certifikatspecifikationer).
+* E-identitet för offentlig sektor - EFOS. [Läs mer om EFOS](https://www.forsakringskassan.se/myndigheter-och-samarbetspartner/e-tjanster-for-myndigheter-och-samarbetspartner/e-identitet-for-offentlig-sektor-efos).
+* Expisoft serverlegitimation/organisationslegitimation certifikat. [Läs mer om Expisoft funktionscertifikat](https://eid.expisoft.se/products/certificates/?product_id=5).
 
 Följande tabeller beskriver de specifika utfärdarcertifikat som finns konfigurerats i test- och
 produktionsmiljö av provtjänstens auktoriseringsserver.
@@ -83,10 +76,8 @@ Se [Hämta JWT med certifikat från godkänd certifikatutfärdare](#hämta-jwt-f
 ## Autentisering utifrån vald metod för överföring av uppgifter
 
 Inför maskinell överföring av uppgifter till Skolverkets provtjänst krävs det att klienter
-autentiserar
-sig mot provtjänstens auktoriseringsserver enligt principen mTLS ("mutual Transport Layer Security")
-och hämtar
-JWT ("JSON Web Token").
+autentiserar sig mot provtjänstens auktoriseringsserver enligt principen mTLS ("mutual Transport Layer Security")
+och hämtar JWT ("JSON Web Token").
 
 "Trust store" för provtjänstens auktoriseringsserver förbereds genom att:
 
@@ -105,8 +96,7 @@ Nedan beskrivs specifika flöden för autentisering utifrån vald metod för öv
 1. Huvudmannens klient autentiserar sig mot provtjänstens auktoriseringsserver genom att presentera
    sitt klientcertifikat.
 2. Auktoriseringsservern autentiserar klientcertifikatet mot etablerad "trust store". Huvudmannens
-   klient
-   kan också kontrollera servercertifikatet av auktoriseringsservern.
+   klient kan också kontrollera servercertifikatet av auktoriseringsservern.
 3. Auktoriseringsservern utfärdar JWT till klienten.
 4. Huvudmannens klient presenterar JWT vid överföring av uppgifter till provtjänstens
    Provisioning-API.
@@ -117,21 +107,17 @@ Se [Hämta JWT för åtkomst till Provisioning API](#hämta-jwt-för-åtkomst-ti
 
 Denna metod för överföring av uppgifter består av två huvudsteg utifrån vilken part som initierar
 kommunikationen. Vid förändringar av uppgifter skickar huvudmannen notifiering, som också kallas "
-webhook", till
-Skolverkets provtjänst. Utifrån informationen som finns i notifieringen hämtar Skolverkets
-provtjänst förändringar
-från huvudmannens SS 12000-API. Autentiseringsflöden för dessa två steg beskrivs nedan.
+webhook", till Skolverkets provtjänst. Utifrån informationen som finns i notifieringen hämtar Skolverkets
+provtjänst förändringar från huvudmannens SS 12000-API. Autentiseringsflöden för dessa två steg beskrivs nedan.
 
 #### _Autentiseringsflöde vid notifiering av ändrade uppgifter_
 
 ![Autentiseringflöde för SS 12000 "webhook" notifiering](authentication-flow-ss12000-webhook-notification.png)
 
 1. Huvudmannens notifieringsklient autentiserar sig mot provtjänstens auktoriseringsserver genom att
-   presentera
-   sitt klientcertifikat.
+   presentera sitt klientcertifikat.
 2. Auktoriseringsservern autentiserar klientcertifikatet mot etablerad "trust store".
-   Notifieringsklienten kan också
-   kontrollera servercertifikatet av auktoriseringsservern.
+   Notifieringsklienten kan också kontrollera servercertifikatet av auktoriseringsservern.
 3. Auktoriseringsservern utfärdar JWT till notifieringsklienten.
 4. Notifieringsklienten presenterar JWT vid notifiering av förändringar till provtjänstens SS
    12000-klient.
@@ -143,11 +129,9 @@ Se [Hämta JWT för åtkomst till notifieringsändpunkt av SS12000-klienten](#h�
 ![Autentiseringflöde för SS 12000 datainhämtning](authentication-flow-ss12000-data-fetching.png)
 
 1. Provtjänstens SS 12000-klient autentiserar sig mot provtjänstens auktoriseringsserver genom att
-   presentera
-   sitt klientcertifikat.
+   presentera sitt klientcertifikat.
 2. Auktoriseringsservern autentiserar klientcertifikatet mot etablerad "trust store". Provtjänstens
-   SS 12000-klient
-   kan också kontrollera servercertifikatet av auktoriseringsservern.
+   SS 12000-klient kan också kontrollera servercertifikatet av auktoriseringsservern.
 3. Auktoriseringsservern utfärdar JWT till klienten.
 4. Skolverkets SS 12000-klient presenterar JWT till huvudmannens SS 12000-API vid hämtning av
    förändrade uppgifter.
