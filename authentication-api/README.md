@@ -55,7 +55,9 @@ Provtjänstens auktoriseringsserver är integrerad med följande 3 certifikatutf
 Följande tabeller beskriver de specifika utfärdarcertifikat som finns konfigurerats i test- och
 produktionsmiljö av provtjänstens auktoriseringsserver.
 
-Se [Hämta JWT med certifikat från godkänd certifikatutfärdare](#hämta-jwt-för-åtkomst-till-provisioning-api-med-certifikat-från-en-godkänd-certifikatutfärdare).
+Se [Hämta JWT med certifikat från godkänd certifikatutfärdare för åtkomst till Provisioning API](#hämta-jwt-för-åtkomst-till-provisioning-api-med-certifikat-från-en-godkänd-certifikatutfärdare).
+
+Se [Hämta JWT med certifikat från godkänd certifikatutfärdare för åtkomst till SS12000-klienten](#hämta-jwt-för-åtkomst-till-notifierings-ändpunkten-av-provtjänstens-ss12000-klient-med-certifikat-från-en-godkänd-certifikatutfärdare).
 
 #### CA för produktionsmiljö av auktoriseringsserver (https://nutid-auth.sunet.se/transaction)
 
@@ -122,7 +124,9 @@ provtjänst förändringar från huvudmannens SS 12000-API. Autentiseringsflöde
 4. Notifieringsklienten presenterar JWT vid notifiering av förändringar till provtjänstens SS
    12000-klient.
 
-Se [Hämta JWT för åtkomst till notifieringsändpunkt av SS12000-klienten](#hämta-jwt-för-åtkomst-till-notifierings-ändpunkten-av-provtjänstens-ss12000-klient-med-certifikat-i-en-tls-federation).
+Se [Hämta JWT för åtkomst till notifieringsändpunkt av SS12000-klienten med certifikat i en TLS-federation](#hämta-jwt-för-åtkomst-till-notifierings-ändpunkten-av-provtjänstens-ss12000-klient-med-certifikat-i-en-tls-federation).
+
+Se [Hämta JWT för åtkomst till notifieringsändpunkt av SS12000-klienten med certifikat från en godkänd certifikatutfärdare](#hämta-jwt-för-åtkomst-till-notifierings-ändpunkten-av-provtjänstens-ss12000-klient-med-certifikat-från-en-godkänd-certifikatutfärdare).
 
 #### _Autentiseringsflöde vid datainhämtning_
 
@@ -141,10 +145,9 @@ Se [Hämta JWT för åtkomst till SS12000-API hos huvudman](#hämta-jwt-för-åt
 ## HTTP-anrop mot auktoriseringsserver
 
 Beroende på vilken typ av certifikat som huvudmannen har finns det två typer av HTTP-anrop som
-kan användas för att hämta JWT från provtjänstens auktoriseringsserver. Nedan finns 4 exempelanrop
-för hur JWT kan hämtas från provtjänstens auktoriseringsserver. Första 3 exemplen avser certifikat
-som finns med i en TLS-federation metadata medan det sista exemplet avser en certifikat från godkänd
-certifikatutfärdare.
+kan användas för att hämta JWT från provtjänstens auktoriseringsserver. Nedan finns exempelanrop
+som visar hur JWT kan hämtas från provtjänstens auktoriseringsserver med att använda certifikat
+i en TLS-federation och från godkänd certifikatutfärdare.
 
 ### Hämta JWT för åtkomst till Provisioning API med certifikat i en TLS-federation
 
@@ -349,7 +352,10 @@ $curl --cert huvudmans-expisoft-cert.crt --key huvudmans-expisoft-cert-private.k
 ````
 
 Notera att `client.key.cert#S256` är fingeravtryck för certifikatet. Följande kommando kan användas
-för att generera fingeravtryck för ett certifikat.
+för att generera fingeravtryck för ett certifikat. Det är olika kommando som används för att generera
+fingeravtryck för certifikat från en godkänd certifikatutfärdare och för att generera pin för certifikat
+i en TLS-federation.
+
 `openssl x509 -in huvudmans-expisoft-cert.crt -noout -sha256 -fingerprint | sed -e 's/.*=//' -e 's/://g' | xxd -r -p | base64`
 
 ### Verifiering av JWT som skickas från Provtjänstens SS12000-Klient
