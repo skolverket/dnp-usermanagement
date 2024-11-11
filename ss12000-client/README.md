@@ -26,7 +26,7 @@ sequenceDiagram
         par SS12000 Client to AP, Administration Provtjänsten
             CLIENT -->> AP: Succeeded
         and SS12000 Client to SS12000 API
-            loop For each recource type
+            loop For each resource type
                 Note over CLIENT, API: The resources are handled in the following order:<br>ORGANISATION, PERSON, GROUP, DUTY, ACTIVITY
                 loop While Pagination token is present
                     CLIENT ->> API: GET: Resource type.

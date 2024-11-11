@@ -244,6 +244,44 @@ $curl --cert huvudmans-fedtls-cert.crt --key huvudmans-fedtls-cert-private.key \
 
 Notera att `locations` i JSON-data ska innehålla bas-URL till provtjänstens SS12000-klient
 
+### Hämta JWT för åtkomst till notifierings ändpunkten av Provtjänstens SS12000-klient med certifikat från en godkänd certifikatutfärdare
+
+````shell script
+$curl --cert huvudmans-expisoft-cert.crt --key huvudmans-expisoft-cert-private.key \
+     -X POST 'https://nutid-auth.sunet.se/transaction' \
+     -H "Content-Type: application/json" \
+     --data-raw '{
+        "access_token": [
+            {
+                "access": [
+                    {
+                        "type": "ss12000-client",
+                        "locations": [
+                            "https://api.skolverket.se/provtjanst/ss12000/klient/v1"
+                        ]
+                    }
+                ],
+                "flags": [
+                    "bearer"
+                ]
+            }
+        ],
+        "client": {
+            "key": {
+                "proof": "mtls",
+                "cert#S256": "Ct4nIeRScfjAT6ZMn41bWuMEg5Dv7nmg170O8tG1PhI="
+            }
+        }
+    }'
+````
+
+Notera att `client.key.cert#S256` är fingeravtryck för certifikatet. Följande kommando kan användas
+för att generera fingeravtryck för ett certifikat. Det är olika kommando som används för att generera
+fingeravtryck för certifikat från en godkänd certifikatutfärdare och för att generera pin för certifikat
+i en TLS-federation.
+
+`openssl x509 -in huvudmans-expisoft-cert.crt -noout -sha256 -fingerprint | sed -e 's/.*=//' -e 's/://g' | xxd -r -p | base64`
+
 ### Hämta JWT för åtkomst till huvudmannens SS12000-API med certifikat i en TLS-federation
 
 Exempel anrop som skickas från provtjänstens SS12000-klient till auktoriseringsserver för åtkomst
