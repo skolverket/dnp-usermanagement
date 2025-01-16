@@ -29,7 +29,12 @@ Utöver huvudkraven ovan gäller följande specifika krav:
       som `issuers` i sitt metadata, men värdet för `pins` behöver beräknas från klientcertifikatet.
     * En huvudman som har ett klientcertifikat från en certifikatutfärdare behöver se till att sitt
       organisationsnummer finns i certifikatet.
-* Om klientcertifikatet har information som innehåller internationella tecken såsom `å`, `ä` och `ö` ska informationen var UTF-8 inkodat.
+* Om klientcertifikatet har information som innehåller internationella tecken såsom `å`, `ä` och `ö` ska
+  informationen var UTF-8 inkodat. Huvudmän och leverantörer kan använda följande kommando för att kontrollera
+  att certifikatet har rätt kodning.
+  ````shell script
+  $ openssl x509 -in huvudmans-cert.crt -noout -text -nameopt multiline,show_type
+  ````
 * Följande alternativ finns för huvudmän som hanterar överföring av uppgifter med flera klienter
   eller flera SS 12000-API:er:
     * Tillhandahålla ett klientcertifikat per klient eller per SS 12000-API. Notera att certifikatet
@@ -283,7 +288,9 @@ för att generera fingeravtryck för ett certifikat. Det är olika kommando som 
 fingeravtryck för certifikat från en godkänd certifikatutfärdare och för att generera pin för certifikat
 i en TLS-federation.
 
-`openssl x509 -in huvudmans-expisoft-cert.crt -noout -sha256 -fingerprint | sed -e 's/.*=//' -e 's/://g' | xxd -r -p | base64`
+````shell script
+$ openssl x509 -in huvudmans-expisoft-cert.crt -noout -sha256 -fingerprint | sed -e 's/.*=//' -e 's/://g' | xxd -r -p | base64
+````
 
 ### Hämta JWT för åtkomst till huvudmannens SS12000-API med certifikat i en TLS-federation
 
@@ -356,7 +363,9 @@ för att generera fingeravtryck för ett certifikat. Det är olika kommando som 
 fingeravtryck för certifikat från en godkänd certifikatutfärdare och för att generera pin för certifikat
 i en TLS-federation.
 
-`openssl x509 -in huvudmans-expisoft-cert.crt -noout -sha256 -fingerprint | sed -e 's/.*=//' -e 's/://g' | xxd -r -p | base64`
+````shell script
+$ openssl x509 -in huvudmans-expisoft-cert.crt -noout -sha256 -fingerprint | sed -e 's/.*=//' -e 's/://g' | xxd -r -p | base64
+````
 
 ### Verifiering av JWT som skickas från Provtjänstens SS12000-Klient
 
