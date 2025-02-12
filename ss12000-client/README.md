@@ -57,7 +57,11 @@ sequenceDiagram
 2. **JWT Validering:**
    - SS1200 Client validerar JWT (JSON Web Token) och dess anspråk (claims).
 
-3. **Hantering av Resurstyper:**
+3. **Fördröjning:**
+   - SS1200 Client väntar 20 minuter innan den reagerar på webhooken.
+   - SS1200 Client ignorerar dubbletter av webhooks (samma prenumeration och resurstyp).
+
+4. **Hantering av Resurstyper:**
    - För varje resurstyp i webhook-meddelandet hanteras resurserna i följande ordning: ORGANISATION, PERSON, GROUP, DUTY, ACTIVITY, DELETED.
    - Så länge det finns en pagineringstoken i svaret från huvudmannens API:
       - SS1200 Client hämtar `lastModified` per resurs och webhook.
@@ -65,11 +69,11 @@ sequenceDiagram
       - API svarar med data och eventuellt en pagineringstoken.
       - **Notering:** Klienten kommer att försöka hämta data tre gånger innan jobbet anses misslyckat.
 
-4. **Felhantering:**
+5. **Felhantering:**
    - Om jobbet misslyckas eller om antalet tillåtna fel överskrids (3):
       - För varje misslyckad resurs skickar SS1200 Client ett POST-meddelande till API med en loggpost som innehåller ett felmeddelande och en felkod.
 
-5. **Statistikrapportering:**
+6. **Statistikrapportering:**
    - SS1200 Client skickar ett POST-meddelande till API med en statistikpost.
    - **Notering:** Systemet skiljer inte mellan skapade och uppdaterade entiteter, därför används endast `StatisticsEntry.updatedCount`.
 
@@ -83,12 +87,13 @@ sequenceDiagram
     critical Validate JWT
         CLIENT --> CLIENT: Validate claims in JWT.
     end
+    Note over CLIENT, API: Delay of 20 minutes before reacting to the webhook.<br> The SS12000 Client will ignore duplicate webhooks.
     loop For resource types in Webhook.
         Note over CLIENT, API: The resources are handled in the following order:<br>ORGANISATION, PERSON, GROUP, DUTY, ACTIVITY, DELETED
         loop While Pagination token is present
             CLIENT -->> CLIENT: Get lastModified per resource and webhook.
             CLIENT ->> API: GET: Resource type with meta.lastModified.
-            Note over CLIENT, API: The client will try to GET data 3 times before failing the job. 
+            Note over CLIENT, API: The client will try to GET data 3 times before failing the job.
             API -->> CLIENT: [DATA] + optional: [PAGINATION TOKEN]
             Note over CLIENT: Validation of data. Will report to log <br> if data is malformed
             alt Validation failed
@@ -102,7 +107,7 @@ sequenceDiagram
             Note over CLIENT, API: The system does not differentiate between<br>CREATED and UPDATED entities.<br>Thus all only StatisticsEntry.updatedCount is used.
         end
     end
-    
+
 ```
 
 
