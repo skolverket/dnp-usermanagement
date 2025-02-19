@@ -1434,12 +1434,14 @@ components:
                     description: |
                       Asynkront svar kan ha följande status:
                       - _Pending_ - Den asynkrona processen är inte klar ännu.
-                      - _Success_ - Den asynkrona processen är slutförd med framgång.
-                      - _Error_ - Den asynkrona processen är slutförd med fel.
+                      - _Success_ - Den asynkrona processen är slutförd med ett lyckat resultat.
+                      - _Error_ - Den asynkrona processen är slutförd med ett misslyckat resultat.
+                      - _TemporaryError_ - Den asynkrona processen har avbrutits på grund av ett tillfälligt fel. Försök igen senare.
                     enum:
                       - Pending
                       - Success
                       - Error
+                      - TemporaryError
                     default: "Pending"
                     example: "Error"
                   statusCode:
