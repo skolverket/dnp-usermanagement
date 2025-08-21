@@ -325,8 +325,21 @@ paths:
                         "status": "Success",
                         "statusCode": 201,
                         "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/persons/3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "provisioningStatus": true,
-                        "errors": []
+                        "errors": [],
+                        "warnings": [
+                          {
+                              "id": "3047",
+                              "statusCode": 400,
+                              "messageType": "Bristfälligt värde",
+                              "message": "Bristfälligt värde på Federationsanvändarnamn, värdet innehåller de tre första bokstäverna i efternamnet, eller de två första bokstäverna i efternamnet och de två första bokstäverna i förnamnet. Uppdatera värdet så att det följer Skolverkets riktlinjer för EPPN, se https://www.skolverket.se/skolutveckling/digitala-nationella-prov/overforing-av-uppgifter-till-skolverket/eppn.",
+                              "resourceType": "Person",
+                              "resourceId": "1282f516-d087-47fc-b82e-481e6663ba02",
+                              "attributeName": "eppn",
+                              "attributeValue": "np-test-dev-2@testverket.se",
+                              "severityLevel": "Warning",
+                              "timeOfOccurance": "2025-08-14T16:17:42.048+02:00"
+                          }
+                        ]
                       },
                       "meta": {
                         "created": "2021-05-12T10:30:00.123+02:00",
@@ -625,7 +638,6 @@ paths:
                         "status": "Success",
                         "statusCode": 201,
                         "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/duties/3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "provisioningStatus": true,
                         "errors": []
                       },
                       "meta": {
@@ -937,7 +949,6 @@ paths:
                         "status": "Success",
                         "statusCode": 201,
                         "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/groups/3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "provisioningStatus": false,
                         "errors": []
                       },
                       "meta": {
@@ -1243,7 +1254,6 @@ paths:
                         "status": "Success",
                         "statusCode": 201,
                         "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/activities/3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "provisioningStatus": true,
                         "errors": []
                       },
                       "meta": {
@@ -1455,22 +1465,18 @@ components:
                       URL till resursen som skapades. Det returneras endast om
                       resurs skapades.
                     example: "https://api.skolverket.se/dnp/iga/provisioning/v1/persons/3fa85f64-5717-4562-b3fc-2c963f66afa7"
-                  provisioningStatus:
-                    type: boolean
-                    description: |
-                      Provisioneringsstatus av resursen i provtjänsten.
-                      Returneras endast om asynkrona processen är slutförd med `status=Success`.
-                      - _false_ - Resursen är mottagen och har lagrats hos Skolverket men
-                                  informationen är inte fullständig för att genomföra
-                                  provisionering till provplattformen. Till exempel,
-                                  personuppgifter som skickas för skolpersonal provisioneras inte
-                                  till provtjänsten förrän information om tjänstgöring skickas.
-                      - _true_ - Provisionering till provplattformen är genomförd.
-                    example: false
                   errors:
                     type: array
-                    description: Lista med felmeddelande. Returneras endast om
-                      fel inträffades.
+                    description: >
+                      Lista över felmeddelanden. Returneras endast om ett fel har inträffat,
+                      vilket innebär att uppgiften inte accepterades.
+                    items:
+                      $ref: "#/components/schemas/LogEntry"
+                  warnings:
+                    type: array
+                    description: >
+                      Lista över varningsmeddelanden. Returneras endast om uppgiften accepteras
+                      men det finns vissa problem som bör åtgärdas.
                     items:
                       $ref: "#/components/schemas/LogEntry"
                 required:
