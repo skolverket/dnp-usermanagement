@@ -36,21 +36,21 @@ sequenceDiagram
     Provisioning-API-->>Huvudmannens-Klient: Statusar för varje 'Person' objekt
     Huvudmannens-Klient->>Huvudmannens-Klient: Spara statusar för varje 'Person' objekt
     
-    Note over Huvudmannens-Klient: Kontrollera att 'Person' objekt är inskickad och fått lyckad status innan 'Duty' skickas
+    Note over Huvudmannens-Klient: Kontrollera att 'Person' objekt<br>är inskickad och fått lyckad status<br>innan 'Duty' skickas
     Huvudmannens-Klient->>Provisioning-API: Skicka flera 'Duty' objekt
     Provisioning-API-->>Huvudmannens-Klient: 'jobId' returneras
     Huvudmannens-Klient->>Provisioning-API: Kontrollera status med 'jobId'
     Provisioning-API-->>Huvudmannens-Klient: Statusar för varje 'Duty' objekt
     Huvudmannens-Klient->>Huvudmannens-Klient: Spara statusar för varje 'Duty' objekt
     
-    Note over Huvudmannens-Klient: Kontrollera att gruppmedlemmars 'Person' objekt är inskickad och fått lyckad status innan 'Group' skickas
+    Note over Huvudmannens-Klient: Kontrollera att gruppmedlemmars 'Person' objekt<br>är inskickad och fått lyckad status<br>innan 'Group' skickas
     Huvudmannens-Klient->>Provisioning-API: Skicka flera 'Group' objekt
     Provisioning-API-->>Huvudmannens-Klient: 'jobId' returneras
     Huvudmannens-Klient->>Provisioning-API: Kontrollera status med 'jobId'
     Provisioning-API-->>Huvudmannens-Klient: Statusar för varje 'Group' objekt
     Huvudmannens-Klient->>Huvudmannens-Klient: Spara statusar för varje 'Duty' objekt
 
-    Note over Huvudmannens-Klient: Kontrollera att relevanta 'Group' och 'Duty' objekt är inskickad och fått lyckad status innan 'Activity' skickas
+    Note over Huvudmannens-Klient: Kontrollera att relevanta 'Group' och 'Duty' objekt<br>är inskickad och fått lyckad status<br>innan 'Activity' skickas
     Huvudmannens-Klient->>Provisioning-API: Skicka flera 'Activity' objekt
     Provisioning-API-->>Huvudmannens-Klient: 'jobId' returneras
     Huvudmannens-Klient->>Provisioning-API: Kontrollera status med 'jobId'
@@ -60,9 +60,11 @@ sequenceDiagram
 
 
 ## Referenser
-Information om digitalisering av de nationella proven finns på [Skolverkets webbplats](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/digitalisering-av-de-nationella-proven)
+Information om digitalisering av de nationella proven finns på
+[Skolverkets webbplats](https://www.skolverket.se/prov-och-bedomning/provplattformen---tekniska-forberedelser/om-digitala-nationella-prov)
 
-Information om SS 12000 finns på [https://www.sis.se/standardutveckling/tksidor/tk400499/sistk450/ss-12000/](https://www.sis.se/standardutveckling/tksidor/tk400499/sistk450/ss-12000/)
+SS 12000 specifikation finns på
+[https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/](https://www.sis.se/produkter/informationsteknik-kontorsutrustning/ittillampningar/ittillampningar-inom-utbildning/ss-120002020/)
 
 ## Kontakt
 https://www.skolverket.se/kontakt

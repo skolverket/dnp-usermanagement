@@ -2,7 +2,7 @@
 
 1. Samla in uppgifter som ska överföras till Skolverkets provtjänst. Uppgifter som behövs i Skolverkets 
    provtjänst finns i följande Excelmall. 
-   >[Se Excelmall för överföring av uppgifter via filinläsning](https://www.skolverket.se/skolutveckling/digitala-nationella-prov/overforing-av-uppgifter-till-skolverket#h-Alternativ3Filinlasning)
+   >[Se Excelmall för överföring av uppgifter via filinläsning](https://www.skolverket.se/prov-och-bedomning/provplattformen---tekniska-forberedelser/tekniska-krav-och-vagledning/overforing-av-uppgifter-till-skolverket#heading-5)
 
 2. Det är inte obligatoriskt men är rekommenderats av Skolverket att hämta studievägs- och skolenhetsinformation
    från _**open-data API**_ för att sedan kontrollera uppgifter innan överföring till Skolverkets provtjänst.
@@ -38,7 +38,7 @@
    personuppgifter. <br /><br />
    
 6. Läsa in fil via Skolverkets e-tjänst Administration provtjänsten.
-   >[Läs mer om Administration provtjänsten](https://www.skolverket.se/skolverkets-e-tjanst-administration-provtjansten)
+   >[Läs mer om Administration provtjänsten](https://www.skolverket.se/prov-och-bedomning/provplattformen---tekniska-forberedelser/om-administration-provtjansten)
 
    Filinläsning ska ske enligt nedanstående flöde:
    1. Huvudmannens ombud loggar in i Administration provtjänsten. 

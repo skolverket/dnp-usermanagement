@@ -1,7 +1,7 @@
 ## Checklista för en huvudman som överför uppgifter genom att skicka data till provtjänstens Provisioning API
 
 1. Samla in och förbereda uppgifter som ska överföras till Skolverkets provtjänst.
-   >[Se attributlista för provisionering](https://www.skolverket.se/skolutveckling/digitala-nationella-prov/overforing-av-uppgifter-till-skolverket#h-UppgiftersombehoveroverforastillSkolverket)
+   >[Se attributlista för provisionering](https://www.skolverket.se/prov-och-bedomning/provplattformen---tekniska-forberedelser/tekniska-krav-och-vagledning/overforing-av-uppgifter-till-skolverket#heading-7)
 
 2. Hämta provtjänstens öppna data från _**open-data API**_.<br />
    Provaktiviteter som motsvarar ämnen eller kurser där det genomförs nationella prov och bedömningsstöd ska
@@ -20,7 +20,7 @@
    skyddade personuppgifter för huvudmannens räkning i Skolverkets e-tjänst _**Administration provtjänsten**_.
    >[URL till Mina ombud](https://minaombud.se/)
 
-   >[Läs mer om Administration provtjänsten](https://www.skolverket.se/skolverkets-e-tjanst-administration-provtjansten)
+   >[Läs mer om Administration provtjänsten](https://www.skolverket.se/prov-och-bedomning/provplattformen---tekniska-forberedelser/om-administration-provtjansten)
 
 5. Registrera e-postadress i _**Administration provtjänsten**_ för mottagande av meddelanden om viktig information gällande skyddade
    personuppgifter.<br /><br />

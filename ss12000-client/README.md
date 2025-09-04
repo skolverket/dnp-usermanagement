@@ -120,12 +120,11 @@ För vidare information rekommenderas att man läser in på [referens implementa
 * [Referens implementationen av huvudmannens API](https://github.com/skolverket/dnp-ss12000-reference-api).
 * [Miljöer](../environments.md)
 
+## Referenser
+Information om digitalisering av de nationella proven finns på [Skolverkets webbplats](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/digitalisering-av-de-nationella-proven)
+
+Information om SS 12000 finns på [https://www.sis.se/standardutveckling/tksidor/tk400499/sistk450/ss-12000/](https://www.sis.se/standardutveckling/tksidor/tk400499/sistk450/ss-12000/)
+
 ## Kontakt och frågor
 Vid tekniska frågor är det bäst att starta ett issue under [referens implementationen repo här på GitHub](https://github.com/skolverket/dnp-ss12000-reference-api). 
 För alla andra frågor kontakta skolverket https://www.skolverket.se/kontakt
-  
-
-<br><br><br><br><br>
-**Notera att arbetet med digitala nationella prov (DNP) är ett pågående projekt och att
-materialet i DNP användarhantering uppdateras kontinuerligt.** Det är inte fastställd
-information från Skolverket, utan dokumenten kommer att uppdateras.

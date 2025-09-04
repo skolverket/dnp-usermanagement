@@ -1,8 +1,7 @@
 # API för autentisering
 
 API för autentisering används för att autentisera klienter inför maskinell överföring av uppgifter
-till
-Skolverkets provtjänst. API:et kallas också för auktoriseringsserver eftersom det utfärdar
+till Skolverkets provtjänst. API:et kallas också för auktoriseringsserver eftersom det utfärdar
 auktoriseringstoken till klienter efter autentisering.
 
 ## Förutsättningar för autentisering och auktorisering

@@ -5,7 +5,7 @@ Viktiga ändringar i systemet för överföring av uppgifter till provtjänsten 
 ## Provtjänst v1.3 (2025-09-22)
 
 ### Nya funktioner
-* Huvudmän kan nu lämna e-postadress för teknisk kontaktperson via e-tjänsten Administrera
+* Huvudmän kan nu lämna e-postadress för teknisk kontaktperson via e-tjänsten Administration
   provtjänsten. Skolverket kommer använda informationen för att kontakta ansvariga vid tekniska frågor.
 
 ### Ändringar
