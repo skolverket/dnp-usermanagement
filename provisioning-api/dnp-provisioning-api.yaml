@@ -3,6 +3,11 @@ servers:
   - url: "https://api.skolverket.se/provtjanst/provisioning/v1"
     description: Produktionsmiljö (Detta är en skarp miljö där endast verkliga uppgifter ska överföras)
 info:
+  version: 1.3.0
+  title: Provtjänstens Provisioning API
+  contact:
+    name: Statens Skolverk
+    email: digit-np@skolverket.se
   description: |
     Detta är ett API för överföring av uppgifter till Skolverkets provtjänst.
     Via detta API kan en huvudman skicka uppgifter om elever, personal och
@@ -13,12 +18,16 @@ info:
     Notera att provtjänsten har specifika krav på uppgifter som skickas från
     skolhuvudmän. Mer information finns i
     [Skolverkets publika github](https://github.com/skolverket/dnp-usermanagement/tree/main/provisioning-api) och på
-    [Skolverkets hemsida](https://www.skolverket.se/om-oss/var-verksamhet/skolverkets-prioriterade-omraden/digitalisering/digitala-nationella-prov/tekniska-forutsattningar-for-digitala-nationella-prov/overforing-av-uppgifter-till-skolverket).
-  version: 1.0.0
-  title: Provtjänstens Provisioning API
-  contact:
-    name: Statens Skolverk
-    email: digit-np@skolverket.se
+    [Skolverkets hemsida](https://www.skolverket.se/prov-och-bedomning/provtjansten/tekniska-krav-och-vagledning/overforing-av-uppgifter-till-skolverket).
+
+    ## Versionshistorik
+    <details>
+    <summary><strong>Version 1.3.0 (2025-09-22)</strong></summary>
+    - Attributet `provisioningStatus` har tagits bort från asynkrona svaret.
+    - Asynkront svar som innehåller varningar har nu status `Warning` istället för `Success`.
+    </details>
+    <br/>
+
 tags:
   - name: Person
     description: |
