@@ -126,6 +126,10 @@ paths:
           $ref: "#/components/responses/400_invalid_filter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /persons/lookup:
@@ -149,8 +153,12 @@ paths:
                   $ref: "#/components/schemas/Person"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
         "503":
-          $ref: "#/components/responses/503_overload"
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
       requestBody:
@@ -205,6 +213,10 @@ paths:
           $ref: "#/components/responses/403_not_authorised"
         "404":
           $ref: "#/components/responses/404_not_found"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /persons/bulk:
@@ -238,6 +250,12 @@ paths:
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
     put:
@@ -268,6 +286,12 @@ paths:
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /persons/bulk/delete:
@@ -300,6 +324,12 @@ paths:
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   "/persons/bulk/jobs/{id}":
@@ -335,6 +365,10 @@ paths:
           $ref: "#/components/responses/403_not_authorised"
         "404":
           $ref: "#/components/responses/404_not_found"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   "/persons/bulk/jobs/{id}/isCompleted":
@@ -366,6 +400,10 @@ paths:
           $ref: "#/components/responses/403_not_authorised"
         "404":
           $ref: "#/components/responses/404_not_found"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /duties:
@@ -421,6 +459,10 @@ paths:
           $ref: "#/components/responses/400_invalid_filter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /duties/lookup:
@@ -445,8 +487,10 @@ paths:
                   $ref: "#/components/schemas/Duty"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
         "503":
-          $ref: "#/components/responses/503_overload"
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
       requestBody:
@@ -482,6 +526,10 @@ paths:
           $ref: "#/components/responses/403_not_authorised"
         "404":
           $ref: "#/components/responses/404_not_found"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /duties/bulk:
@@ -515,6 +563,12 @@ paths:
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
     put:
@@ -545,6 +599,12 @@ paths:
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /duties/bulk/delete:
@@ -577,6 +637,12 @@ paths:
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   "/duties/bulk/jobs/{id}":
@@ -611,6 +677,10 @@ paths:
           $ref: "#/components/responses/403_not_authorised"
         "404":
           $ref: "#/components/responses/404_not_found"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   "/duties/bulk/jobs/{id}/isCompleted":
@@ -642,6 +712,10 @@ paths:
           $ref: "#/components/responses/403_not_authorised"
         "404":
           $ref: "#/components/responses/404_not_found"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /groups:
@@ -708,6 +782,10 @@ paths:
           $ref: "#/components/responses/400_invalid_filter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /groups/lookup:
@@ -731,8 +809,12 @@ paths:
                   $ref: "#/components/schemas/Group"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
         "503":
-          $ref: "#/components/responses/503_overload"
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
       requestBody:
@@ -768,6 +850,10 @@ paths:
           $ref: "#/components/responses/403_not_authorised"
         "404":
           $ref: "#/components/responses/404_not_found"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /groups/bulk:
@@ -803,6 +889,12 @@ paths:
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
     put:
@@ -833,6 +925,12 @@ paths:
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /groups/bulk/delete:
@@ -865,6 +963,12 @@ paths:
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   "/groups/bulk/jobs/{id}":
@@ -899,6 +1003,10 @@ paths:
           $ref: "#/components/responses/403_not_authorised"
         "404":
           $ref: "#/components/responses/404_not_found"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   "/groups/bulk/jobs/{id}/isCompleted":
@@ -930,6 +1038,10 @@ paths:
           $ref: "#/components/responses/403_not_authorised"
         "404":
           $ref: "#/components/responses/404_not_found"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /activities:
@@ -992,6 +1104,10 @@ paths:
           $ref: "#/components/responses/400_invalid_filter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /activities/lookup:
@@ -1015,8 +1131,12 @@ paths:
                   $ref: "#/components/schemas/Activity"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
         "503":
-          $ref: "#/components/responses/503_overload"
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
       requestBody:
@@ -1052,6 +1172,10 @@ paths:
           $ref: "#/components/responses/403_not_authorised"
         "404":
           $ref: "#/components/responses/404_not_found"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /activities/bulk:
@@ -1085,6 +1209,12 @@ paths:
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
     put:
@@ -1115,6 +1245,12 @@ paths:
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   /activities/bulk/delete:
@@ -1147,6 +1283,12 @@ paths:
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
+        "413":
+          $ref: "#/components/responses/413_payload_too_large"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   "/activities/bulk/jobs/{id}":
@@ -1181,6 +1323,10 @@ paths:
           $ref: "#/components/responses/403_not_authorised"
         "404":
           $ref: "#/components/responses/404_not_found"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   "/activities/bulk/jobs/{id}/isCompleted":
@@ -1212,6 +1358,10 @@ paths:
           $ref: "#/components/responses/403_not_authorised"
         "404":
           $ref: "#/components/responses/404_not_found"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
   "/alive":
@@ -1225,8 +1375,6 @@ paths:
           description: Tjänsten är tillgänglig.
         "503":
           $ref: "#/components/responses/503_service_unavailable"
-        default:
-          $ref: "#/components/responses/default_error"
 components:
   securitySchemes:
     BearerAuth:
@@ -2148,6 +2296,60 @@ components:
                   "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
                 }
               ]
+    413_payload_too_large:
+      description: Payload i anropet är för stort.
+      headers:
+        x-ratelimit-limit:
+          $ref: "#/components/headers/x-ratelimit-limit"
+        x-ratelimit-remaining:
+          $ref: "#/components/headers/x-ratelimit-remaining"
+        x-ratelimit-reset:
+          $ref: "#/components/headers/x-ratelimit-reset"
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Felmeddelande lista
+            items:
+              $ref: "#/components/schemas/LogEntry"
+            example: |
+              [
+                {
+                  "id": "5020",
+                  "statusCode": 413,
+                  "messageType": "Teknisk begränsning",
+                  "message": "Provisionerade uppgifter överstiger tillåten datamängd.",
+                  "severityLevel": "Error",
+                  "timeOfOccurance": "2025-03-06T16:10:01.431+01:00"
+                }
+              ]
+    429_too_many_requests:
+      description: För många anrop.
+      headers:
+        x-ratelimit-limit:
+          $ref: "#/components/headers/x-ratelimit-limit"
+        x-ratelimit-remaining:
+          $ref: "#/components/headers/x-ratelimit-remaining"
+        x-ratelimit-reset:
+          $ref: "#/components/headers/x-ratelimit-reset"
+      content:
+        application/json:
+          schema:
+            type: array
+            description: Felmeddelande lista
+            items:
+              $ref: "#/components/schemas/LogEntry"
+            example: |
+              [
+                {
+                  "id": "5021",
+                  "statusCode": 429,
+                  "messageType": "Teknisk begränsning",
+                  "message": "Den högsta tillåtna antal förfrågningar har uppnåtts för den specifika URL:en.",
+                  "severityLevel": "Error",
+                  "timeOfOccurance": "2025-03-06T16:10:01.431+01:00"
+                }
+              ]
     503_overload:
       description: Svaret är för stort för servern att hantera.
       headers:
@@ -2181,11 +2383,21 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              message:
-                type: string
-                example: "Tjänsten är inte tillgänglig. Försök igen senare."
+            type: array
+            description: Felmeddelande lista
+            items:
+              $ref: "#/components/schemas/LogEntry"
+            example: |
+              [
+                {
+                  "id": "5022",
+                  "statusCode": 503,
+                  "messageType": "Teknisk begränsning",
+                  "message": "Tjänsten är inte tillgänglig. Försök igen senare.",
+                  "severityLevel": "Error",
+                  "timeOfOccurance": "2025-03-06T16:10:01.431+01:00"
+                }
+              ]
     default_error:
       description: Okänt fel.
       headers:
