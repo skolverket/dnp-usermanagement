@@ -70,36 +70,14 @@ paths:
       operationId: getPersons
       tags:
         - Person
-      summary: Hämta en lista med personer. Ej implementerad!
+      summary: Hämta en lista med personer.
+      description: > 
+        Hämta en lista med personer. Denna operation returnerar enbart ett urval av
+        personattribut. De attribut som returneras är `id`, `civicNo`,
+        `eduPersonPrincipalNames`, `givenName`, `middleName`, `familyName`,
+        `provisioningStatus` och `meta`. Om du behöver fullständig information om en
+        person kan du istället använda `/persons/{id}` och `/persons/lookup`.
       parameters:
-        - name: civicNo
-          description: >-
-            Begränsa urvalet till den person vars civicNo matchar parameterns värde.
-          in: query
-          schema:
-            type: string
-            example: "200901272385"
-        - name: eduPersonPrincipalName
-          description: >-
-            Begränsa urvalet till den person vars eduPersonPrincipalNames
-            matchar parameterns värde.
-          in: query
-          schema:
-            type: string
-            example: "piplan145@soderhavetsgymnasium.se"
-        - name: relationship.organisation
-          description: >
-            Begränsa urvalet till de personer som har en relation till angivet
-            organisationselement (vanligtvis en skolenhet).
-          in: query
-          schema:
-            type: string
-            format: uuid
-            example: "3fa85f64-5717-4562-b3fc-2c963f66afa5"
-        - $ref: "#/components/parameters/SearchCreatedBefore"
-        - $ref: "#/components/parameters/SearchCreatedAfter"
-        - $ref: "#/components/parameters/SearchModifiedBefore"
-        - $ref: "#/components/parameters/SearchModifiedAfter"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/PageToken"
       responses:
@@ -123,7 +101,7 @@ paths:
                 required:
                   - data
         "400":
-          $ref: "#/components/responses/400_invalid_filter"
+          $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
         "429":
@@ -137,7 +115,7 @@ paths:
       operationId: searchPersons
       tags:
         - Person
-      summary: Hämta många personer baserat på en lista av ID:n eller personnummer. Ej implementerad!
+      summary: Hämta många personer baserat på en lista av ID:n, personnummer och/eller eduPersonPrincipalName.
       description: >-
         Istället för att hämta personer en i taget med en loop av GET-anrop så
         finns det även möjlighet att hämta många personer på en gång genom att
@@ -151,6 +129,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Person"
+        "400":
+          $ref: "#/components/responses/400_invalid_lookup"
         "403":
           $ref: "#/components/responses/403_not_authorised"
         "413":
@@ -162,8 +142,9 @@ paths:
         default:
           $ref: "#/components/responses/default_error"
       requestBody:
-        description: |
-          En lista med personnummer och / eller uuid:n på personer.
+        description: >
+          En lista med uuid:n, personnummer och / eller eduPersonPrincipalName för de
+          personer som ska hämtas.
         content:
           application/json:
             schema:
@@ -180,18 +161,26 @@ paths:
                     description: >
                       Svenskt personnummer, samordningsnummer eller tillfälligt personnummer.
                     type: string
+                eduPersonPrincipalNames:
+                  type: array
+                  items:
+                    description: >
+                      EduPersonPrincipalName (EPPN)
+                    type: string
               example:
                 ids:
                   - "d544563a-747a-42d3-8d37-415a101537fa"
                 civicNos:
                   - "200901272385"
+                eduPersonPrincipalNames:
+                  - "fc79e369-18a3-40c4-aa33-d92057bfff65@edu.huvudman.se"
         required: true
   "/persons/{id}":
     get:
       operationId: getPersonById
       tags:
         - Person
-      summary: Get person by person id. Ej implementerad!
+      summary: Hämta person baserat på personens ID.
       parameters:
         - name: id
           in: path
@@ -411,28 +400,8 @@ paths:
       operationId: getDuties
       tags:
         - Duty
-      summary: Hämta en lista med tjänstgöringar. Ej implementerad!
+      summary: Hämta en lista med tjänstgöringar.
       parameters:
-        - name: organisation
-          description: >
-            Begränsa urvalet till de tjänstgöringar som är kopplade till ett
-            organisationselement (vanligtvis en skolenhet).
-          in: query
-          schema:
-            type: string
-            format: uuid
-        - name: person
-          description: >
-            Begränsa urvalet till de tjänstgöringar som är kopplade till person
-            ID.
-          in: query
-          schema:
-            type: string
-            format: uuid
-        - $ref: "#/components/parameters/SearchCreatedBefore"
-        - $ref: "#/components/parameters/SearchCreatedAfter"
-        - $ref: "#/components/parameters/SearchModifiedBefore"
-        - $ref: "#/components/parameters/SearchModifiedAfter"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/PageToken"
       responses:
@@ -456,7 +425,7 @@ paths:
                 required:
                   - data
         "400":
-          $ref: "#/components/responses/400_invalid_filter"
+          $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
         "429":
@@ -470,7 +439,7 @@ paths:
       operationId: searchDuties
       tags:
         - Duty
-      summary: "Hämta många tjänstgöringar baserat på en lista av ID:n. Ej implementerad!"
+      summary: Hämta många tjänstgöringar baserat på en lista av ID:n.
       description: >-
         Istället för att hämta tjänstgöringar en i taget med en loop av
         GET-anrop så finns det även möjlighet att hämta många tjänstgöringar på
@@ -485,6 +454,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Duty"
+        "400":
+          $ref: "#/components/responses/400_invalid_lookup"
         "403":
           $ref: "#/components/responses/403_not_authorised"
         "429":
@@ -504,7 +475,7 @@ paths:
       operationId: getDutyById
       tags:
         - Duty
-      summary: Hämta tjänstgöring baserat på tjänstgörings ID. Ej implementerad!
+      summary: Hämta tjänstgöring baserat på tjänstgörings ID.
       parameters:
         - name: id
           in: path
@@ -723,39 +694,8 @@ paths:
       operationId: getGroups
       tags:
         - Group
-      summary: Hämta en lista med grupper. Ej implementerad!
+      summary: Hämta en lista med grupper.
       parameters:
-        - name: groupType
-          description: |
-            Begränsa urvalet till grupper av en eller flera grupptyper.
-          in: query
-          schema:
-            type: array
-            items:
-              $ref: "#/components/schemas/Code_GroupType"
-        - name: schoolTypes
-          description: >
-            Begränsa urvalet av grupper till de som har en av de angivna
-            skolformerna.
-          in: query
-          schema:
-            type: array
-            items:
-              $ref: "#/components/schemas/Code_SchoolType"
-        - name: organisation
-          description: >
-            Begränsa urvalet till de grupper som direkt kopplade till angivna
-            organisationselement.
-          in: query
-          schema:
-            type: array
-            items:
-              type: string
-              format: uuid
-        - $ref: "#/components/parameters/SearchCreatedBefore"
-        - $ref: "#/components/parameters/SearchCreatedAfter"
-        - $ref: "#/components/parameters/SearchModifiedBefore"
-        - $ref: "#/components/parameters/SearchModifiedAfter"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/PageToken"
       responses:
@@ -779,7 +719,7 @@ paths:
                 required:
                   - data
         "400":
-          $ref: "#/components/responses/400_invalid_filter"
+          $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
         "429":
@@ -793,7 +733,7 @@ paths:
       operationId: searchGroups
       tags:
         - Group
-      summary: "Hämta många grupper baserat på en lista av ID:n. Ej implementerad!"
+      summary: Hämta många grupper baserat på en lista av ID:n.
       description: >-
         Istället för att hämta grupper en i taget med en loop av GET-anrop så
         finns det även möjlighet att hämta många grupper på en gång genom att
@@ -807,6 +747,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Group"
+        "400":
+          $ref: "#/components/responses/400_invalid_lookup"
         "403":
           $ref: "#/components/responses/403_not_authorised"
         "413":
@@ -828,7 +770,7 @@ paths:
       operationId: getGroupById
       tags:
         - Group
-      summary: Hämta grupp baserat på gruppens ID. Ej implementerad!
+      summary: Hämta grupp baserat på gruppens ID.
       parameters:
         - name: id
           in: path
@@ -1051,33 +993,6 @@ paths:
         - Activity
       summary: Hämta en lista med aktiviteter baserat på ett antal sökparametrar. Ej implementerad!
       parameters:
-        - name: teacher
-          description: >-
-            Begränsa urvalet till aktiviteter vars lärare `teachers` inkluderar
-            detta id i attributet `duty.id`. Tidsbegräninsgar (`startDate`,
-            `endDate`) appliceras inte för detta filter.
-          in: query
-          schema:
-            type: string
-            format: uuid
-        - name: organisation
-          description: >-
-            Begränsa urvalet till utpekat organisationselement och dess
-            underliggande element.
-          in: query
-          schema:
-            type: string
-            format: uuid
-        - name: group
-          description: Begränsa urvalet till utpekad grupp.
-          in: query
-          schema:
-            type: string
-            format: uuid
-        - $ref: "#/components/parameters/SearchCreatedBefore"
-        - $ref: "#/components/parameters/SearchCreatedAfter"
-        - $ref: "#/components/parameters/SearchModifiedBefore"
-        - $ref: "#/components/parameters/SearchModifiedAfter"
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/PageToken"
       responses:
@@ -1101,7 +1016,7 @@ paths:
                 required:
                   - data
         "400":
-          $ref: "#/components/responses/400_invalid_filter"
+          $ref: "#/components/responses/400_invalid_parameter"
         "403":
           $ref: "#/components/responses/403_not_authorised"
         "429":
@@ -1115,7 +1030,7 @@ paths:
       operationId: searchActivities
       tags:
         - Activity
-      summary: "Hämta en lista med aktiviteter baserat på motsvarande lista av ID:n. Ej implementerad!"
+      summary: Hämta en lista med aktiviteter baserat på en lista av ID:n.
       description: >-
         Istället för att hämta aktiviteter en i taget med en loop av GET-anrop
         så finns det även möjlighet att hämta många aktiviteter på en gång genom
@@ -1129,6 +1044,8 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Activity"
+        "400":
+          $ref: "#/components/responses/400_invalid_lookup"
         "403":
           $ref: "#/components/responses/403_not_authorised"
         "413":
@@ -1150,7 +1067,7 @@ paths:
       operationId: getActivityById
       tags:
         - Activity
-      summary: Hämta en aktivitet baserat på dess ID. Ej implementerad!
+      summary: Hämta en aktivitet baserat på dess ID.
       parameters:
         - name: id
           in: path
@@ -1447,6 +1364,12 @@ components:
             properties:
               duty:
                 $ref: "#/components/schemas/DutyReference"
+        provisioningStatus:
+          type: boolean
+          description: >
+            Indikerar om någon undervisningsgrupp som hör aktiviteten finns
+            i provplattformen.
+          example: true
         organisation:
           allOf:
             - $ref: "#/components/schemas/OrganisationReference"
@@ -1667,6 +1590,11 @@ components:
             - description: >
                 Syfte med tjänsten, den roll tjänsten avser, till exempel lärare
                 eller rektor.
+        provisioningStatus:
+          type: boolean
+          description: >
+            Indikerar om tjänstgöringen finns i provplattformen.
+          example: true
       required:
         - id
         - person
@@ -1747,6 +1675,13 @@ components:
           $ref: "#/components/schemas/Code_SchoolType"
         organisation:
           $ref: "#/components/schemas/OrganisationReference"
+        provisioningStatus:
+          type: boolean
+          description: >
+            Indikerar om gruppen finns i provplattformen. Notera att en grupp
+            av typen `Undervisning` måste kopplas till en aktivitet för att kunna
+            skapa undervisningsgrupp i provplattformen.
+          example: true
       required:
         - id
         - displayName
@@ -2047,6 +1982,13 @@ components:
           description: En lista med inskrivningar för personen
           items:
             $ref: "#/components/schemas/Enrolment"
+        provisioningStatus:
+          type: boolean
+          description: >
+            Indikerar om personen har fått ett konto i provplattformen. Notera att en
+            person måste vara inskriven eller ha tjänstgöring i en skola för att kunna
+            få ett konto.
+          example: true
       required:
         - id
         - civicNo
@@ -2148,7 +2090,7 @@ components:
                   följa URL-adressen i ’Location’-header.
     400_invalid_parameter:
       description: >-
-        Felaktigt format på parameter `updateIfExists`.
+        Felaktigt format på parameter.
       headers:
         x-ratelimit-limit:
           $ref: "#/components/headers/x-ratelimit-limit"
@@ -2163,24 +2105,39 @@ components:
             description: Felmeddelande lista
             items:
               $ref: "#/components/schemas/LogEntry"
-            example: |
-              [
-                {
-                  "id": "2025",
-                  "statusCode": 400,
-                  "messageType": "Ogiltigt format",
-                  "message": "Ogiltigt format på ´query´ parameter <updateIfExists>. Format ska vara boolean (true/false).",
-                  "parameterName": "updateIfExists",
-                  "parameterValue": "xxxxx",
-                  "severityLevel": "Error",
-                  "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
-                }
-              ]
-    400_invalid_filter:
+          examples:
+            invalid_updateIfExists:
+              summary: Ogiltigt format på query parameter updateIfExists
+              value: |
+                [
+                  {
+                    "id": "2025",
+                    "statusCode": 400,
+                    "messageType": "Ogiltigt format",
+                    "message": "Ogiltigt format på ´query´ parameter <updateIfExists>. Format ska vara boolean (true/false).",
+                    "parameterName": "updateIfExists",
+                    "parameterValue": "xxxxx",
+                    "severityLevel": "Error",
+                    "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
+                  }
+                ]
+            invalid_limit:
+              summary: Ogiltigt format på query parameter limit
+              value: |
+                [
+                  {
+                    "id": "3085",
+                    "statusCode": 400,
+                    "messageType": "Ogiltigt värde",
+                    "message": "Värdet för <limit> måste vara ett tal mellan 1 och 100 (inklusive).",
+                    "parameterName": "limit",
+                    "severityLevel": "Error",
+                    "timeOfOccurance": "2025-11-13T08:56:22.844+01:00"
+                  }
+                ]
+    400_invalid_lookup:
       description: >-
-        Felaktigt format på filter (ex `meta.modified.after`, `meta.modified.before`,
-        `meta.created.after`, `meta.created.before` osv.) och/eller filter kan inte kombineras
-        med `pageToken`.
+        Felaktigt format på lookup request body.
       headers:
         x-ratelimit-limit:
           $ref: "#/components/headers/x-ratelimit-limit"
@@ -2195,20 +2152,22 @@ components:
             description: Felmeddelande lista
             items:
               $ref: "#/components/schemas/LogEntry"
-            example: |
-              [
-                {
-                  "id": "2024",
-                  "statusCode": 400,
-                  "messageType": "Ogiltigt format",
-                  "message": "Ogiltigt format på ´query´ parameter <meta.modified.after>. Format ska vara enligt RFC3339. Se https://tools.ietf.org/html/rfc3339.txt.",
-                  "parameterName": "meta.modified.after",
-                  "parameterValue": "xxxxx",
-                  "resourceType": "Person",
-                  "severityLevel": "Error",
-                  "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
-                }
-              ]
+          examples:
+            invalid_ids:
+              summary: Ogiltigt format på id i request body
+              value: |
+                [
+                  {
+                    "id": "2010",
+                    "statusCode": 400,
+                    "messageType": "Ogiltigt format",
+                    "message": "Ogiltigt format på ´body´ parameter <ids>. Format ska vara UUID enligt RFC4122. Se https://www.ietf.org/rfc/rfc4122.txt.",
+                    "parameterName": "ids",
+                    "parameterValue": "xxxxx",
+                    "severityLevel": "Error",
+                    "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
+                  }
+                ]
     400_invalid_id:
       description: Felaktigt id.
       headers:
@@ -2432,10 +2391,12 @@ components:
       schema:
         type: integer
         minimum: 1
+        maximum: 100
+        default: 50
       required: false
       description: >
-        Antal poster som ska visas i resultatet. Utelämnas det så returneras så
-        många poster som möjligt av servern, se `pageToken`.
+        Antal poster som ska visas i resultatet. Utelämnas det så returneras max
+        50 poster, se `pageToken`.
     PageToken:
       in: query
       name: pageToken
@@ -2444,50 +2405,6 @@ components:
       description: >
         Ett opakt värde som servern givit som svar på en tidigare ställd fråga.
         Kan inte kombineras med andra filter men väl med `limit`.
-    SearchCreatedAfter:
-      name: meta.created.after
-      description: >
-        Endast poster skapade efter detta timestamp (RFC 3339 format, tex
-        "2015-12-12T10:30:00.123+02:00"). Exkluderande.
-      in: query
-      schema:
-        type: string
-        format: date-time
-    SearchCreatedBefore:
-      name: meta.created.before
-      description: >
-        Endast poster skapade på eller före detta timestamp (RFC 3339 format,
-        tex "2015-12-12T10:30:00.123+02:00"). Inkluderande.
-      in: query
-      schema:
-        type: string
-        format: date-time
-    SearchModifiedAfter:
-      name: meta.modified.after
-      description: >
-        Endast poster modifierade efter detta timestamp (RFC 3339 format, tex
-        "2015-12-12T10:30:00.123+02:00"). Exkluderande.
-      in: query
-      schema:
-        type: string
-        format: date-time
-    SearchModifiedBefore:
-      name: meta.modified.before
-      description: >
-        Endast poster modifierade på eller före detta timestamp (RFC 3339
-        format, tex "2015-12-12T10:30:00.123+02:00"). Inkluderande.
-      in: query
-      schema:
-        type: string
-        format: date-time
-    Sortkey:
-      in: query
-      name: sortkey
-      schema:
-        type: string
-        enum:
-          - ModifiedDesc
-          - DisplayNameAsc
     UpdateIfExists:
       in: query
       name: updateIfExists
