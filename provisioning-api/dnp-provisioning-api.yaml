@@ -1804,12 +1804,6 @@ components:
           type: string
           format: uuid
           example: "3fa85f64-5717-4562-b3fc-2c963f66afa5"
-        displayName:
-          type: string
-          readOnly: true
-          description: >
-            Namn för visningsyfte för det refererade objektet.
-          example: "Testskola"
     OrganisationReference:
       allOf:
         - $ref: "#/components/schemas/ObjectReference"
