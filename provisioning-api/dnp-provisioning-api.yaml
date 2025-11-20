@@ -1364,12 +1364,6 @@ components:
             properties:
               duty:
                 $ref: "#/components/schemas/DutyReference"
-        provisioningStatus:
-          type: boolean
-          description: >
-            Indikerar om någon undervisningsgrupp som hör aktiviteten finns
-            i provplattformen.
-          example: true
         organisation:
           allOf:
             - $ref: "#/components/schemas/OrganisationReference"
@@ -1390,6 +1384,12 @@ components:
                 [open-data API](https://api-pre.skolverket.se/dnp/iga/open-data/swagger-ui.html).
                 Mer information om nationella prov-aktiviteter finns i
                 [Skolverkets Github](https://github.com/skolverket/dnp-usermanagement/tree/main/open-data-api).
+        provisioningStatus:
+          type: boolean
+          description: >
+            Indikerar om någon undervisningsgrupp som hör aktiviteten finns
+            i provplattformen.
+          example: true
       required:
         - id
         - displayName
