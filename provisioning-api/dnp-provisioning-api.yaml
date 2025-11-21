@@ -92,12 +92,32 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Person"
+                    example: |
+                      {
+                        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                        "meta": {
+                          "created": "2021-05-12T10:30:00.123+02:00",
+                          "modified": "2021-05-12T10:30:00.123+02:00"
+                        },
+                        "givenName": "Pippilotta Viktualia Rullgardina Krusmynta",
+                        "middleName": "Efraimsdotter",
+                        "familyName": "Långstrump",
+                        "eduPersonPrincipalNames": [
+                          "fc79e369-18a3-40c4-aa33-d92057bfff65@edu.huvudman.se"
+                        ],
+                        "civicNo": {
+                          "value": "200901272385",
+                          "nationality": "SE"
+                        },
+                        "provisioningStatus": true
+                      }
                   pageToken:
                     type: string
                     nullable: true
                     description: >
                       Om värdet är null finns inget mer att hämta på det token
                       som skickades in som query parameter.
+                    example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
                 required:
                   - data
         "400":
@@ -422,6 +442,7 @@ paths:
                     description: >
                       Om värdet är null finns inget mer att hämta på det token
                       som skickades in som query parameter.
+                    example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
                 required:
                   - data
         "400":
@@ -716,6 +737,7 @@ paths:
                     description: >
                       Om värdet är null finns inget mer att hämta på det token
                       som skickades in som query parameter.
+                    example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
                 required:
                   - data
         "400":
@@ -1013,6 +1035,7 @@ paths:
                     description: >
                       Om värdet är null finns inget mer att hämta på det token
                       som skickades in som query parameter.
+                    example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
                 required:
                   - data
         "400":
@@ -1386,6 +1409,7 @@ components:
                 [Skolverkets Github](https://github.com/skolverket/dnp-usermanagement/tree/main/open-data-api).
         provisioningStatus:
           type: boolean
+          readOnly: true
           description: >
             Indikerar om någon undervisningsgrupp som hör aktiviteten finns
             i provplattformen.
@@ -1592,6 +1616,7 @@ components:
                 eller rektor.
         provisioningStatus:
           type: boolean
+          readOnly: true
           description: >
             Indikerar om tjänstgöringen finns i provplattformen.
           example: true
@@ -1677,6 +1702,7 @@ components:
           $ref: "#/components/schemas/OrganisationReference"
         provisioningStatus:
           type: boolean
+          readOnly: true
           description: >
             Indikerar om gruppen finns i provplattformen. Notera att en grupp
             av typen `Undervisning` måste kopplas till en aktivitet för att kunna
@@ -1978,6 +2004,7 @@ components:
             $ref: "#/components/schemas/Enrolment"
         provisioningStatus:
           type: boolean
+          readOnly: true
           description: >
             Indikerar om personen har fått ett konto i provplattformen. Notera att en
             person måste vara inskriven eller ha tjänstgöring i en skola för att kunna
@@ -2399,6 +2426,7 @@ components:
       description: >
         Ett opakt värde som servern givit som svar på en tidigare ställd fråga.
         Kan inte kombineras med andra filter men väl med `limit`.
+      example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
     UpdateIfExists:
       in: query
       name: updateIfExists
