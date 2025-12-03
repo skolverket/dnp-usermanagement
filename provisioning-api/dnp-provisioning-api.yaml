@@ -22,11 +22,25 @@ info:
 
     ## Versionshistorik
     <details>
-    <summary><strong>Version 1.3.1 (2025-xx-xx)</strong></summary>
+    <summary><strong>Version 1.3.1 (2025-12-xx)</strong></summary>
     - Lagt följande response-header relaterat till begränsning av anropsfrekvens:
       - `X-RateLimit-Limit`
       - `X-RateLimit-Remaining`
       - `X-RateLimit-Reset`
+    - Get-metoder för att hämta personer, tjänstgöringar, grupper och aktiviteter finns nu
+      tillgängliga. Följande endpoints har lagts till:
+      - `GET /persons`
+      - `POST /persons/lookup`
+      - `GET /persons/{id}`
+      - `GET /duties`
+      - `POST /duties/lookup`
+      - `GET /duties/{id}`
+      - `GET /groups`
+      - `POST /groups/lookup`
+      - `GET /groups/{id}`
+      - `GET /activities`
+      - `POST /activities/lookup`
+      - `GET /activities/{id}`
 
     **Notera:** Datum för version 1.3.1 är ej fastställt ännu.
     </details>
@@ -385,7 +399,7 @@ paths:
       operationId: getPersonsBulkJobIsCompleted
       tags:
         - Person
-      summary: Kontrollera om bulk-processen är klar
+      summary: Kontrollera om bulk-processen är klar. Ej implementerad ännu!
       parameters:
         - name: id
           in: path
@@ -680,7 +694,7 @@ paths:
       operationId: getDutiesBulkJobIsCompleted
       tags:
         - Duty
-      summary: Kontrollera om bulk-processen är klar.
+      summary: Kontrollera om bulk-processen är klar. Ej implementerad ännu!
       parameters:
         - name: id
           in: path
@@ -978,7 +992,7 @@ paths:
       operationId: getGroupsBulkJobIsCompleted
       tags:
         - Group
-      summary: Kontrollera om bulk-processen är klar
+      summary: Kontrollera om bulk-processen är klar. Ej implementerad ännu!
       parameters:
         - name: id
           in: path
@@ -1013,7 +1027,7 @@ paths:
       operationId: getActivities
       tags:
         - Activity
-      summary: Hämta en lista med aktiviteter baserat på ett antal sökparametrar. Ej implementerad!
+      summary: Hämta en lista med aktiviteter baserat på ett antal sökparametrar.
       parameters:
         - $ref: "#/components/parameters/Limit"
         - $ref: "#/components/parameters/PageToken"
@@ -1274,7 +1288,7 @@ paths:
       operationId: getActivitiesBulkJobIsCompleted
       tags:
         - Activity
-      summary: Kontrollera om bulk-processen är klar
+      summary: Kontrollera om bulk-processen är klar. Ej implementerad ännu!
       parameters:
         - name: id
           in: path
