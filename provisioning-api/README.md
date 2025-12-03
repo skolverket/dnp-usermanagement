@@ -13,12 +13,18 @@ auktoriseringsserver och därefter överför uppgifter med att skicka data via P
 sequenceDiagram
     title   Autentiseringsflöde
     autonumber
-    participant Auktoriseringsserver
-    participant Huvudmannens-Klient
-    participant Provisioning-API
-    Huvudmannens-Klient->>Auktoriseringsserver: Hämta JWT med klientcertifikat
-    Auktoriseringsserver-->>Huvudmannens-Klient: JWT
-    Huvudmannens-Klient->>Provisioning-API: Överföra uppgifter med JWT
+    box Vetenskapsrådet
+    participant AS as Auktoriseringsserver
+    end
+    box Huvudman      
+    participant Klient as Provisionerings-Klient
+    end
+    box Skolverkets<br>provisioneringstjänst
+    participant API as Provisioning-API
+    end
+    Klient->>AS: Hämta JWT med klientcertifikat
+    AS-->>Klient: JWT (JSON Web Token)
+    Klient->>API: Överföra uppgifter med JWT
 `````
 
 ## Ordningsföljd för överföring av uppgifter via Provisioning API
@@ -26,36 +32,51 @@ Följande sekvensdiagram visar i vilken ordningsföljd som uppgifter ska överf�
 
 ````mermaid
 sequenceDiagram
-    title   Ordningsföljd för överföring av uppgifter via Provisioning API
+    title   Överföring av uppgifter via Provisioning API
     autonumber
-    participant Huvudmannens-Klient
-    participant Provisioning-API
-    Huvudmannens-Klient->>Provisioning-API: Skicka flera 'Person' objekt
-    Provisioning-API-->>Huvudmannens-Klient: 'jobId' returneras
-    Huvudmannens-Klient->>Provisioning-API: Kontrollera status med 'jobId'
-    Provisioning-API-->>Huvudmannens-Klient: Statusar för varje 'Person' objekt
-    Huvudmannens-Klient->>Huvudmannens-Klient: Spara statusar för varje 'Person' objekt
+    box Huvudman
+    participant Klient as Provisionerings-klient
+    end
+    box Skolverkets<br>provisioneringstjänst
+    participant API as Provisioning API
+    end
+    box Provplattformen
+    participant PP_API as Provplattformens-API
+    end
+    Klient->>API: Skicka flera 'Person' objekt
+    API-->>Klient: 'jobId' returneras
+    Klient->>API: Kontrollera status med 'jobId'
+    API-->>Klient: Statusar för varje 'Person' objekt
+    Klient->>Klient: Spara statusar för varje 'Person' objekt<br>inklusive eventuella felmeddelanden
+    opt Har 'Person' objekt inskrivning?
+    API->>PP_API: Skapa/uppdatera elevkonto
+    end
     
-    Note over Huvudmannens-Klient: Kontrollera att 'Person' objekt<br>är inskickad och fått lyckad status<br>innan 'Duty' skickas
-    Huvudmannens-Klient->>Provisioning-API: Skicka flera 'Duty' objekt
-    Provisioning-API-->>Huvudmannens-Klient: 'jobId' returneras
-    Huvudmannens-Klient->>Provisioning-API: Kontrollera status med 'jobId'
-    Provisioning-API-->>Huvudmannens-Klient: Statusar för varje 'Duty' objekt
-    Huvudmannens-Klient->>Huvudmannens-Klient: Spara statusar för varje 'Duty' objekt
+    Note over Klient: Kontrollera att 'Person' objekt<br>är inskickad och fått lyckad status<br>innan 'Duty' skickas
+    Klient->>API: Skicka flera 'Duty' objekt
+    API-->>Klient: 'jobId' returneras
+    Klient->>API: Kontrollera status med 'jobId'
+    API-->>Klient: Statusar för varje 'Duty' objekt
+    Klient->>Klient: Spara statusar för varje 'Duty' objekt<br>inklusive eventuella felmeddelanden
+    API->>PP_API: Skapa/uppdatera personalskonto
     
-    Note over Huvudmannens-Klient: Kontrollera att gruppmedlemmars 'Person' objekt<br>är inskickad och fått lyckad status<br>innan 'Group' skickas
-    Huvudmannens-Klient->>Provisioning-API: Skicka flera 'Group' objekt
-    Provisioning-API-->>Huvudmannens-Klient: 'jobId' returneras
-    Huvudmannens-Klient->>Provisioning-API: Kontrollera status med 'jobId'
-    Provisioning-API-->>Huvudmannens-Klient: Statusar för varje 'Group' objekt
-    Huvudmannens-Klient->>Huvudmannens-Klient: Spara statusar för varje 'Duty' objekt
+    Note over Klient: Kontrollera att gruppmedlemmars 'Person' objekt<br>är inskickad och fått lyckad status<br>innan 'Group' skickas
+    Klient->>API: Skicka flera 'Group' objekt
+    API-->>Klient: 'jobId' returneras
+    Klient->>API: Kontrollera status med 'jobId'
+    API-->>Klient: Statusar för varje 'Group' objekt
+    Klient->>Klient: Spara statusar för varje 'Group' objekt<br>inklusive eventuella felmeddelanden
+    opt Är 'Group' av typ 'Klass'?
+    API->>PP_API: Uppdatera elevkonton med klassinformation
+    end
 
-    Note over Huvudmannens-Klient: Kontrollera att relevanta 'Group' och 'Duty' objekt<br>är inskickad och fått lyckad status<br>innan 'Activity' skickas
-    Huvudmannens-Klient->>Provisioning-API: Skicka flera 'Activity' objekt
-    Provisioning-API-->>Huvudmannens-Klient: 'jobId' returneras
-    Huvudmannens-Klient->>Provisioning-API: Kontrollera status med 'jobId'
-    Provisioning-API-->>Huvudmannens-Klient: Statusar för varje 'Activity' objekt
-    Huvudmannens-Klient->>Huvudmannens-Klient: Spara statusar för varje 'Activity' objekt
+    Note over Klient: Kontrollera att relevanta 'Group' och 'Duty' objekt<br>är inskickad och fått lyckad status<br>innan 'Activity' skickas
+    Klient->>API: Skicka flera 'Activity' objekt
+    API-->>Klient: 'jobId' returneras
+    Klient->>API: Kontrollera status med 'jobId'
+    API-->>Klient: Statusar för varje 'Activity' objekt
+    Klient->>Klient: Spara statusar för varje 'Activity' objekt<br>inklusive eventuella felmeddelanden
+    API->>PP_API: Skapa/uppdatera undervisningsgrupper och koppla elever och personal
 ````
 
 
