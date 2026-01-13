@@ -30,7 +30,8 @@ Viktiga ändringar i systemet för överföring av uppgifter till provtjänsten 
 
 ### Nya funktioner och ändringar
 * Nya Get-endpoints som används för att hämta redan överförda uppgifter finns nu implementerade i provisionerings-API.
-  Se [OpenAPI-specifikationen för provisionerings-API](provisioning-api/dnp-provisioning-api.yaml) för detaljer.
+  Se [OpenAPI-specifikationen för provisionerings-API](provisioning-api/dnp-provisioning-api.yaml) för detaljer. 
+  **Huvudmän kan testa de nya funktionerna i verifieringstestmiljö från och med den 13 januari 2026.**
 * Från och med den 19 januari 2026 införs begränsningar i antal anrop per sekund till samtliga
   endpoints i provisionerings-API. Begränsningarna varierar beroende på typ av endpoint:
   * Endpoints för överföring av uppgifter och uppföljning av status har en begränsning på

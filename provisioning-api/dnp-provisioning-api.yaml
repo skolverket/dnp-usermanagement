@@ -20,8 +20,8 @@ info:
     ## Versionshistorik
     <details>
     <summary><strong>Version 1.3.1 (2026-01-19)</strong></summary>
-      - Get-endpoints för att hämta personer, tjänstgöringar, grupper och aktiviteter finns nu
-        tillgängliga. Följande endpoints har lagts till:
+      - API med GET-metoder för att hämta personer, tjänstgöringar, grupper och aktiviteter finns nu
+        tillgänglig. Följande ändpunkter (endpoints) har lagts till:
         - `GET /persons`
         - `POST /persons/lookup`
         - `GET /persons/{id}`
@@ -34,7 +34,7 @@ info:
         - `GET /activities`
         - `POST /activities/lookup`
         - `GET /activities/{id}` <br/><br/>
-      - Begränsning av anropsfrekvens (rate-limit) är införd för alla endpoints. Följande headers returneras i svaren:
+      - Begränsning av anropsfrekvens (rate-limit) är införd på alla ändpunkter. Följande header returneras i svaren:
         - `X-RateLimit-Limit`
         - `X-RateLimit-Remaining`
         - `X-RateLimit-Reset` <br/><br/>
