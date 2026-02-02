@@ -16,6 +16,8 @@ info:
     name: Statens Skolverk
     email: digit-np@skolverket.se
 tags:
+  - name: Alive
+    description: Kontrollera att API:et är tillgängligt.
   - name: Organisation
     description: >
       En skolhuvudman eller annan slags organisatorisk enhet eller juridisk person som
@@ -29,15 +31,28 @@ tags:
   - name: Activity
     description: Provaktiviteter i provtjänsten.
 paths:
+  "/alive":
+    get:
+      operationId: getAlive
+      tags:
+        - Alive
+      summary: Kontrollera att API:et är tillgängligt.
+      description: >
+        Returnerar status `200 OK` om API:et är tillgängligt.
+      responses:
+        "200":
+          description: Anropet lyckades.
+        default:
+          $ref: "#/components/responses/default_error"
   "/organisations/{id}":
     get:
       operationId: getOrganisationById
       tags:
         - Organisation
-      summary: Hämta en huvudman med id.
+      summary: Hämta huvudman med id.
       description: >
-        Returnerar en huvudman (organisation) som identifierats av parameter `id`. Om
-        parameter `expandSchoolUnits` satts till `true` returneras även skolenheter som
+        Returnerar den huvudman (organisation) som identifieras via parametern `id`. Om
+        parametern `expandSchoolUnits` satts till `true` returneras även skolenheter som
         organiseras under huvudmannen.
       parameters:
         - name: id
@@ -68,10 +83,10 @@ paths:
       operationId: getOrganisationByCode
       tags:
         - Organisation
-      summary: Hämta en huvudman med organisationNumber
+      summary: Hämta huvudman med organisationNumber
       description: >
-        Returnerar en huvudman (organisation) som identifierats av parameter `code` som
-        motsvarar `organisationNumber`. Om parameter `expandSchoolUnits` satts till `true`
+        Returnerar den huvudman (organisation) som identifieras via parametern `code` som
+        motsvarar `organisationNumber`. Om parametern `expandSchoolUnits` satts till `true`
         returneras även skolenheter som organiseras under huvudmannen.
       parameters:
         - name: code
@@ -94,35 +109,6 @@ paths:
           $ref: "#/components/responses/404_organisation_not_found"
         default:
           $ref: "#/components/responses/default_error"
-  "/schoolUnits":
-    get:
-      operationId: getSchoolUnits
-      tags:
-        - SchoolUnit
-      security:
-        - ApiKeyAuth: [ ]
-      summary: Hämta en lista med skolenheter.
-      description: >
-        Returnerar en lista med skolenheter.
-        Observera! Funktionen är endast tillgänglig för Skolverkets personal.
-      responses:
-        "200":
-          description: Anropet lyckades.
-          content:
-            application/json:
-              schema:
-                type: array
-                description: En lista med skolenheter.
-                items:
-                  $ref: "#/components/schemas/SchoolUnit"
-        "401":
-          description: Åtkomst nekad.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        default:
-          $ref: "#/components/responses/default_error"
   "/schoolUnits/{id}":
     get:
       operationId: getSchoolUnitById
@@ -130,7 +116,7 @@ paths:
         - SchoolUnit
       summary: Hämta en skolenhet med id.
       description: >
-        Returnerar en skolenhet som identifierats av parameter `id`.
+        Returnerar den skolenhet som identifieras via parametern `id`.
       parameters:
         - name: id
           in: path
@@ -159,9 +145,9 @@ paths:
       operationId: getSchoolUnitByCode
       tags:
         - SchoolUnit
-      summary: Hämta en skolenhet med skolenhetskod.
+      summary: Hämta skolenhet med skolenhetskod.
       description: >
-        Returnerar en skolenhet som identifierats av parameter `code` som motsvarar
+        Returnerar den skolenhet som identifieras via parametern `code` som motsvarar
         `schoolUnitCode`.
       parameters:
         - name: code
@@ -188,9 +174,9 @@ paths:
       operationId: getProgrammes
       tags:
         - Programme
-      summary: Hämta en lista med studievägar.
+      summary: Hämta lista med studievägar.
       description: >
-        Returnerar en lista med studievägar.
+        Returnerar lista med studievägar.
       responses:
         "200":
           description: Anropet lyckades.
@@ -208,9 +194,9 @@ paths:
       operationId: getProgrammeById
       tags:
         - Programme
-      summary: Hämta en studieväg med id.
+      summary: Hämta studieväg med id.
       description: >
-        Returnerar en studieväg som identifierats av parameter `id`.
+        Returnerar den studieväg som identifieras via parametern `id`.
       parameters:
         - name: id
           in: path
@@ -239,9 +225,9 @@ paths:
       operationId: getProgrammeByCode
       tags:
         - Programme
-      summary: Hämta en studieväg med studievägskod.
+      summary: Hämta studieväg med studievägskod.
       description: >
-        Returnerar en studieväg som identifierats av parameter `code` som motsvarar studievägskod (SS12000: `educationCode`).
+        Returnerar den studieväg som identifieras via parametern `code` som motsvarar studievägskod (SS12000: `educationCode`).
       parameters:
         - name: code
           in: path
@@ -267,9 +253,9 @@ paths:
       operationId: getActivities
       tags:
         - Activity
-      summary: Hämta en lista med provaktiviteter.
+      summary: Hämta lista med provaktiviteter.
       description: >
-        Returnerar en lista med provaktiviteter.
+        Returnerar lista med provaktiviteter.
       responses:
         "200":
           description: Anropet lyckades.
@@ -287,9 +273,9 @@ paths:
       operationId: getActivityById
       tags:
         - Activity
-      summary: Hämta en provaktivitet med id.
+      summary: Hämta provaktivitet med id.
       description: >
-        Returnerar en provaktivitet som identifierats av parameter `id`.
+        Returnerar den provaktivitet som identifieras via parametern `id`.
       parameters:
         - name: id
           in: path
@@ -314,12 +300,6 @@ paths:
         default:
           $ref: "#/components/responses/default_error"
 components:
-  securitySchemes:
-    ApiKeyAuth:
-      type: apiKey
-      in: header
-      name: vnd.skolverket.se.pda.key
-      description: API-nyckel.
   schemas:
     Activity:
       type: object
@@ -364,8 +344,6 @@ components:
         comment:
           type: string
           description: En text med kompletterande information.
-        meta:
-          $ref: "#/components/schemas/Meta"
       required:
         - id
         - displayName
@@ -383,18 +361,22 @@ components:
           - _FTH_ - Fritidshem
           - _OPPFTH_ - Öppen fritidsverksamhet
           - _GR_ - Grundskola
+          - _GRAN_ - Anpassad grundskola
           - _GRS_ - Grundsärskola
           - _TR_ - Träningsskolan
           - _SP_ - Specialskola
           - _SAM_ - Sameskola
           - _GY_ - Gymnasieskola
+          - _GYAN_ - Anpassad gymnasieskola
           - _GYS_ - Gymnasiesärskola
           - _VUX_ - Kommunal vuxenutbildning
           - _VUXSFI_ - Kommunal vuxenutbildning i svenska för invandrare
           - _VUXGR_ - Kommunal vuxenutbildning på grundläggande nivå
           - _VUXGY_ - Kommunal vuxenutbildning på gymnasial nivå
+          - _VUXGRAN_ - Kommunal vuxenutbildning som anpassad utbildning på grundläggande nivå
           - _VUXSARGR_ - Kommunal vuxenutbildning som särskild utbildning på grundläggande nivå
           - _VUXSARTR_ - Kommunal vuxenutbildning som särskild utbildning som motsvarar träningsskolan
+          - _VUXGYAN_  - Kommunal vuxenutbildning som anpassad utbildning på gymnasial nivå
           - _VUXSARGY_ - Kommunal vuxenutbildning som särskild utbildning på gymnasial nivå
           - _SFI_ - Utbildning i svenska för invandrare
           - _SARVUX_ - Särskild utbildning för vuxna
@@ -416,18 +398,22 @@ components:
         - FTH
         - OPPFTH
         - GR
+        - GRAN
         - GRS
         - TR
         - SP
         - SAM
         - GY
+        - GYAN
         - GYS
         - VUX
         - VUXSFI
         - VUXGR
         - VUXGY
+        - VUXGRAN
         - VUXSARGR
         - VUXSARTR
+        - VUXGYAN
         - VUXSARGY
         - SFI
         - SARVUX
@@ -472,26 +458,6 @@ components:
         - code
         - message
         - timeStamp
-    Meta:
-      title: Meta
-      type: object
-      readOnly: true
-      properties:
-        created:
-          type: string
-          format: date-time
-          description: >
-            Datum och tid för när entiteten skapades (RFC 3339 format,
-            exempel "2015-12-12T10:30:00+01:00").
-          example: "2020-12-12T10:30:00+01:00"
-        modified:
-          type: string
-          format: date-time
-          description: >
-            Datum och tid för när entiteten eller något av de attribut som direkt
-            tillhör entiteten senast uppdaterades (RFC 3339 format,
-            exempel "2015-12-12T10:30:00+01:00").
-          example: "2020-12-12T10:30:00+01:00"
     Organisation:
       type: object
       properties:
@@ -566,13 +532,20 @@ components:
           description: En lista med skolenheter som organiseras under huvudmannen.
           items:
             $ref: "#/components/schemas/SchoolUnit"
-        meta:
-          $ref: "#/components/schemas/Meta"
+        email:
+          type: string
+          description: Organisationens e-post adress.
+          example: "org_name@org_domain.se"
+        phoneNumber:
+          type: string
+          description: Organisationens telefonnummer.
+          example: "+46 8 123 456 78"
+        address:
+          $ref: "#/components/schemas/Address"
       required:
         - id
         - displayName
         - organisationNumber
-        - meta
     OrganisationReference:
       title: OrganisationReference
       description: Referens till huvudman (organisation)
@@ -641,13 +614,10 @@ components:
                   - _New_ - Studieväg finns registrerad men är ännu inte aktiv
                   - _Active_ - Studieväg finns och kan användas för provisionering
                   - _Expired_ - Studieväg har upphört
-        meta:
-          $ref: "#/components/schemas/Meta"
       required:
         - id
         - displayName
         - educationCode
-        - meta
     SchoolType:
       description: Utbildningsform med årskurs
       type: object
@@ -729,13 +699,25 @@ components:
             - description: >
                 Huvudmannaorganisation som organiserar skolenheten. Huvudmannaorganisation
                 kan ändras exempelvis vid ett uppköp, rekonstruktion eller ombildning.
-        meta:
-          $ref: "#/components/schemas/Meta"
       required:
         - id
         - displayName
         - schoolUnitCode
-        - meta
+    Address:
+      type: object
+      properties:
+        streetAdress:
+          type: string
+          description: Organisationens gatuadress.
+          example: "Testgatan 1"
+        postalCode:
+          type: string
+          description: Organisationens postnummer.
+          example: "123 45"
+        locality:
+          type: string
+          description: Organisationens ort.
+          example: "Teststad"
     SchoolYear:
       type: object
       properties:
@@ -755,16 +737,13 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            description: Felmeddelandelista
-            items:
-              $ref: "#/components/schemas/Error"
-            example:
-              {
-                "code": 400,
-                "message": "Invalid parameter: id",
-                "timeStamp": "2021-06-10T17:50:49+02:00"
-              }
+            $ref: "#/components/schemas/Error"
+          example:
+            {
+              "code": 400,
+              "message": "Invalid parameter: id",
+              "timeStamp": "2021-06-10T17:50:49+02:00"
+            }
     404_organisation_not_found:
       description: Huvudman (organisation) hittades inte.
       content:
@@ -822,7 +801,7 @@ components:
   parameters:
     expandSchoolUnits:
       name: expandSchoolUnits
-      description: Returnerar en lista med skolenheter som organiseras under huvudmannen.
+      description: Returnerar lista med skolenheter som organiseras under en huvudman.
       in: query
       schema:
         type: boolean
