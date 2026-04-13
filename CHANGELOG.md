@@ -7,8 +7,8 @@ Viktiga ändringar i systemet för överföring av uppgifter till provtjänsten 
 ### Nya funktioner och ändringar
 * Ändpunkten `/isCompleted` i provisionerings-API är nu implementerad för alla typer av uppgifter (Person, Duty, Group, Activity).
   Se [OpenAPI-specifikationen för provisionerings-API](provisioning-api/dnp-provisioning-api.yaml) för detaljer.
-* Elevgrupp kan nu överföras även om vissa elever i gruppen finns inte i provtjänsten. Gruppen accepteras men det återkopplas varningsmeddelande.
-  Det rekommenderas att huvudmän följer upp varningsmeddelanden och åtgärdar eventuella problem med eleverna. Efter eleverna har lagts till i
+* Elevgrupp kan nu överföras även om vissa elever i gruppen inte finns i provtjänsten. Gruppen accepteras men det återkopplas varningsmeddelande.
+  Det rekommenderas att huvudmän följer upp varningsmeddelanden och åtgärdar eventuella problem med elevuppgifterna. Efter eleverna har lagts till i
   provtjänsten behöver gruppen överföras igen för att eleverna ska inkluderas i gruppen.
   
 ## Provtjänst v1.3.1 (2026-01-19)
@@ -27,7 +27,8 @@ Viktiga ändringar i systemet för överföring av uppgifter till provtjänsten 
   detta svar.
 * Från och med den 19 januari 2026 sänks den maximala datamängden som kan överföras per anrop via
   provisionerings-API från 1 MB till 200 KB per anrop. Det motsvarar cirka
-  400 elevers uppgifter. Klienter som överför uppgifter via provisionerings-API behöver därför
+  400 elevers uppgifter. Statuskod `413 Payload too large` returneras när en klient överskrider
+  datamängd begränsningen. Klienter som överför uppgifter via provisionerings-API behöver därför
   anpassa sina implementationer för att stödja den nya gränsen.
 
 ## Provtjänst v1.3 (2025-09-22)
