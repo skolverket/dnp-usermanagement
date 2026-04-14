@@ -19,6 +19,15 @@ info:
 
     ## Versionshistorik
     <details>
+    <summary><strong>Version 1.3.2 (2026-04-15)</strong></summary>
+      * Ändpunkten `/isCompleted` är nu implementerad för alla fyra resurstyper (Person, Duty, Group och Activity).
+        Det innebär att det nu går att kontrollera om en bulk-jobb är klar utan att behöva hämta hela statusen för bulk-jobbet.
+      * Elevgrupper kan nu skapas även om några av eleverna inte finns i provtjänsten. Grupperna kommer
+        få status `Warning` i det asynkrona svaret. Det är därför viktigt att huvudmän följer upp varningsmeddelanden,
+        åtgärda eventuella problem, överföra elevuppgifterna och sedan överföra grupperna igen.
+    </details>
+    <br/>
+    <details>
     <summary><strong>Version 1.3.1 (2026-01-19)</strong></summary>
       - API med GET-metoder för att hämta personer, tjänstgöringar, grupper och aktiviteter finns nu
         tillgänglig. Följande ändpunkter (endpoints) har lagts till:
@@ -400,7 +409,7 @@ paths:
       operationId: getPersonsBulkJobIsCompleted
       tags:
         - Person
-      summary: Kontrollera om bulk-processen är klar. Ej implementerad ännu!
+      summary: Kontrollera om bulk-processen är klar.
       parameters:
         - name: id
           in: path
@@ -695,7 +704,7 @@ paths:
       operationId: getDutiesBulkJobIsCompleted
       tags:
         - Duty
-      summary: Kontrollera om bulk-processen är klar. Ej implementerad ännu!
+      summary: Kontrollera om bulk-processen är klar.
       parameters:
         - name: id
           in: path
@@ -993,7 +1002,7 @@ paths:
       operationId: getGroupsBulkJobIsCompleted
       tags:
         - Group
-      summary: Kontrollera om bulk-processen är klar. Ej implementerad ännu!
+      summary: Kontrollera om bulk-processen är klar.
       parameters:
         - name: id
           in: path
@@ -1289,7 +1298,7 @@ paths:
       operationId: getActivitiesBulkJobIsCompleted
       tags:
         - Activity
-      summary: Kontrollera om bulk-processen är klar. Ej implementerad ännu!
+      summary: Kontrollera om bulk-processen är klar.
       parameters:
         - name: id
           in: path

@@ -2,6 +2,35 @@
 
 Viktiga ändringar i systemet för överföring av uppgifter till provtjänsten publiceras här.
 
+## Provtjänst v1.3.2 (2026-04-15)
+
+### Nya funktioner och ändringar
+* Ändpunkten `/isCompleted` i provisionerings-API är nu implementerad för alla typer av uppgifter (Person, Duty, Group, Activity).
+  Se [OpenAPI-specifikationen för provisionerings-API](provisioning-api/dnp-provisioning-api.yaml) för detaljer.
+* Elevgrupp kan nu överföras även om vissa elever i gruppen inte finns i provtjänsten. Gruppen accepteras men det återkopplas varningsmeddelande.
+  Det rekommenderas att huvudmän följer upp varningsmeddelanden och åtgärdar eventuella problem med elevuppgifterna. Efter eleverna har lagts till i
+  provtjänsten behöver gruppen överföras igen för att eleverna ska inkluderas i gruppen.
+  
+## Provtjänst v1.3.1 (2026-01-19)
+
+### Nya funktioner och ändringar
+* Nya Get-endpoints som används för att hämta redan överförda uppgifter finns nu implementerade i provisionerings-API.
+  Se [OpenAPI-specifikationen för provisionerings-API](provisioning-api/dnp-provisioning-api.yaml) för detaljer. 
+  **Huvudmän kan testa de nya funktionerna i verifieringstestmiljö från och med den 13 januari 2026.**
+* Från och med den 19 januari 2026 införs begränsningar i antal anrop per sekund till samtliga
+  endpoints i provisionerings-API. Begränsningarna varierar beroende på typ av endpoint:
+  * Endpoints för överföring av uppgifter och uppföljning av status har en begränsning på
+    _5 anrop per sekund per klient-IP_.
+  * Endpoints för hämtning av uppgifter har en begränsning på _10 anrop per sekund per klient-IP_.
+* Statuskoden `429 Too Many Requests` returneras när en klient överskrider tillåtet antal anrop.
+  Det rekommenderas att klienter implementerar en backoff-strategi med återförsök för att hantera
+  detta svar.
+* Från och med den 19 januari 2026 sänks den maximala datamängden som kan överföras per anrop via
+  provisionerings-API från 1 MB till 200 KB per anrop. Det motsvarar cirka
+  400 elevers uppgifter. Statuskod `413 Payload too large` returneras när en klient överskrider
+  datamängd begränsningen. Klienter som överför uppgifter via provisionerings-API behöver därför
+  anpassa sina implementationer för att stödja den nya gränsen.
+
 ## Provtjänst v1.3 (2025-09-22)
 
 ### Nya funktioner
@@ -26,21 +55,3 @@ Viktiga ändringar i systemet för överföring av uppgifter till provtjänsten 
   av uppgifter via provisionerings-API. Rekommendationen är att personal på skolorna loggar in i
   provplattformen och kontrollerar att de överförda uppgifterna stämmer.
 
-## Provtjänst v1.3.1 (2026-01-19)
-
-### Nya funktioner och ändringar
-* Nya Get-endpoints som används för att hämta redan överförda uppgifter finns nu implementerade i provisionerings-API.
-  Se [OpenAPI-specifikationen för provisionerings-API](provisioning-api/dnp-provisioning-api.yaml) för detaljer. 
-  **Huvudmän kan testa de nya funktionerna i verifieringstestmiljö från och med den 13 januari 2026.**
-* Från och med den 19 januari 2026 införs begränsningar i antal anrop per sekund till samtliga
-  endpoints i provisionerings-API. Begränsningarna varierar beroende på typ av endpoint:
-  * Endpoints för överföring av uppgifter och uppföljning av status har en begränsning på
-    _5 anrop per sekund per klient-IP_.
-  * Endpoints för hämtning av uppgifter har en begränsning på _10 anrop per sekund per klient-IP_.
-* Statuskoden `429 Too Many Requests` returneras när en klient överskrider tillåtet antal anrop.
-  Det rekommenderas att klienter implementerar en backoff-strategi med återförsök för att hantera
-  detta svar.
-* Från och med den 19 januari 2026 sänks den maximala datamängden som kan överföras per anrop via
-  provisionerings-API från 1 MB till 200 KB per anrop. Det motsvarar cirka
-  400 elevers uppgifter. Klienter som överför uppgifter via provisionerings-API behöver därför
-  anpassa sina implementationer för att stödja den nya gränsen.
