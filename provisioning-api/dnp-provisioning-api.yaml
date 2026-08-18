@@ -19,6 +19,15 @@ info:
 
     ## Versionshistorik
     <details>
+    <summary><strong>Version 1.3.3 (2026-09-01)</strong></summary>
+      * Nya ändpunkter för att hämta alla bulk-jobb per resurstyp:
+        - `GET /persons/bulk/jobs`
+        - `GET /duties/bulk/jobs`
+        - `GET /groups/bulk/jobs`
+        - `GET /activities/bulk/jobs` <br/>
+    </details>
+    <br/>
+    <details>
     <summary><strong>Version 1.3.2 (2026-04-15)</strong></summary>
       * Ändpunkten `/isCompleted` är nu implementerad för alla fyra resurstyper (Person, Duty, Group och Activity).
         Det innebär att det nu går att kontrollera om en bulk-jobb är klar utan att behöva hämta hela statusen för bulk-jobbet.
@@ -365,6 +374,74 @@ paths:
           $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
+  /persons/bulk/jobs:
+    get:
+      operationId: getAllPersonsBulkJobs
+      tags:
+        - Person
+      summary: Hämta en lista med bulk-jobb för personer.
+      description: >-
+        Hämta en lista med alla bulk-jobb för personer.
+      parameters:
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/PageToken"
+        - $ref: "#/components/parameters/ResourceId"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AsynchronousResponse"
+                  pageToken:
+                    type: string
+                    nullable: true
+                    description: >
+                      Om värdet är null finns inget mer att hämta på det token som skickades in som query parameter.
+                    example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
+                required:
+                  - data
+              example:
+                data:
+                  - jobId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                    responses:
+                      - id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                        response:
+                          status: "Warning"
+                          statusCode: 201
+                          location: "https://api.skolverket.se/dnp/iga/provisioning/v1/persons/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                          errors: [ ]
+                          warnings:
+                            - id: "3047"
+                              statusCode: 400
+                              messageType: "Bristfälligt värde"
+                              message: "Bristfälligt värde på Federationsanvändarnamn, värdet innehåller de tre första bokstäverna i efternamnet, eller de två första bokstäverna i efternamnet och de två första bokstäverna i förnamnet. Uppdatera värdet så att det följer Skolverkets riktlinjer för EPPN, se https://www.skolverket.se/skolutveckling/digitala-nationella-prov/overforing-av-uppgifter-till-skolverket/eppn."
+                              resourceType: "Person"
+                              resourceId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                              attributeName: "eppn"
+                              attributeValue: "efraimsdotter09@edu.huvudman.se"
+                              severityLevel: "Warning"
+                              timeOfOccurance: "2025-08-14T16:17:42.048+02:01"
+                        meta:
+                          created: "2021-05-12T10:30:00.123+02:00"
+                          modified: "2021-05-12T10:30:00.123+02:00"
+                pageToken:
+                  example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
+        default:
+          $ref: "#/components/responses/default_error"
   "/persons/bulk/jobs/{id}":
     get:
       operationId: getPersonsBulkJobStatusById
@@ -391,7 +468,7 @@ paths:
             example: "false"
       responses:
         "200":
-          $ref: "#/components/responses/200_job_status"
+          $ref: "#/components/responses/200_job_status_persons"
         "400":
           $ref: "#/components/responses/400_invalid_id"
         "403":
@@ -661,6 +738,64 @@ paths:
           $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
+  /duties/bulk/jobs:
+    get:
+      operationId: getAllDutiesBulkJobs
+      tags:
+        - Duty
+      summary: Hämta en lista med bulk-jobb för tjänstgöringar.
+      description: >-
+        Hämta en lista med alla bulk-jobb för tjänstgöringar.
+      parameters:
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/PageToken"
+        - $ref: "#/components/parameters/ResourceId"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AsynchronousResponse"
+                  pageToken:
+                    type: string
+                    nullable: true
+                    description: >
+                      Om värdet är null finns inget mer att hämta på det token som skickades in som query parameter.
+                    example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
+                required:
+                  - data
+              example:
+                data:
+                  - jobId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                    responses:
+                      - id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                        response:
+                          status: "Success"
+                          statusCode: 201
+                          location: "https://api.skolverket.se/dnp/iga/provisioning/v1/duties/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                          errors: [ ]
+                          warnings: [ ]
+                        meta:
+                          created: "2021-05-12T10:30:00.123+02:00"
+                          modified: "2021-05-12T10:30:00.123+02:00"
+                pageToken:
+                  example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
+        default:
+          $ref: "#/components/responses/default_error"
   "/duties/bulk/jobs/{id}":
     get:
       operationId: getDutiesBulkJobStatusById
@@ -686,7 +821,7 @@ paths:
             example: false
       responses:
         "200":
-          $ref: "#/components/responses/200_job_status"
+          $ref: "#/components/responses/200_job_status_duties"
         "400":
           $ref: "#/components/responses/400_invalid_id"
         "403":
@@ -959,6 +1094,64 @@ paths:
           $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
+  /groups/bulk/jobs:
+    get:
+      operationId: getAllGroupsBulkJobs
+      tags:
+        - Group
+      summary: Hämta en lista med bulk-jobb för grupper.
+      description: >-
+        Hämta en lista med alla bulk-jobb för grupper.
+      parameters:
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/PageToken"
+        - $ref: "#/components/parameters/ResourceId"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AsynchronousResponse"
+                  pageToken:
+                    type: string
+                    nullable: true
+                    description: >
+                      Om värdet är null finns inget mer att hämta på det token som skickades in som query parameter.
+                    example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
+                required:
+                  - data
+              example:
+                data:
+                  - jobId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                    responses:
+                      - id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                        response:
+                          status: "Success"
+                          statusCode: 201
+                          location: "https://api.skolverket.se/dnp/iga/provisioning/v1/groups/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                          errors: [ ]
+                          warnings: [ ]
+                        meta:
+                          created: "2021-05-12T10:30:00.123+02:00"
+                          modified: "2021-05-12T10:30:00.123+02:00"
+                pageToken:
+                  example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
+        default:
+          $ref: "#/components/responses/default_error"
   "/groups/bulk/jobs/{id}":
     get:
       operationId: getGroupsBulkJobStatusById
@@ -984,7 +1177,7 @@ paths:
             example: false
       responses:
         "200":
-          $ref: "#/components/responses/200_job_status"
+          $ref: "#/components/responses/200_job_status_groups"
         "400":
           $ref: "#/components/responses/400_invalid_id"
         "403":
@@ -1255,6 +1448,64 @@ paths:
           $ref: "#/components/responses/503_service_unavailable"
         default:
           $ref: "#/components/responses/default_error"
+  /activities/bulk/jobs:
+    get:
+      operationId: getAllActivitiesBulkJobs
+      tags:
+        - Activity
+      summary: Hämta en lista med bulk-jobb för aktiviteter.
+      description: >-
+        Hämta en lista med alla bulk-jobb för aktiviteter.
+      parameters:
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/PageToken"
+        - $ref: "#/components/parameters/ResourceId"
+      responses:
+        "200":
+          description: Anropet lyckades.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/AsynchronousResponse"
+                  pageToken:
+                    type: string
+                    nullable: true
+                    description: >
+                      Om värdet är null finns inget mer att hämta på det token som skickades in som query parameter.
+                    example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
+                required:
+                  - data
+              example:
+                data:
+                  - jobId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                    responses:
+                      - id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                        response:
+                          status: "Success"
+                          statusCode: 201
+                          location: "https://api.skolverket.se/dnp/iga/provisioning/v1/activities/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                          errors: [ ]
+                          warnings: [ ]
+                        meta:
+                          created: "2021-05-12T10:30:00.123+02:00"
+                          modified: "2021-05-12T10:30:00.123+02:00"
+                pageToken:
+                  example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
+        "400":
+          $ref: "#/components/responses/400_invalid_parameter"
+        "403":
+          $ref: "#/components/responses/403_not_authorised"
+        "429":
+          $ref: "#/components/responses/429_too_many_requests"
+        "503":
+          $ref: "#/components/responses/503_service_unavailable"
+        default:
+          $ref: "#/components/responses/default_error"
   "/activities/bulk/jobs/{id}":
     get:
       operationId: getActivitiesBulkJobStatusById
@@ -1280,7 +1531,7 @@ paths:
             example: false
       responses:
         "200":
-          $ref: "#/components/responses/200_job_status"
+          $ref: "#/components/responses/200_job_status_activities"
         "400":
           $ref: "#/components/responses/400_invalid_id"
         "403":
@@ -2057,7 +2308,7 @@ components:
             Mer information om nationella prov-aktiviteter finns i
             [Skolverkets Github](https://github.com/skolverket/dnp-usermanagement/tree/main/open-data-api).
   responses:
-    200_job_status:
+    200_job_status_persons:
       description: Anropet har lyckats.
       headers:
         x-ratelimit-limit:
@@ -2095,6 +2346,105 @@ components:
                           "timeOfOccurance": "2025-08-14T16:17:42.048+02:00"
                       }
                     ]
+                  },
+                  "meta": {
+                    "created": "2021-05-12T10:30:00.123+02:00",
+                    "modified": "2021-05-12T10:30:00.123+02:00"
+                  }
+                }
+              ]
+            }
+    200_job_status_duties:
+      description: Anropet har lyckats.
+      headers:
+        x-ratelimit-limit:
+          $ref: "#/components/headers/x-ratelimit-limit"
+        x-ratelimit-remaining:
+          $ref: "#/components/headers/x-ratelimit-remaining"
+        x-ratelimit-reset:
+          $ref: "#/components/headers/x-ratelimit-reset"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AsynchronousResponse"
+          example: |
+            {
+              "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "responses": [
+                {
+                  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                  "response": {
+                    "status": "Success",
+                    "statusCode": 201,
+                    "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/duties/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                    "errors": [],
+                    "warnings": []
+                  },
+                  "meta": {
+                    "created": "2021-05-12T10:30:00.123+02:00",
+                    "modified": "2021-05-12T10:30:00.123+02:00"
+                  }
+                }
+              ]
+            }
+    200_job_status_groups:
+      description: Anropet har lyckats.
+      headers:
+        x-ratelimit-limit:
+          $ref: "#/components/headers/x-ratelimit-limit"
+        x-ratelimit-remaining:
+          $ref: "#/components/headers/x-ratelimit-remaining"
+        x-ratelimit-reset:
+          $ref: "#/components/headers/x-ratelimit-reset"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AsynchronousResponse"
+          example: |
+            {
+              "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "responses": [
+                {
+                  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                  "response": {
+                    "status": "Success",
+                    "statusCode": 201,
+                    "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/groups/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                    "errors": [],
+                    "warnings": []
+                  },
+                  "meta": {
+                    "created": "2021-05-12T10:30:00.123+02:00",
+                    "modified": "2021-05-12T10:30:00.123+02:00"
+                  }
+                }
+              ]
+            }
+    200_job_status_activities:
+      description: Anropet har lyckats.
+      headers:
+        x-ratelimit-limit:
+          $ref: "#/components/headers/x-ratelimit-limit"
+        x-ratelimit-remaining:
+          $ref: "#/components/headers/x-ratelimit-remaining"
+        x-ratelimit-reset:
+          $ref: "#/components/headers/x-ratelimit-reset"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AsynchronousResponse"
+          example: |
+            {
+              "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "responses": [
+                {
+                  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                  "response": {
+                    "status": "Success",
+                    "statusCode": 201,
+                    "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/activities/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                    "errors": [],
+                    "warnings": []
                   },
                   "meta": {
                     "created": "2021-05-12T10:30:00.123+02:00",
@@ -2238,7 +2588,7 @@ components:
                   "message": "Ogiltigt format på ´path´ parameter <id>. Format ska vara UUID enligt RFC4122. Se https://www.ietf.org/rfc/rfc4122.txt.",
                   "parameterName": "id",
                   "parameterValue": "xxxxx",
-                  "resourceType": "Person",
+                  "resourceType": "xxxxx",
                   "severityLevel": "Error",
                   "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
                 }
@@ -2295,7 +2645,7 @@ components:
                   "message": "Person identifierats av angivet värden i `path` parameter <id> hittades inte.",
                   "parameterName": "id",
                   "parameterValue": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
-                  "resourceType": "Person",
+                  "resourceType": "xxxxx",
                   "severityLevel": "Error",
                   "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
                 }
@@ -2377,7 +2727,7 @@ components:
                   "statusCode": 503,
                   "messageType": "Overload",
                   "message": "Svaret är för stort för servern att hantera.",
-                  "resourceType": "Person",
+                  "resourceType": "xxxxx",
                   "severityLevel": "Error",
                   "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
                 }
@@ -2442,6 +2792,18 @@ components:
       description: >
         Antal poster som ska visas i resultatet. Utelämnas det så returneras max
         50 poster, se `pageToken`.
+    BulkJobsLimit:
+      in: query
+      name: limit
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+      required: false
+      description: >
+        Antal poster som ska visas i resultatet. Utelämnas det så returneras 
+        max 10 poster, se `pageToken`.
     PageToken:
       in: query
       name: pageToken
@@ -2451,6 +2813,15 @@ components:
         Ett opakt värde som servern givit som svar på en tidigare ställd fråga.
         Kan inte kombineras med andra filter men väl med `limit`.
       example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
+    ResourceId:
+      in: query
+      name: resourceId
+      schema:
+        type: string
+      required: false
+      description: >
+        Identifierare för resurs som anropet avser.
+      example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
     UpdateIfExists:
       in: query
       name: updateIfExists

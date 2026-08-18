@@ -2,6 +2,12 @@
 
 Viktiga ändringar i systemet för överföring av uppgifter till provtjänsten publiceras här.
 
+## Provtjänst v1.3.3 (2026-09-01)
+
+### Nya funktioner och ändringar
+* Nya Get-endpoints som används för att hämta alla bulk-jobb finns nu implementerade för alla resurstyper i provisionerings-API.
+  Se [OpenAPI-specifikationen för provisionerings-API](provisioning-api/dnp-provisioning-api.yaml) för detaljer. 
+
 ## Provtjänst v1.3.2 (2026-04-15)
 
 ### Nya funktioner och ändringar
@@ -10,12 +16,12 @@ Viktiga ändringar i systemet för överföring av uppgifter till provtjänsten 
 * Elevgrupp kan nu överföras även om vissa elever i gruppen inte finns i provtjänsten. Gruppen accepteras men det återkopplas varningsmeddelande.
   Det rekommenderas att huvudmän följer upp varningsmeddelanden och åtgärdar eventuella problem med elevuppgifterna. Efter eleverna har lagts till i
   provtjänsten behöver gruppen överföras igen för att eleverna ska inkluderas i gruppen.
-  
+
 ## Provtjänst v1.3.1 (2026-01-19)
 
 ### Nya funktioner och ändringar
 * Nya Get-endpoints som används för att hämta redan överförda uppgifter finns nu implementerade i provisionerings-API.
-  Se [OpenAPI-specifikationen för provisionerings-API](provisioning-api/dnp-provisioning-api.yaml) för detaljer. 
+  Se [OpenAPI-specifikationen för provisionerings-API](provisioning-api/dnp-provisioning-api.yaml) för detaljer.
   **Huvudmän kan testa de nya funktionerna i verifieringstestmiljö från och med den 13 januari 2026.**
 * Från och med den 19 januari 2026 införs begränsningar i antal anrop per sekund till samtliga
   endpoints i provisionerings-API. Begränsningarna varierar beroende på typ av endpoint:
