@@ -104,7 +104,7 @@ paths:
       tags:
         - Person
       summary: Hämta en lista med personer.
-      description: > 
+      description: >
         Hämta en lista med personer. Denna operation returnerar enbart ett urval av
         personattribut. De attribut som returneras är `id`, `civicNo`,
         `eduPersonPrincipalNames`, `givenName`, `middleName`, `familyName`,
@@ -383,7 +383,7 @@ paths:
       description: >-
         Hämta en lista med alla bulk-jobb för personer.
       parameters:
-        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/BulkJobsLimit"
         - $ref: "#/components/parameters/PageToken"
         - $ref: "#/components/parameters/ResourceId"
       responses:
@@ -414,7 +414,7 @@ paths:
                         response:
                           status: "Warning"
                           statusCode: 201
-                          location: "https://api.skolverket.se/dnp/iga/provisioning/v1/persons/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                          location: "https://api.skolverket.se/provtjanst/provisioning/v1/persons/3fa85f64-5717-4562-b3fc-2c963f66afa6"
                           errors: [ ]
                           warnings:
                             - id: "3047"
@@ -468,7 +468,7 @@ paths:
             example: "false"
       responses:
         "200":
-          $ref: "#/components/responses/200_job_status_persons"
+          $ref: "#/components/responses/200_job_status"
         "400":
           $ref: "#/components/responses/400_invalid_id"
         "403":
@@ -747,7 +747,7 @@ paths:
       description: >-
         Hämta en lista med alla bulk-jobb för tjänstgöringar.
       parameters:
-        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/BulkJobsLimit"
         - $ref: "#/components/parameters/PageToken"
         - $ref: "#/components/parameters/ResourceId"
       responses:
@@ -778,7 +778,7 @@ paths:
                         response:
                           status: "Success"
                           statusCode: 201
-                          location: "https://api.skolverket.se/dnp/iga/provisioning/v1/duties/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                          location: "https://api.skolverket.se/provtjanst/provisioning/v1/duties/3fa85f64-5717-4562-b3fc-2c963f66afa6"
                           errors: [ ]
                           warnings: [ ]
                         meta:
@@ -821,7 +821,7 @@ paths:
             example: false
       responses:
         "200":
-          $ref: "#/components/responses/200_job_status_duties"
+          $ref: "#/components/responses/200_job_status"
         "400":
           $ref: "#/components/responses/400_invalid_id"
         "403":
@@ -1103,7 +1103,7 @@ paths:
       description: >-
         Hämta en lista med alla bulk-jobb för grupper.
       parameters:
-        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/BulkJobsLimit"
         - $ref: "#/components/parameters/PageToken"
         - $ref: "#/components/parameters/ResourceId"
       responses:
@@ -1134,7 +1134,7 @@ paths:
                         response:
                           status: "Success"
                           statusCode: 201
-                          location: "https://api.skolverket.se/dnp/iga/provisioning/v1/groups/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                          location: "https://api.skolverket.se/provtjanst/provisioning/v1/groups/3fa85f64-5717-4562-b3fc-2c963f66afa6"
                           errors: [ ]
                           warnings: [ ]
                         meta:
@@ -1177,7 +1177,7 @@ paths:
             example: false
       responses:
         "200":
-          $ref: "#/components/responses/200_job_status_groups"
+          $ref: "#/components/responses/200_job_status"
         "400":
           $ref: "#/components/responses/400_invalid_id"
         "403":
@@ -1457,7 +1457,7 @@ paths:
       description: >-
         Hämta en lista med alla bulk-jobb för aktiviteter.
       parameters:
-        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/BulkJobsLimit"
         - $ref: "#/components/parameters/PageToken"
         - $ref: "#/components/parameters/ResourceId"
       responses:
@@ -1488,7 +1488,7 @@ paths:
                         response:
                           status: "Success"
                           statusCode: 201
-                          location: "https://api.skolverket.se/dnp/iga/provisioning/v1/activities/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                          location: "https://api.skolverket.se/provtjanst/provisioning/v1/activities/3fa85f64-5717-4562-b3fc-2c963f66afa6"
                           errors: [ ]
                           warnings: [ ]
                         meta:
@@ -1531,7 +1531,7 @@ paths:
             example: false
       responses:
         "200":
-          $ref: "#/components/responses/200_job_status_activities"
+          $ref: "#/components/responses/200_job_status"
         "400":
           $ref: "#/components/responses/400_invalid_id"
         "403":
@@ -1679,7 +1679,7 @@ components:
                 `GY` och `VUXGY` motsvarar en prov-aktivitet en kurs det genomförs nationellt prov eller
                 bedömningsstöd, exempelvis "MATMAT01a". Information om nationella prov-aktiviteter med
                 identifierare i UUID-format **ska** hämtas via provtjänstens
-                [open-data API](https://api-pre.skolverket.se/dnp/iga/open-data/swagger-ui.html).
+                [open-data API](https://api.skolverket.se/dnp/provtjanstn-data/swagger-ui.html).
                 Mer information om nationella prov-aktiviteter finns i
                 [Skolverkets Github](https://github.com/skolverket/dnp-usermanagement/tree/main/open-data-api).
         provisioningStatus:
@@ -1748,7 +1748,7 @@ components:
                     description: >-
                       URL till resursen som skapades. Det returneras endast om
                       resurs skapades.
-                    example: "https://api.skolverket.se/dnp/iga/provisioning/v1/persons/3fa85f64-5717-4562-b3fc-2c963f66afa7"
+                    example: "https://api.skolverket.se/provtjanst/provisioning/v1/persons/3fa85f64-5717-4562-b3fc-2c963f66afa7"
                   errors:
                     type: array
                     description: >
@@ -2113,7 +2113,7 @@ components:
             Referens till ett organisationselement av typen skolenhet. Notera att skolenhetsidentifieraren
             ska vara ett UUID-värde som är genererat av Skolverket. Skolenhetsinformation med
             identifierare i UUID-format kan hämtas via provtjänstens
-            [open-data API](https://api-pre.skolverket.se/dnp/iga/open-data/swagger-ui.html).
+            [open-data API](https://api.skolverket.se/dnp/provtjanstn-data/swagger-ui.html).
             Mer information om nationella prov-aktiviteter finns i
             [Skolverkets Github](https://github.com/skolverket/dnp-usermanagement/tree/main/open-data-api).
     Person:
@@ -2304,11 +2304,11 @@ components:
             Referens till ett organisationselement av typen skolenhet. Notera att skolenhetsidentifieraren
             ska vara ett UUID-värde som är genererat av Skolverket. Skolenhetsinformation med
             identifierare i UUID-format kan hämtas via provtjänstens
-            [open-data API](https://api-pre.skolverket.se/dnp/iga/open-data/swagger-ui.html).
+            [open-data API](https://api.skolverket.se/dnp/provtjanstn-data/swagger-ui.html).
             Mer information om nationella prov-aktiviteter finns i
             [Skolverkets Github](https://github.com/skolverket/dnp-usermanagement/tree/main/open-data-api).
   responses:
-    200_job_status_persons:
+    200_job_status:
       description: Anropet har lyckats.
       headers:
         x-ratelimit-limit:
@@ -2321,19 +2321,40 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/AsynchronousResponse"
-          example: |
-            {
-              "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-              "responses": [
-                {
-                  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                  "response": {
-                    "status": "Warning",
-                    "statusCode": 201,
-                    "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/persons/3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                    "errors": [],
-                    "warnings": [
-                      {
+          examples:
+            PersonJobStatusSuccess:
+              value: {
+                "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                "responses": [
+                  {
+                    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                    "response": {
+                      "status": "Success",
+                      "statusCode": 201,
+                      "location": "https://api.skolverket.se/provtjanst/provisioning/v1/persons/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                      "errors": [ ],
+                      "warnings": [ ]
+                    },
+                    "meta": {
+                      "created": "2021-05-12T10:30:00.123+02:00",
+                      "modified": "2021-05-12T10:30:00.123+02:00"
+                    }
+                  }
+                ]
+              }
+            PersonJobStatusWarning:
+              value: {
+                "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                "responses": [
+                  {
+                    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                    "response": {
+                      "status": "Warning",
+                      "statusCode": 201,
+                      "location": "https://api.skolverket.se/provtjanst/provisioning/v1/persons/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                      "errors": [ ],
+                      "warnings": [
+                        {
                           "id": "3047",
                           "statusCode": 400,
                           "messageType": "Bristfälligt värde",
@@ -2344,115 +2365,76 @@ components:
                           "attributeValue": "efraimsdotter09@edu.huvudman.se",
                           "severityLevel": "Warning",
                           "timeOfOccurance": "2025-08-14T16:17:42.048+02:00"
-                      }
-                    ]
-                  },
-                  "meta": {
-                    "created": "2021-05-12T10:30:00.123+02:00",
-                    "modified": "2021-05-12T10:30:00.123+02:00"
+                        }
+                      ]
+                    },
+                    "meta": {
+                      "created": "2021-05-12T10:30:00.123+02:00",
+                      "modified": "2021-05-12T10:30:00.123+02:00"
+                    }
                   }
-                }
-              ]
-            }
-    200_job_status_duties:
-      description: Anropet har lyckats.
-      headers:
-        x-ratelimit-limit:
-          $ref: "#/components/headers/x-ratelimit-limit"
-        x-ratelimit-remaining:
-          $ref: "#/components/headers/x-ratelimit-remaining"
-        x-ratelimit-reset:
-          $ref: "#/components/headers/x-ratelimit-reset"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/AsynchronousResponse"
-          example: |
-            {
-              "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-              "responses": [
-                {
-                  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                  "response": {
-                    "status": "Success",
-                    "statusCode": 201,
-                    "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/duties/3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                    "errors": [],
-                    "warnings": []
-                  },
-                  "meta": {
-                    "created": "2021-05-12T10:30:00.123+02:00",
-                    "modified": "2021-05-12T10:30:00.123+02:00"
+                ]
+              }
+            DutyJobStatusSuccess:
+              value: {
+                "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                "responses": [
+                  {
+                    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                    "response": {
+                      "status": "Success",
+                      "statusCode": 201,
+                      "location": "https://api.skolverket.se/provtjanst/provisioning/v1/duties/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                      "errors": [ ],
+                      "warnings": [ ]
+                    },
+                    "meta": {
+                      "created": "2021-05-12T10:30:00.123+02:00",
+                      "modified": "2021-05-12T10:30:00.123+02:00"
+                    }
                   }
-                }
-              ]
-            }
-    200_job_status_groups:
-      description: Anropet har lyckats.
-      headers:
-        x-ratelimit-limit:
-          $ref: "#/components/headers/x-ratelimit-limit"
-        x-ratelimit-remaining:
-          $ref: "#/components/headers/x-ratelimit-remaining"
-        x-ratelimit-reset:
-          $ref: "#/components/headers/x-ratelimit-reset"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/AsynchronousResponse"
-          example: |
-            {
-              "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-              "responses": [
-                {
-                  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                  "response": {
-                    "status": "Success",
-                    "statusCode": 201,
-                    "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/groups/3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                    "errors": [],
-                    "warnings": []
-                  },
-                  "meta": {
-                    "created": "2021-05-12T10:30:00.123+02:00",
-                    "modified": "2021-05-12T10:30:00.123+02:00"
+                ]
+              }
+            GroupJobStatusSuccess:
+              value: {
+                "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                "responses": [
+                  {
+                    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                    "response": {
+                      "status": "Success",
+                      "statusCode": 201,
+                      "location": "https://api.skolverket.se/provtjanst/provisioning/v1/groups/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                      "errors": [ ],
+                      "warnings": [ ]
+                    },
+                    "meta": {
+                      "created": "2021-05-12T10:30:00.123+02:00",
+                      "modified": "2021-05-12T10:30:00.123+02:00"
+                    }
                   }
-                }
-              ]
-            }
-    200_job_status_activities:
-      description: Anropet har lyckats.
-      headers:
-        x-ratelimit-limit:
-          $ref: "#/components/headers/x-ratelimit-limit"
-        x-ratelimit-remaining:
-          $ref: "#/components/headers/x-ratelimit-remaining"
-        x-ratelimit-reset:
-          $ref: "#/components/headers/x-ratelimit-reset"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/AsynchronousResponse"
-          example: |
-            {
-              "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-              "responses": [
-                {
-                  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                  "response": {
-                    "status": "Success",
-                    "statusCode": 201,
-                    "location": "https://api.skolverket.se/dnp/iga/provisioning/v1/activities/3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                    "errors": [],
-                    "warnings": []
-                  },
-                  "meta": {
-                    "created": "2021-05-12T10:30:00.123+02:00",
-                    "modified": "2021-05-12T10:30:00.123+02:00"
+                ]
+              }
+            ActivityJobStatusSuccess:
+              value: {
+                "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                "responses": [
+                  {
+                    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                    "response": {
+                      "status": "Success",
+                      "statusCode": 201,
+                      "location": "https://api.skolverket.se/provtjanst/provisioning/v1/activities/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                      "errors": [ ],
+                      "warnings": [ ]
+                    },
+                    "meta": {
+                      "created": "2021-05-12T10:30:00.123+02:00",
+                      "modified": "2021-05-12T10:30:00.123+02:00"
+                    }
                   }
-                }
-              ]
-            }
+                ]
+              }
     202_accepted:
       description: Anropet har tagits emot.
       headers:
@@ -2461,7 +2443,7 @@ components:
             type: string
             format: uri
           description: URL till det nyskapade asynkrona jobbet
-          example: "https://api.skolverket.se/dnp/iga/provisioning/v1/persons/bulk/jobs/3fa85f64-5717-4562-b3fc-2c963f66afa7"
+          example: "https://api.skolverket.se/provtjanst/provisioning/v1/persons/bulk/jobs/3fa85f64-5717-4562-b3fc-2c963f66afa7"
         x-ratelimit-limit:
           $ref: "#/components/headers/x-ratelimit-limit"
         x-ratelimit-remaining:
@@ -2852,4 +2834,4 @@ components:
         type: integer
       example: 0.5
 security:
-  - BearerAuth: []
+  - BearerAuth: [ ]
