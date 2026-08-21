@@ -125,25 +125,6 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/Person"
-                    example: |
-                      {
-                        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                        "meta": {
-                          "created": "2021-05-12T10:30:00.123+02:00",
-                          "modified": "2021-05-12T10:30:00.123+02:00"
-                        },
-                        "givenName": "Pippilotta Viktualia Rullgardina Krusmynta",
-                        "middleName": "Efraimsdotter",
-                        "familyName": "Långstrump",
-                        "eduPersonPrincipalNames": [
-                          "fc79e369-18a3-40c4-aa33-d92057bfff65@edu.huvudman.se"
-                        ],
-                        "civicNo": {
-                          "value": "200901272385",
-                          "nationality": "SE"
-                        },
-                        "provisioningStatus": true
-                      }
                   pageToken:
                     type: string
                     nullable: true
@@ -398,6 +379,41 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/AsynchronousResponse"
+                    example:
+                      [
+                        {
+                          "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                          "responses": [
+                            {
+                              "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                              "response": {
+                                "status": "Warning",
+                                "statusCode": 201,
+                                "location": "https://api.skolverket.se/provtjanst/provisioning/v1/persons/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                                "errors": [ ],
+                                "warnings": [
+                                  {
+                                    "id": "3047",
+                                    "statusCode": 400,
+                                    "messageType": "Bristfälligt värde",
+                                    "message": "Bristfälligt värde på Federationsanvändarnamn, värdet innehåller de tre första bokstäverna i efternamnet, eller de två första bokstäverna i efternamnet och de två första bokstäverna i förnamnet. Uppdatera värdet så att det följer Skolverkets riktlinjer för EPPN, se https://www.skolverket.se/skolutveckling/digitala-nationella-prov/overforing-av-uppgifter-till-skolverket/eppn.",
+                                    "resourceType": "Person",
+                                    "resourceId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                                    "attributeName": "eppn",
+                                    "attributeValue": "efraimsdotter09@edu.huvudman.se",
+                                    "severityLevel": "Warning",
+                                    "timeOfOccurance": "2025-08-14T16:17:42.048+02:00"
+                                  }
+                                ]
+                              },
+                              "meta": {
+                                "created": "2021-05-12T10:30:00.123+02:00",
+                                "modified": "2021-05-12T10:30:00.123+02:00"
+                              }
+                            }
+                          ]
+                        }
+                      ]
                   pageToken:
                     type: string
                     nullable: true
@@ -406,32 +422,6 @@ paths:
                     example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
                 required:
                   - data
-              example:
-                data:
-                  - jobId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                    responses:
-                      - id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                        response:
-                          status: "Warning"
-                          statusCode: 201
-                          location: "https://api.skolverket.se/provtjanst/provisioning/v1/persons/3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                          errors: [ ]
-                          warnings:
-                            - id: "3047"
-                              statusCode: 400
-                              messageType: "Bristfälligt värde"
-                              message: "Bristfälligt värde på Federationsanvändarnamn, värdet innehåller de tre första bokstäverna i efternamnet, eller de två första bokstäverna i efternamnet och de två första bokstäverna i förnamnet. Uppdatera värdet så att det följer Skolverkets riktlinjer för EPPN, se https://www.skolverket.se/skolutveckling/digitala-nationella-prov/overforing-av-uppgifter-till-skolverket/eppn."
-                              resourceType: "Person"
-                              resourceId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                              attributeName: "eppn"
-                              attributeValue: "efraimsdotter09@edu.huvudman.se"
-                              severityLevel: "Warning"
-                              timeOfOccurance: "2025-08-14T16:17:42.048+02:01"
-                        meta:
-                          created: "2021-05-12T10:30:00.123+02:00"
-                          modified: "2021-05-12T10:30:00.123+02:00"
-                pageToken:
-                  example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
         "400":
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
@@ -762,6 +752,28 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/AsynchronousResponse"
+                    example:
+                      [
+                        {
+                          "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                          "responses": [
+                            {
+                              "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                              "response": {
+                                "status": "Success",
+                                "statusCode": 201,
+                                "location": "https://api.skolverket.se/provtjanst/provisioning/v1/duties/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                                "errors": [ ],
+                                "warnings": [ ]
+                              },
+                              "meta": {
+                                "created": "2021-05-12T10:30:00.123+02:00",
+                                "modified": "2021-05-12T10:30:00.123+02:00"
+                              }
+                            }
+                          ]
+                        }
+                      ]
                   pageToken:
                     type: string
                     nullable: true
@@ -770,22 +782,6 @@ paths:
                     example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
                 required:
                   - data
-              example:
-                data:
-                  - jobId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                    responses:
-                      - id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                        response:
-                          status: "Success"
-                          statusCode: 201
-                          location: "https://api.skolverket.se/provtjanst/provisioning/v1/duties/3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                          errors: [ ]
-                          warnings: [ ]
-                        meta:
-                          created: "2021-05-12T10:30:00.123+02:00"
-                          modified: "2021-05-12T10:30:00.123+02:00"
-                pageToken:
-                  example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
         "400":
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
@@ -1118,6 +1114,28 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/AsynchronousResponse"
+                    example:
+                      [
+                        {
+                          "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                          "responses": [
+                            {
+                              "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                              "response": {
+                                "status": "Success",
+                                "statusCode": 201,
+                                "location": "https://api.skolverket.se/provtjanst/provisioning/v1/groups/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                                "errors": [ ],
+                                "warnings": [ ]
+                              },
+                              "meta": {
+                                "created": "2021-05-12T10:30:00.123+02:00",
+                                "modified": "2021-05-12T10:30:00.123+02:00"
+                              }
+                            }
+                          ]
+                        }
+                      ]
                   pageToken:
                     type: string
                     nullable: true
@@ -1126,22 +1144,6 @@ paths:
                     example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
                 required:
                   - data
-              example:
-                data:
-                  - jobId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                    responses:
-                      - id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                        response:
-                          status: "Success"
-                          statusCode: 201
-                          location: "https://api.skolverket.se/provtjanst/provisioning/v1/groups/3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                          errors: [ ]
-                          warnings: [ ]
-                        meta:
-                          created: "2021-05-12T10:30:00.123+02:00"
-                          modified: "2021-05-12T10:30:00.123+02:00"
-                pageToken:
-                  example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
         "400":
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
@@ -1472,6 +1474,28 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/AsynchronousResponse"
+                    example:
+                      [
+                        {
+                          "jobId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                          "responses": [
+                            {
+                              "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                              "response": {
+                                "status": "Success",
+                                "statusCode": 201,
+                                "location": "https://api.skolverket.se/provtjanst/provisioning/v1/activities/3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                                "errors": [ ],
+                                "warnings": [ ]
+                              },
+                              "meta": {
+                                "created": "2021-05-12T10:30:00.123+02:00",
+                                "modified": "2021-05-12T10:30:00.123+02:00"
+                              }
+                            }
+                          ]
+                        }
+                      ]
                   pageToken:
                     type: string
                     nullable: true
@@ -1480,22 +1504,6 @@ paths:
                     example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
                 required:
                   - data
-              example:
-                data:
-                  - jobId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                    responses:
-                      - id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                        response:
-                          status: "Success"
-                          statusCode: 201
-                          location: "https://api.skolverket.se/provtjanst/provisioning/v1/activities/3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                          errors: [ ]
-                          warnings: [ ]
-                        meta:
-                          created: "2021-05-12T10:30:00.123+02:00"
-                          modified: "2021-05-12T10:30:00.123+02:00"
-                pageToken:
-                  example: "eyJpZCI6IjAzMzEwMmQ4LWUyYjYtNDQzZS1iYzUwLWIzMjNkM2EwYWU1NSIsImNyZWF0ZWQiOiIyMDI1LTA5LTIyVDA5OjAwOjQ4LjE3OTQxNyJ9"
         "400":
           $ref: "#/components/responses/400_invalid_parameter"
         "403":
@@ -2570,7 +2578,6 @@ components:
                   "message": "Ogiltigt format på ´path´ parameter <id>. Format ska vara UUID enligt RFC4122. Se https://www.ietf.org/rfc/rfc4122.txt.",
                   "parameterName": "id",
                   "parameterValue": "xxxxx",
-                  "resourceType": "xxxxx",
                   "severityLevel": "Error",
                   "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
                 }
@@ -2627,7 +2634,7 @@ components:
                   "message": "Person identifierats av angivet värden i `path` parameter <id> hittades inte.",
                   "parameterName": "id",
                   "parameterValue": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
-                  "resourceType": "xxxxx",
+                  "resourceType": "Person",
                   "severityLevel": "Error",
                   "timeOfOccurance": "2021-05-12T10:30:00.123+02:00"
                 }
