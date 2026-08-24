@@ -1687,7 +1687,7 @@ components:
                 `GY` och `VUXGY` motsvarar en prov-aktivitet en kurs det genomförs nationellt prov eller
                 bedömningsstöd, exempelvis "MATMAT01a". Information om nationella prov-aktiviteter med
                 identifierare i UUID-format **ska** hämtas via provtjänstens
-                [open-data API](https://api.skolverket.se/dnp/provtjanstn-data/swagger-ui.html).
+                [open-data API](https://api.skolverket.se/provtjanst/open-data/v1/swagger-ui.html).
                 Mer information om nationella prov-aktiviteter finns i
                 [Skolverkets Github](https://github.com/skolverket/dnp-usermanagement/tree/main/open-data-api).
         provisioningStatus:
@@ -2121,7 +2121,7 @@ components:
             Referens till ett organisationselement av typen skolenhet. Notera att skolenhetsidentifieraren
             ska vara ett UUID-värde som är genererat av Skolverket. Skolenhetsinformation med
             identifierare i UUID-format kan hämtas via provtjänstens
-            [open-data API](https://api.skolverket.se/dnp/provtjanstn-data/swagger-ui.html).
+            [open-data API](https://api.skolverket.se/provtjanst/open-data/v1/swagger-ui.html).
             Mer information om nationella prov-aktiviteter finns i
             [Skolverkets Github](https://github.com/skolverket/dnp-usermanagement/tree/main/open-data-api).
     Person:
@@ -2312,7 +2312,7 @@ components:
             Referens till ett organisationselement av typen skolenhet. Notera att skolenhetsidentifieraren
             ska vara ett UUID-värde som är genererat av Skolverket. Skolenhetsinformation med
             identifierare i UUID-format kan hämtas via provtjänstens
-            [open-data API](https://api.skolverket.se/dnp/provtjanstn-data/swagger-ui.html).
+            [open-data API](https://api.skolverket.se/provtjanst/open-data/v1/swagger-ui.html).
             Mer information om nationella prov-aktiviteter finns i
             [Skolverkets Github](https://github.com/skolverket/dnp-usermanagement/tree/main/open-data-api).
   responses:
