@@ -364,9 +364,9 @@ paths:
       description: >-
         Hämta en lista med alla bulk-jobb för personer.
       parameters:
+        - $ref: "#/components/parameters/ResourceId"
         - $ref: "#/components/parameters/BulkJobsLimit"
         - $ref: "#/components/parameters/PageToken"
-        - $ref: "#/components/parameters/ResourceId"
       responses:
         "200":
           description: Anropet lyckades.
@@ -737,9 +737,9 @@ paths:
       description: >-
         Hämta en lista med alla bulk-jobb för tjänstgöringar.
       parameters:
+        - $ref: "#/components/parameters/ResourceId"
         - $ref: "#/components/parameters/BulkJobsLimit"
         - $ref: "#/components/parameters/PageToken"
-        - $ref: "#/components/parameters/ResourceId"
       responses:
         "200":
           description: Anropet lyckades.
@@ -1099,9 +1099,9 @@ paths:
       description: >-
         Hämta en lista med alla bulk-jobb för grupper.
       parameters:
+        - $ref: "#/components/parameters/ResourceId"
         - $ref: "#/components/parameters/BulkJobsLimit"
         - $ref: "#/components/parameters/PageToken"
-        - $ref: "#/components/parameters/ResourceId"
       responses:
         "200":
           description: Anropet lyckades.
@@ -1459,9 +1459,9 @@ paths:
       description: >-
         Hämta en lista med alla bulk-jobb för aktiviteter.
       parameters:
+        - $ref: "#/components/parameters/ResourceId"
         - $ref: "#/components/parameters/BulkJobsLimit"
         - $ref: "#/components/parameters/PageToken"
-        - $ref: "#/components/parameters/ResourceId"
       responses:
         "200":
           description: Anropet lyckades.
@@ -2807,9 +2807,11 @@ components:
       name: resourceId
       schema:
         type: string
+        format: uuid
       required: false
       description: >
-        Identifierare för resurs som anropet avser.
+        Identifierare för en specifik resurs. Används för att filtrera jobbstatusar för en
+        specifik resurs.
       example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
     UpdateIfExists:
       in: query
