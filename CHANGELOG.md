@@ -2,11 +2,24 @@
 
 Viktiga ändringar i systemet för överföring av uppgifter till provtjänsten publiceras här.
 
-## Provtjänst v1.3.3 (2026-09-01)
+## Provtjänst v1.4.0 (2026-09-01)
 
 ### Nya funktioner och ändringar
-* Nya Get-endpoints som används för att hämta alla bulk-jobb finns nu implementerade för alla resurstyper i provisionerings-API.
-  Se [OpenAPI-specifikationen för provisionerings-API](provisioning-api/dnp-provisioning-api.yaml) för detaljer. 
+* Nya Get-endpoints som används för att hämta alla bulk-jobb finns nu implementerade för alla
+  resurstyper i provisionerings-API. Se [OpenAPI-specifikationen för provisionerings-API](provisioning-api/dnp-provisioning-api.yaml)
+  för detaljer.
+* Händelser skapas nu i Administration provtjänsten för att ge huvudmän bättre insyn i
+  uppgiftsöverföringen. Behöriga hos huvudmännen kan logga in och ta del av händelserna.
+  I denna version skapas händelser för följande fall:
+  * När Skolverket inte kan komma åt huvudmannens SS12000-API skapas en händelse och en
+    mejlnotis skickas till huvudmannens tekniska kontaktperson.
+  * Vid initial hämtning av uppgifter från huvudmannens SS12000-API skapas en händelse.
+    Ingen mejlnotis skickas i detta fall.
+* Det har gjort ändring i begränsningen på antal anrop per sekund i provisionerings-API. 
+  De nya begränsningarna är enligt följande:
+  * Endpoints för överföring av uppgifter har en begränsning på _5 anrop per sekund per klient-IP_.
+  * Endpoints för uppföljning av överföringsstatus och hämtning av uppgifter har en begränsning
+    på _10 anrop per sekund per klient-IP_.
 
 ## Provtjänst v1.3.2 (2026-04-15)
 
